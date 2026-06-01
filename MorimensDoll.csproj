@@ -35,8 +35,6 @@
 
     <ItemGroup>
         <Publicize Include="sts2" IncludeVirtualMembers="false" IncludeCompilerGeneratedMembers="false"/>
-        <!-- 如果需要解鎖 MinionLib 的私有成員，取消註解下一行 -->
-        <!-- <Publicize Include="MinionLib" IncludeVirtualMembers="false" IncludeCompilerGeneratedMembers="false"/> -->
     </ItemGroup>
 
     <ItemGroup>
@@ -45,6 +43,7 @@
         <Reference Include="Steamworks.NET" HintPath="$(Sts2DataDir)\Steamworks.NET.dll" Private="True"/>
         <!-- Private="False" 可以防止編譯時把 MinionLib.dll 複製到你自己的模組資料夾中造成冗餘 -->
         <Reference Include="MinionLib" HintPath="$(Sts2Dir)\mods\MinionLib\MinionLib.dll" Private="False"/>
+        <Reference Include="MinionLib.RitsuLibAdapters" HintPath="$(Sts2Dir)\mods\MinionLib.RitsuAdapters\MinionLib.RitsuAdapters.dll" Private="False"/>
     </ItemGroup>
 
     <ItemGroup>

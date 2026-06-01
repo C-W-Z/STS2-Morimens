@@ -109,6 +109,11 @@ public sealed class Doll : ModCharacterTemplate<DollCardPool, DollRelicPool, Dol
 
     protected override CreatureAnimator? SetupCustomCreatureAnimator(MegaSprite controller)
     {
+        return GetCreatureAnimator(controller);
+    }
+
+    public static CreatureAnimator GetCreatureAnimator(MegaSprite controller)
+    {
         const string STATE_IDLE = "Idle_1";
         const string STATE_ATTACK = "Attack";
         const string STATE_DEFENCE = "Defence";
