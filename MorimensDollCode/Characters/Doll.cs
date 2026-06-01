@@ -1,4 +1,6 @@
 using Godot;
+using MegaCrit.Sts2.Core.Animation;
+using MegaCrit.Sts2.Core.Bindings.MegaSpine;
 using MegaCrit.Sts2.Core.Entities.Characters;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -87,5 +89,59 @@ public sealed class Doll : ModCharacterTemplate<DollCardPool, DollRelicPool, Dol
             "vfx/vfx_bloody_impact",
             "vfx/vfx_rock_shatter"
         ];
+    }
+
+    const string STATE_IDLE = "Idle_1";
+    const string STATE_ATTACK = "Attack";
+    const string STATE_DEFENCE = "Defence";
+    const string STATE_SKILL1 = "Skill1";
+    const string STATE_SKILL2 = "Skill2";
+    const string STATE_EXALT = "Exalt";
+    const string STATE_EXSKILL = "ExSkill";
+    const string STATE_HIT = "Hit";
+    const string STATE_MOVE = "Move";
+    const string STATE_BACK = "Back";
+
+    protected override CreatureAnimator? SetupCustomCreatureAnimator(MegaSprite controller)
+    {
+        // 设定动画名和是否循环播放
+        AnimState idle = new(STATE_IDLE, isLooping: true);
+        AnimState attack = new(STATE_ATTACK);
+        AnimState defence = new(STATE_DEFENCE);
+        AnimState skill1 = new(STATE_SKILL1);
+        AnimState skill2 = new(STATE_SKILL2);
+        AnimState exalt = new(STATE_EXALT);
+        AnimState exSkill = new(STATE_EXSKILL);
+        AnimState hit = new(STATE_HIT);
+        AnimState move = new(STATE_MOVE);
+        AnimState back = new(STATE_BACK);
+
+        // 设定播放后自动跳转，例如这里都是返回idle
+        attack.NextState = idle;
+        defence.NextState = idle;
+        skill1.NextState = idle;
+        skill2.NextState = idle;
+        exalt.NextState = idle;
+        exSkill.NextState = idle;
+        hit.NextState = idle;
+        move.NextState = idle;
+        back.NextState = idle;
+
+        // 绑定播放动画名
+        CreatureAnimator creatureAnimator = new(idle, controller);
+        creatureAnimator.AddAnyState("Idle", idle);
+        creatureAnimator.AddAnyState("Dead", idle);
+        creatureAnimator.AddAnyState("Hit", hit);
+        creatureAnimator.AddAnyState("Attack", attack);
+        creatureAnimator.AddAnyState("Cast", defence);
+        creatureAnimator.AddAnyState("Relaxed", idle);
+        creatureAnimator.AddAnyState(STATE_SKILL1, skill1);
+        creatureAnimator.AddAnyState(STATE_SKILL2, skill2);
+        creatureAnimator.AddAnyState(STATE_EXALT, exalt);
+        creatureAnimator.AddAnyState(STATE_EXSKILL, exSkill);
+        creatureAnimator.AddAnyState(STATE_MOVE, move);
+        creatureAnimator.AddAnyState(STATE_BACK, back);
+
+        return creatureAnimator;
     }
 }
