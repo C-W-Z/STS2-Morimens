@@ -8,5 +8,7 @@
   "MORIMENS_DOLL_CARD_EQUIVALENT_EXCHANGE.title": "等價交換",
   "MORIMENS_DOLL_CARD_EQUIVALENT_EXCHANGE.description": "回復 {Heal:diff()} 點生命，每有一張手牌額外回復 {CalculationExtra:diff()} 點生命並獲得等量[gold]格擋[/gold]。\n棄掉所有手牌。",
   "MORIMENS_DOLL_CARD_FLESH_DETACHED.title": "靈肉兩分",
-  "MORIMENS_DOLL_CARD_FLESH_DETACHED.description": "回復生命時獲得 {FleshDetachedPower:diff()} 點[gold]格擋[/gold]。"
+  "MORIMENS_DOLL_CARD_FLESH_DETACHED.description": "回復生命時獲得 {FleshDetachedPower:diff()} 點[gold]格擋[/gold]。",
+  "MORIMENS_DOLL_CARD_DISSOLUTION.title": "融蝕症",
+  "MORIMENS_DOLL_CARD_DISSOLUTION.description": "給予{DoomPower:diff()}災厄。"
 }
