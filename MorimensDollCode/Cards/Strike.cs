@@ -13,7 +13,7 @@ namespace MorimensDoll.Cards;
 // RegisterCharacterStarterCard 会把它追加进 Doll 的初始卡组。
 [RegisterCard(typeof(DollCardPool))]
 [RegisterCharacterStarterCard(typeof(Doll), 4)]
-public sealed class Strike : ModCardTemplate
+public sealed class Strike : AbstractDollCard
 {
     // 基础耗能。
     private const int BaseEnergyCost = 1;
@@ -25,12 +25,6 @@ public sealed class Strike : ModCardTemplate
     private const TargetType CardTarget = TargetType.AnyEnemy;
     // 是否在卡牌图鉴中显示。
     private const bool ShowInCardLibrary = true;
-
-    // 卡图资源。
-    // 如果你按这行代码写，文件名就对应 MorimensDoll/images/cards/Strike.png。
-    // 这里的 res://MorimensDoll/... 是 Godot 资源路径，对应的是你的资源文件夹名字。
-    public override CardAssetProfile AssetProfile => new(
-        PortraitPath: $"{Entry.ResPath}/images/cards/{GetType().Name}.png");
 
     // CanonicalVars 翻译是“规范值”，指卡牌的基础数值。
     // 添加一个 DamageVar 意为指定卡牌的基础伤害是多少；它会自动绑定到本地化里的 {Damage:diff()} 占位符。
