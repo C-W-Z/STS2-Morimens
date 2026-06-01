@@ -91,7 +91,7 @@ public sealed class Doll : ModCharacterTemplate<DollCardPool, DollRelicPool, Dol
         ];
     }
 
-    public class State
+    public static class State
     {
         public const string Idle = "Idle";
         public const string Relaxed = "Relaxed";

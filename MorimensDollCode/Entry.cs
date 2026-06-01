@@ -8,7 +8,7 @@ using Logger = MegaCrit.Sts2.Core.Logging.Logger;
 namespace MorimensDoll;
 
 [ModInitializer(nameof(Initialize))]
-public partial class Entry
+public static partial class Entry
 {
     // ModId 需要和 MorimensDoll.json 里的 id 保持一致。
     // res://MorimensDoll/... 里的 MorimensDoll 是 PCK 资源目录，不是 C# namespace。
