@@ -16,9 +16,10 @@ public sealed class FleshDetached() : AbstractDollCard(2, CardType.Power, CardRa
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<FleshDetachedPower>(2m)];
 
-    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromPower<FleshDetachedPower>()];
-
-    public override bool GainsBlock => true;
+    protected override IEnumerable<IHoverTip> AdditionalHoverTips => [
+        HoverTipFactory.FromPower<FleshDetachedPower>(),
+        HoverTipFactory.Static(StaticHoverTip.Block)
+    ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
