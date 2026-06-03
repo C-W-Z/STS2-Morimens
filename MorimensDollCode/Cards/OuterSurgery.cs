@@ -12,7 +12,7 @@ namespace MorimensDoll.Cards;
 [RegisterCharacterStarterCard(typeof(Doll), 1)]
 public sealed class OuterSurgery() : AbstractDollCard(2, CardType.Skill, CardRarity.Common, TargetType.AllEnemies)
 {
-    protected override HashSet<CardTag> CanonicalTags => [];
+    protected override HashSet<CardTag> CanonicalTags => [DollCardTag.Heal];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [new HealVar(5m), new PowerVar<WeakPower>(1m)];
 

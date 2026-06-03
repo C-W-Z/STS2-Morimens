@@ -13,7 +13,7 @@ namespace MorimensDoll.Cards;
 [RegisterCharacterStarterCard(typeof(Doll), 1)]
 public sealed class EquivalentExchange() : AbstractDollCard(3, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
-    protected override HashSet<CardTag> CanonicalTags => [];
+    protected override HashSet<CardTag> CanonicalTags => [DollCardTag.Heal];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new HealVar(5m),

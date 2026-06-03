@@ -18,6 +18,8 @@ public class DollMinion : ModMinionTemplate
     public override int MinInitialHp => 1; // 作为敌方方怪物生成时的血量，通常无需在意
     public override int MaxInitialHp => 1; // 作为敌方方怪物生成时的血量，通常无需在意
 
+    public const decimal MAX_HP = 4m;
+
     private const string SceneRoot = $"{Entry.ResPath}/scenes/minions";
 
     public override MonsterAssetProfile AssetProfile => new(
@@ -28,8 +30,13 @@ public class DollMinion : ModMinionTemplate
     // 注意使用 self 而非 this
     public override async Task OnSummon(PlayerChoiceContext choiceContext, Player owner, Creature self, MinionSummonOptions options)
     {
+        await CreatureCmd.SetMaxHp(self, MAX_HP);
         if (options.MaxHp is decimal maxHp)
-            await CreatureCmd.SetMaxAndCurrentHp(self, maxHp); // 设置血量
+        {
+            if (maxHp > MAX_HP)
+                await CreatureCmd.SetMaxHp(self, maxHp);
+            await CreatureCmd.SetCurrentHp(self, maxHp); // 设置血量
+        }
 
         await PowerCmd.Apply<MinionGuardianPower>(choiceContext, self, 1, owner.Creature, options.Source);
 
