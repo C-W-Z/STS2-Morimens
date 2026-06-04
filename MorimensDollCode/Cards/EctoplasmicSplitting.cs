@@ -9,11 +9,11 @@ namespace MorimensDoll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
 [RegisterCharacterStarterCard(typeof(Doll), 1)]
-public sealed class SpareBody() : AbstractDollCard(0, CardType.Skill, CardRarity.Basic, TargetType.None)
+public sealed class EctoplasmicSplitting() : AbstractDollCard(2, CardType.Skill, CardRarity.Common, TargetType.None)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new RepeatVar(1)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new RepeatVar(2)];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, CardKeyword.Retain];
 
@@ -27,6 +27,6 @@ public sealed class SpareBody() : AbstractDollCard(0, CardType.Skill, CardRarity
 
     protected override void OnUpgrade()
     {
-        AddKeyword(CardKeyword.Innate);
+        DynamicVars.Repeat.UpgradeValueBy(1);
     }
 }

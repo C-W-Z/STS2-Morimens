@@ -10,7 +10,7 @@
   "MORIMENS_DOLL_CARD_FLESH_DETACHED.title": "靈肉兩分",
   "MORIMENS_DOLL_CARD_FLESH_DETACHED.description": "回復生命時獲得 {FleshDetachedPower:diff()} 點[gold]格擋[/gold]。",
   "MORIMENS_DOLL_CARD_SPARE_BODY.title": "備用軀體",
-  "MORIMENS_DOLL_CARD_SPARE_BODY.description": "召喚1個人偶。",
+  "MORIMENS_DOLL_CARD_SPARE_BODY.description": "召喚{Repeat:diff()}個人偶。",
   "MORIMENS_DOLL_CARD_MINION_ATTACK.title": "指令．攻擊",
   "MORIMENS_DOLL_CARD_MINION_ATTACK.description": "所有人偶隨機攻擊。\n若無人偶改為召喚半血人偶。",
   "MORIMENS_DOLL_CARD_MINION_GROW.title": "指令．成長",
@@ -20,5 +20,7 @@
   "MORIMENS_DOLL_CARD_DISSOLUTION_BURST.title": "融蝕爆發",
   "MORIMENS_DOLL_CARD_DISSOLUTION_BURST.description": "全體單位失去等量於身上[gold]災厄[/gold]層數的生命。",
   "MORIMENS_DOLL_CARD_SYNAPTIC_EXPANSION.title": "神經突觸擴充",
-  "MORIMENS_DOLL_CARD_SYNAPTIC_EXPANSION.description": "前排人偶上限提升{DollMinionLimitPower:diff()}。"
+  "MORIMENS_DOLL_CARD_SYNAPTIC_EXPANSION.description": "前排人偶上限提升{DollMinionLimitPower:diff()}。",
+  "MORIMENS_DOLL_CARD_ECTOPLASMIC_SPLITTING.title": "靈質分離",
+  "MORIMENS_DOLL_CARD_ECTOPLASMIC_SPLITTING.description": "召喚{Repeat:diff()}個人偶。"
 }
