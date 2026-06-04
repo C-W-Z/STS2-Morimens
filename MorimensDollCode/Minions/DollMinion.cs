@@ -6,9 +6,9 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MinionLib.Minion;
-using MinionLib.Powers;
 using MinionLib.RitsuAdapters;
 using MorimensDoll.Anims;
+using MorimensDoll.Powers;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace MorimensDoll.Minions;
@@ -41,7 +41,7 @@ public class DollMinion : ModMinionTemplate
             await CreatureCmd.SetCurrentHp(self, maxHp); // 设置血量
         }
 
-        await PowerCmd.Apply<MinionGuardianPower>(choiceContext, self, 1, owner.Creature, options.Source);
+        await PowerCmd.Apply<DollMinionGuardianPower>(choiceContext, self, 1, owner.Creature, options.Source);
 
         if (options.PrimaryStatAmount is decimal strength && strength > 0m)
             await PowerCmd.Apply<StrengthPower>(choiceContext, self, strength, owner.Creature, options.Source); // 根据传入的参数设置力量
