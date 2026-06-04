@@ -10,7 +10,7 @@ public class MinionBeforeTurnEndPatch : IPatchMethod
     // 1. 填寫 RitsuLib 要求的唯一 ID 與說明
     public static string PatchId => "morimens_doll_minion_before_turn_end";
 
-    public static string Description => "將戰鬥中存活的Minions放入回合結束的參與者名單中";
+    public static string Description => "將戰鬥中存活的Minions放入回合結束的參與者名單中，主要為了修復災厄不會在Minions身上觸發的問題。";
 
     public static bool IsCritical => false;
 
@@ -43,9 +43,7 @@ public class MinionBeforeTurnEndPatch : IPatchMethod
 
                 Entry.Logger.Debug($"MinionBeforeTurnEndPatch: Find Pet {pet.Monster?.GetType().Namespace}");
 
-                // 修正：核心關鍵！原版遊戲自己的召喚物（如 Osty，屬於 MegaCrit 命名空間）
-                // 本來就不需要進這個名單就能運作。強行塞入會破壞原版的回合清理機制。
-                // 我們直接利用命名空間排除原版和其他模組的召喚物，只保留我們 Mod 的自訂召喚物！
+                // 利用命名空間排除原版和其他模組的召喚物，只保留我們的自訂召喚物
                 if (pet.Monster?.GetType().Namespace?.StartsWith(Entry.ModId) == false) continue;
 
                 if (!updatedParticipants.Contains(pet))
