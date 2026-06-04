@@ -69,7 +69,7 @@ public static class DollSpine
         CreatureAnimator creatureAnimator = new(idle, controller);
         creatureAnimator.AddAnyState(State.Idle, idle);
         creatureAnimator.AddAnyState(State.Relaxed, idle);
-        creatureAnimator.AddAnyState(State.Dead, idle);
+        creatureAnimator.AddAnyState(State.Dead, hit);
         creatureAnimator.AddAnyState(State.Attack, attack);
         creatureAnimator.AddAnyState(State.Cast, defence);
         creatureAnimator.AddAnyState(State.Skill1, skill1);

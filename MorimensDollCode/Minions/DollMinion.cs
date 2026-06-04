@@ -9,7 +9,6 @@ using MinionLib.Minion;
 using MinionLib.Powers;
 using MinionLib.RitsuAdapters;
 using MorimensDoll.Anims;
-using MorimensDoll.Characters;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace MorimensDoll.Minions;
