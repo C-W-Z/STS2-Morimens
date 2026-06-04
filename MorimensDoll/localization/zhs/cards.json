@@ -16,5 +16,7 @@
   "MORIMENS_DOLL_CARD_MINION_GROW.title": "指令．成長",
   "MORIMENS_DOLL_CARD_MINION_GROW.description": "所有人偶+{MaxHp:diff()}最大血量\n若無人偶改為召喚半血人偶。",
   "MORIMENS_DOLL_CARD_VOID_DROPLET.title": "虛無液滴",
-  "MORIMENS_DOLL_CARD_VOID_DROPLET.description": "給予全體單位{DoomPower:diff()}[gold]災厄[/gold]。"
+  "MORIMENS_DOLL_CARD_VOID_DROPLET.description": "給予全體單位{DoomPower:diff()}[gold]災厄[/gold]。",
+  "MORIMENS_DOLL_CARD_DISSOLUTION_BURST.title": "融蝕爆發",
+  "MORIMENS_DOLL_CARD_DISSOLUTION_BURST.description": "全體單位失去等量於身上[gold]災厄[/gold]層數的生命。"
 }

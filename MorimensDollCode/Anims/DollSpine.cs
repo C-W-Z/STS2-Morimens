@@ -102,6 +102,10 @@ public static class DollSpine
                     track.SetTrackTime(0.5f);
                     track.SetTimeScale(1.5f);
                     break;
+                case State.ExSkill:
+                    track.SetTrackTime(0.5f);
+                    track.SetTimeScale(2.0f);
+                    break;
             }
         }));
 
