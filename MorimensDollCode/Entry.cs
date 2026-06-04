@@ -1,6 +1,8 @@
 using System.Reflection;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
+using MinionLib.Layout;
+using MorimensDoll.Minion;
 using STS2RitsuLib;
 using STS2RitsuLib.Interop;
 using Logger = MegaCrit.Sts2.Core.Logging.Logger;
@@ -32,6 +34,9 @@ public static partial class Entry
         // 自动注册扫描会读取当前程序集里的 RegisterCard/RegisterRelic 等 attribute。
         // 新增内容类后，只要 attribute 写对，通常不需要在入口里手动逐个注册。
         ModTypeDiscoveryHub.RegisterModAssembly(ModId, assembly);
+
+        // 註冊我們的佈局器，設定 priority: 1 確保它在 DefaultMinionLayout (0) 之前執行
+        MinionLayoutManager.Register(new DollMinionLayout(), priority: 1);
 
         Logger.Info("MorimensDoll initialized.");
     }

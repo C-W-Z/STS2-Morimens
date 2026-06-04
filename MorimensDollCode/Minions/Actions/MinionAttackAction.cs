@@ -20,7 +20,7 @@ public class MinionAttackAction : ModActionTemplate
 
     // 核心重载，定义 Action 被触发时的行为，类似于卡牌的 OnPlay
     // 和卡牌一样，如果目标无需选定（如所有敌人），target 将会是 null
-    protected override async Task OnAct(PlayerChoiceContext choiceContext, Creature? target)
+    public override async Task OnAct(PlayerChoiceContext choiceContext, Creature? target)
     {
         if (target == null) return;
 

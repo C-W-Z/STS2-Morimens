@@ -21,6 +21,9 @@ public class DollMinion : ModMinionTemplate
 
     public const decimal MAX_HP = 4m;
 
+    // 預設的基礎上限
+    public const int BASE_FRONT_LIMIT = 2;
+
     private const string SceneRoot = $"{Entry.ResPath}/scenes/minions";
 
     public override MonsterAssetProfile AssetProfile => new(
