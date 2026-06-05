@@ -28,5 +28,7 @@
   "MORIMENS_DOLL_CARD_PROLIFERATION.title": "增殖",
   "MORIMENS_DOLL_CARD_PROLIFERATION.description": "{IfUpgraded:show:立即召喚{Repeat:diff()}個人偶，|}接下來{ProliferationPower:diff()}回合結束時召喚一個人偶。",
   "MORIMENS_DOLL_CARD_DEBRIS_ANALYSIS.title": "殘骸分析",
-  "MORIMENS_DOLL_CARD_DEBRIS_ANALYSIS.description": "每當人偶死亡時抽{DebrisAnalysisPower:diff()}張牌。"
+  "MORIMENS_DOLL_CARD_DEBRIS_ANALYSIS.description": "每當人偶死亡時抽{DebrisAnalysisPower:diff()}張牌。",
+  "MORIMENS_DOLL_CARD_DISSOLUTION_DIFFUSION.title": "融蝕擴散",
+  "MORIMENS_DOLL_CARD_DISSOLUTION_DIFFUSION.description": "每當人偶死亡時給予所有敵人{DissolutionDiffusionPower:diff()}[gold]災厄[/gold]。"
 }
