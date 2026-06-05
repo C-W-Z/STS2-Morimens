@@ -4,26 +4,33 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MorimensDoll.Anims;
 using MorimensDoll.Characters;
+using MorimensDoll.Minion;
 using MorimensDoll.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace MorimensDoll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class Assimilation() : AbstractDollCard(2, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+public sealed class Proliferation() : AbstractDollCard(2, CardType.Power, CardRarity.Uncommon, TargetType.Self)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<AssimilationPower>(1m)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new RepeatVar(0), new PowerVar<ProliferationPower>(3m)];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await CreatureCmd.TriggerAnim(Owner.Creature, DollSpine.State.Skill2, DollSpine.Skill2AnimDelay);
-        await PowerCmd.Apply<AssimilationPower>(choiceContext, Owner.Creature, DynamicVars["AssimilationPower"].BaseValue, Owner.Creature, this);
+
+        for (int i = 0; i < DynamicVars.Repeat.BaseValue; i++)
+        {
+            await DollMinionCmd.Summon(choiceContext, Owner, this);
+        }
+
+        await PowerCmd.Apply<ProliferationPower>(choiceContext, Owner.Creature, DynamicVars["ProliferationPower"].BaseValue, Owner.Creature, this);
     }
 
     protected override void OnUpgrade()
     {
-        EnergyCost.UpgradeBy(-1);
+        DynamicVars.Repeat.UpgradeValueBy(1);
     }
 }
