@@ -2,16 +2,16 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MinionLib.Targeting;
 using MorimensDoll.Anims;
 using MorimensDoll.Characters;
 using MorimensDoll.Minion;
+using MorimensDoll.Targeting;
 using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace MorimensDoll.Cards;
 
-[RegisterCard(typeof(DollCardPool))] // TODO: MinionTargetTypes.AllMinions 要改成自訂的只有 DollMinion 的 TargetType
-public sealed class MinionMerge() : AbstractMinionCard(2, CardType.Skill, CardRarity.Rare, MinionTargetTypes.AllMinions)
+[RegisterCard(typeof(DollCardPool))]
+public sealed class MinionMerge() : AbstractMinionCard(2, CardType.Skill, CardRarity.Rare, DollTargetTypes.AllDollMinions)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [];
 
