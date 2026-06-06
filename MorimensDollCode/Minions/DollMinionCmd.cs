@@ -35,7 +35,7 @@ public static class DollMinionCmd
 
     public static async Task<Creature> MergeAllDollMinions(PlayerChoiceContext choiceContext, Player player, CardModel? cardSource)
     {
-        IEnumerable<DollMinion> minions = GetAllDollMinions(player);
+        List<DollMinion> minions = GetAllDollMinions(player);
         decimal maxHp = 0;
         decimal atk = 0;
         decimal hp = 0;
@@ -78,9 +78,10 @@ public static class DollMinionCmd
             object? resultTask = genericMethod.Invoke(null, [
                 choiceContext,
                 newMinion,
-                p.Amount,
+                (decimal)p.Amount,
                 player.Creature,
-                cardSource
+                cardSource,
+                false
             ]);
 
             // 因為 Apply 是 async Task，將傳回值轉為 Task 並 await 它，確保能力依序掛載
