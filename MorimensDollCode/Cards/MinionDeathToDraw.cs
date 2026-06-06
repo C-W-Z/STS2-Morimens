@@ -4,33 +4,26 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MorimensDoll.Anims;
 using MorimensDoll.Characters;
-using MorimensDoll.Minion;
 using MorimensDoll.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace MorimensDoll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class Proliferation() : AbstractDollCard(2, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+public sealed class MinionDeathToDraw() : AbstractDollCard(2, CardType.Power, CardRarity.Uncommon, TargetType.Self)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new RepeatVar(0), new PowerVar<ProliferationPower>(3m)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<MinionDeathToDrawPower>(1m)];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await CreatureCmd.TriggerAnim(Owner.Creature, DollSpine.State.Skill2, DollSpine.Skill2AnimDelay);
-
-        for (int i = 0; i < DynamicVars.Repeat.BaseValue; i++)
-        {
-            await DollMinionCmd.Summon(choiceContext, Owner, this);
-        }
-
-        await PowerCmd.Apply<ProliferationPower>(choiceContext, Owner.Creature, DynamicVars["ProliferationPower"].BaseValue, Owner.Creature, this);
+        await PowerCmd.Apply<MinionDeathToDrawPower>(choiceContext, Owner.Creature, DynamicVars["MinionDeathToDrawPower"].BaseValue, Owner.Creature, this);
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Repeat.UpgradeValueBy(1);
+        EnergyCost.UpgradeBy(-1);
     }
 }

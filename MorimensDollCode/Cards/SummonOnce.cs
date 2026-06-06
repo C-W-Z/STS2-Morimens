@@ -9,24 +9,22 @@ namespace MorimensDoll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
 [RegisterCharacterStarterCard(typeof(Doll), 1)]
-public sealed class EctoplasmicSplitting() : AbstractDollCard(2, CardType.Skill, CardRarity.Common, TargetType.None)
+public sealed class SummonOnce() : AbstractDollCard(0, CardType.Skill, CardRarity.Basic, TargetType.None)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new RepeatVar(2)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new RepeatVar(1)];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust, CardKeyword.Retain];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         for (int i = 0; i < DynamicVars.Repeat.BaseValue; i++)
-        {
             await DollMinionCmd.Summon(choiceContext, Owner, this);
-        }
     }
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Repeat.UpgradeValueBy(1);
+        AddKeyword(CardKeyword.Innate);
     }
 }

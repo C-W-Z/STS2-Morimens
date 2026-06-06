@@ -16,9 +16,9 @@ public sealed class MinionAttack() : AbstractMinionCard(1, CardType.Skill, CardR
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        List<DollMinion> pets = await CheckMinionExistAndSummon(choiceContext);
+        List<DollMinion> minions = await CheckMinionExistAndSummon(choiceContext);
 
-        foreach (var minion in pets)
+        foreach (var minion in minions)
             await DollMinionCmd.AttackRandomEnemy(choiceContext, minion, null);
     }
 

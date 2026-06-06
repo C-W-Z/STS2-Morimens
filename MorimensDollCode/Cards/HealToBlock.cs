@@ -10,20 +10,20 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace MorimensDoll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class DebrisAnalysis() : AbstractDollCard(2, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+public sealed class HealToBlock() : AbstractDollCard(2, CardType.Power, CardRarity.Rare, TargetType.Self)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<DebrisAnalysisPower>(1m)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<HealToBlockPower>(2m)];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await CreatureCmd.TriggerAnim(Owner.Creature, DollSpine.State.Skill2, DollSpine.Skill2AnimDelay);
-        await PowerCmd.Apply<DebrisAnalysisPower>(choiceContext, Owner.Creature, DynamicVars["DebrisAnalysisPower"].BaseValue, Owner.Creature, this);
+        await CreatureCmd.TriggerAnim(Owner.Creature, DollSpine.State.Exalt, DollSpine.ExaltAnimDelay);
+        await PowerCmd.Apply<HealToBlockPower>(choiceContext, Owner.Creature, DynamicVars["HealToBlockPower"].BaseValue, Owner.Creature, this);
     }
 
     protected override void OnUpgrade()
     {
-        EnergyCost.UpgradeBy(-1);
+        DynamicVars["HealToBlockPower"].UpgradeValueBy(1m);
     }
 }

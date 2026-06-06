@@ -2,13 +2,14 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Models.Powers;
 using MorimensDoll.Minions;
 using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace MorimensDoll.Powers;
 
 [RegisterPower]
-public sealed class DebrisAnalysisPower : AbstractDollPower
+public sealed class MinionDeathToDoomEnemiesPower : AbstractDollPower
 {
     public override PowerType Type => PowerType.Buff;
 
@@ -19,6 +20,6 @@ public sealed class DebrisAnalysisPower : AbstractDollPower
         if (Owner.Player == null || wasRemovalPrevented || creature.Monster is not DollMinion)
             return;
 
-        await CardPileCmd.Draw(choiceContext, Amount, Owner.Player);
+        await PowerCmd.Apply<DoomPower>(choiceContext, CombatState.HittableEnemies, Amount, Owner, null);
     }
 }

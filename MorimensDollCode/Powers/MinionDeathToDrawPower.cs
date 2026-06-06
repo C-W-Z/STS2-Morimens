@@ -1,14 +1,14 @@
-using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MorimensDoll.Minion;
+using MorimensDoll.Minions;
 using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace MorimensDoll.Powers;
 
 [RegisterPower]
-public sealed class AssimilationPower : AbstractDollPower
+public sealed class MinionDeathToDrawPower : AbstractDollPower
 {
     public override PowerType Type => PowerType.Buff;
 
@@ -16,12 +16,9 @@ public sealed class AssimilationPower : AbstractDollPower
 
     public override async Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
     {
-        if (Owner.Player == null || wasRemovalPrevented || creature.Side != CombatSide.Enemy)
+        if (Owner.Player == null || wasRemovalPrevented || creature.Monster is not DollMinion)
             return;
 
-        for (int i = 0; i < Amount; i++)
-        {
-            await DollMinionCmd.Summon(choiceContext, Owner.Player, null);
-        }
+        await CardPileCmd.Draw(choiceContext, Amount, Owner.Player);
     }
 }

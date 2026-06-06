@@ -17,9 +17,9 @@ public sealed class MinionGrow() : AbstractMinionCard(1, CardType.Skill, CardRar
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        List<DollMinion> pets = await CheckMinionExistAndSummon(choiceContext);
+        List<DollMinion> minions = await CheckMinionExistAndSummon(choiceContext);
 
-        foreach (var minion in pets)
+        foreach (var minion in minions)
         {
             await CreatureCmd.TriggerAnim(minion.Creature, DollSpine.State.Skill2, DollSpine.Skill2AnimDelay);
             await CreatureCmd.GainMaxHp(minion.Creature, DynamicVars.MaxHp.BaseValue);

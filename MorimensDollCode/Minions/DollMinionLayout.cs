@@ -24,7 +24,7 @@ public class DollMinionLayout : IMinionLayout
             if (owner?.PlayerCombatState?.Pets == null) continue;
 
             // 2. 動態計算當前的前排最大上限（基礎值 + Power 帶來的附加值）
-            int currentFrontLimit = DollMinion.BASE_FRONT_LIMIT + owner.Creature.GetPowerAmount<DollMinionLimitPower>();
+            int currentFrontLimit = DollMinion.BASE_FRONT_LIMIT + owner.Creature.GetPowerAmount<MinionLimitUpPower>();
 
             int frontCount = 0;
 
@@ -37,14 +37,14 @@ public class DollMinionLayout : IMinionLayout
                     {
                         minion.Position = MinionPosition.Front;
                         frontCount++;
-                        if (!minion.Creature.HasPower<DollMinionGuardianPower>())
-                            ModelDb.Power<DollMinionGuardianPower>().ToMutable().ApplyInternal(minion.Creature, 1);
+                        if (!minion.Creature.HasPower<MinionGuardianPower>())
+                            ModelDb.Power<MinionGuardianPower>().ToMutable().ApplyInternal(minion.Creature, 1);
                     }
                     else
                     {
                         // 超出總上限時的防呆，擠在後排
                         minion.Position = MinionPosition.Back;
-                        minion.Creature.GetPower<DollMinionGuardianPower>()?.RemoveInternal();
+                        minion.Creature.GetPower<MinionGuardianPower>()?.RemoveInternal();
                     }
                 }
             }

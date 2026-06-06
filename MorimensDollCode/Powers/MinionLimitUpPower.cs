@@ -4,7 +4,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace MorimensDoll.Powers;
 
 [RegisterPower]
-public sealed class DollMinionLimitPower : AbstractDollPower
+public sealed class MinionLimitUpPower : AbstractDollPower
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Counter;

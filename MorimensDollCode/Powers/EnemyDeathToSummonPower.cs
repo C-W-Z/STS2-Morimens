@@ -1,15 +1,14 @@
-using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Models.Powers;
-using MorimensDoll.Minions;
+using MorimensDoll.Minion;
 using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace MorimensDoll.Powers;
 
 [RegisterPower]
-public sealed class DissolutionDiffusionPower : AbstractDollPower
+public sealed class EnemyDeathToSummonPower : AbstractDollPower
 {
     public override PowerType Type => PowerType.Buff;
 
@@ -17,9 +16,12 @@ public sealed class DissolutionDiffusionPower : AbstractDollPower
 
     public override async Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
     {
-        if (Owner.Player == null || wasRemovalPrevented || creature.Monster is not DollMinion)
+        if (Owner.Player == null || wasRemovalPrevented || creature.Side != CombatSide.Enemy)
             return;
 
-        await PowerCmd.Apply<DoomPower>(choiceContext, CombatState.HittableEnemies, Amount, Owner, null);
+        for (int i = 0; i < Amount; i++)
+        {
+            await DollMinionCmd.Summon(choiceContext, Owner.Player, null);
+        }
     }
 }

@@ -1,5 +1,4 @@
 using MegaCrit.Sts2.Core.Entities.Creatures;
-using MinionLib.Minion;
 using MinionLib.Powers.Patches;
 using MorimensDoll.Powers;
 using STS2RitsuLib.Patching.Models;
@@ -28,7 +27,7 @@ public class MinionGuardianPatch : IPatchMethod
 
         // 如果不是，檢查它有沒有掛載我們自訂的新 Power
         // 並且同樣要符合「它是隨從，且站在前排」的規則
-        if (creature.HasPower<DollMinionGuardianPower>())
+        if (creature.HasPower<MinionGuardianPower>())
         {
             __result = true; // 強行改成 true，欺騙原模組的溢出演算法！
         }

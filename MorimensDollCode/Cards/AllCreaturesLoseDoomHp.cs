@@ -13,7 +13,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace MorimensDoll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class DissolutionBurst() : AbstractDollCard(2, CardType.Attack, CardRarity.Rare, MinionTargetTypes.AllCreatures)
+public sealed class AllCreaturesLoseDoomHp() : AbstractDollCard(2, CardType.Attack, CardRarity.Rare, MinionTargetTypes.AllCreatures)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 

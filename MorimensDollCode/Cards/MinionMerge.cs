@@ -28,6 +28,6 @@ public sealed class MinionMerge() : AbstractMinionCard(2, CardType.Skill, CardRa
 
     protected override void OnUpgrade()
     {
-        DynamicVars.MaxHp.UpgradeValueBy(2m);
+        AddKeyword(CardKeyword.Retain);
     }
 }

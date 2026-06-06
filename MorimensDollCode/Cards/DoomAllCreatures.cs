@@ -12,7 +12,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace MorimensDoll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class VoidDroplet() : AbstractDollCard(0, CardType.Skill, CardRarity.Uncommon, MinionTargetTypes.AllCreatures)
+public sealed class DoomAllCreatures() : AbstractDollCard(0, CardType.Skill, CardRarity.Uncommon, MinionTargetTypes.AllCreatures)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 
