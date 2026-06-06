@@ -8,7 +8,7 @@ namespace MorimensDoll.Powers;
 
 // 能力不需要放入角色池，RegisterPower 会直接注册模型。
 [RegisterPower]
-public sealed class FleshDetachedPower : AbstractDollPower
+public sealed class HealToBlockPower : AbstractDollPower
 {
     // Buff 是正面能力，Debuff 是负面能力。
     public override PowerType Type => PowerType.Buff;

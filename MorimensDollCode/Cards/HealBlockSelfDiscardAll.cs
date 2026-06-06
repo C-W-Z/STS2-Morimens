@@ -4,6 +4,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
+using MorimensDoll.Anims;
 using MorimensDoll.Characters;
 using STS2RitsuLib.Interop.AutoRegistration;
 
@@ -11,9 +12,9 @@ namespace MorimensDoll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
 [RegisterCharacterStarterCard(typeof(Doll), 1)]
-public sealed class EquivalentExchange() : AbstractDollCard(3, CardType.Skill, CardRarity.Common, TargetType.Self)
+public sealed class HealBlockSelfDiscardAll() : AbstractDollCard(3, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
-    protected override HashSet<CardTag> CanonicalTags => [];
+    protected override HashSet<CardTag> CanonicalTags => [DollCardTag.Heal];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new HealVar(5m),
@@ -27,7 +28,7 @@ public sealed class EquivalentExchange() : AbstractDollCard(3, CardType.Skill, C
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await CreatureCmd.TriggerAnim(Owner.Creature, Doll.State.Skill2, Owner.Character.CastAnimDelay);
+        await CreatureCmd.TriggerAnim(Owner.Creature, DollSpine.State.Skill2, DollSpine.Skill2AnimDelay);
         var blockAmount = DynamicVars.CalculatedBlock.Calculate(cardPlay.Target);
         IEnumerable<CardModel> cards = PileType.Hand.GetPile(Owner).Cards;
         await CardCmd.Discard(choiceContext, cards);
