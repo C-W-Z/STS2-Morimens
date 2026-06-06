@@ -10,7 +10,7 @@ public static class PatchRegister
     {
         ModPatcher minionLibPatcher = RitsuLibFramework.CreatePatcher(Entry.ModId, "minion-patches");
         minionLibPatcher.RegisterPatch<MinionGuardianPatch>();
-        minionLibPatcher.RegisterPatch<MinionBeforeTurnEndPatch>();
+        minionLibPatcher.RegisterPatch<MinionTurnEndPatch>();
         if (!minionLibPatcher.PatchAll())
             throw new InvalidOperationException("MorimensDoll critical minion-patches failed!");
     }

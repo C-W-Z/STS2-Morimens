@@ -1,6 +1,7 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MorimensDoll.Characters;
 using MorimensDoll.Minion;
@@ -12,19 +13,21 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace MorimensDoll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class MinionAttack() : AbstractMinionCard(1, CardType.Skill, CardRarity.Common, DollTargetTypes.AllDollMinions)
+public sealed class MinionAttack() : AbstractMinionCard(1, CardType.Attack, CardRarity.Common, DollTargetTypes.AllDollMinions)
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<TmpStrengthPower>(1m)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<MinionAttackPower>(1m)];
+
+    // protected override IEnumerable<IHoverTip> AdditionalHoverTips => [HoverTipFactory.FromPower<MinionAttackPower>()];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         List<DollMinion> minions = await CheckMinionExistAndSummon(choiceContext);
 
-        if (DynamicVars["TmpStrengthPower"].BaseValue > 0)
+        if (DynamicVars["MinionAttackPower"].BaseValue > 0)
         {
-            await PowerCmd.Apply<TmpStrengthPower>(choiceContext,
+            await PowerCmd.Apply<MinionAttackPower>(choiceContext,
                 minions.Select(m => m.Creature),
-                DynamicVars["TmpStrengthPower"].BaseValue,
+                DynamicVars["MinionAttackPower"].BaseValue,
                 Owner.Creature, this);
         }
 
@@ -34,6 +37,6 @@ public sealed class MinionAttack() : AbstractMinionCard(1, CardType.Skill, CardR
 
     protected override void OnUpgrade()
     {
-        DynamicVars["TmpStrengthPower"].UpgradeValueBy(1m);
+        DynamicVars["MinionAttackPower"].UpgradeValueBy(1m);
     }
 }

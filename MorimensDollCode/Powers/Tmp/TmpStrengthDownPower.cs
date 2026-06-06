@@ -1,4 +1,5 @@
 using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using STS2RitsuLib.Combat.Powers;
@@ -7,14 +8,14 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace MorimensDoll.Powers.Tmp;
 
-[RegisterPower]
-public class TmpStrengthDownPower : ModTemporaryAppliedPowerTemplate<AbstractModel, StrengthPower>
+[RegisterPower(Inherit = true)]
+public abstract class TmpStrengthDownPower<T> : ModTemporaryAppliedPowerTemplate<T, StrengthPower> where T : AbstractModel
 {
     // 自定义图标路径
 #pragma warning disable RITSU013
     public override PowerAssetProfile AssetProfile => new(
-        IconPath: ImageHelper.GetImagePath("atlases/power_atlas.sprites/strength.tres"),
-        BigIconPath: ImageHelper.GetImagePath("powers/strength.png")
+        IconPath: ImageHelper.GetImagePath("atlases/power_atlas.sprites/strength_power.tres"),
+        BigIconPath: ImageHelper.GetImagePath("powers/strength_power.png")
     );
 #pragma warning restore RITSU013
 
@@ -25,4 +26,8 @@ public class TmpStrengthDownPower : ModTemporaryAppliedPowerTemplate<AbstractMod
     protected override bool UntilEndOfOtherSideTurn => false; // 为 true 时，在另一方回合结束时过期；否则在拥有者一方回合结束时过期。
 
     protected override int LastForXExtraTurns => 0; // 额外持续回合数
+
+    public override LocString Title => new("powers", "MORIMENS_DOLL_POWER_TMP_STRENGTH_DOWN_POWER.title");
+
+    public override LocString Description => new("powers", "MORIMENS_DOLL_POWER_TMP_STRENGTH_DOWN_POWER.description");
 }
