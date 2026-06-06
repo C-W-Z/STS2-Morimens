@@ -23,6 +23,8 @@ public sealed class EquivalentExchange() : AbstractDollCard(3, CardType.Skill, C
         new CalculatedBlockVar(ValueProp.Move).WithMultiplier((card, _) => PileType.Hand.GetPile(card.Owner).Cards.Count)
     ];
 
+    public override bool GainsBlock => true;
+
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await CreatureCmd.TriggerAnim(Owner.Creature, Doll.State.Skill2, Owner.Character.CastAnimDelay);

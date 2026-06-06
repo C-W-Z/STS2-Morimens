@@ -1,4 +1,5 @@
 {
   "MORIMENS_DOLL_POWER_FLESH_DETACHED_POWER.title": "靈肉兩分",
-  "MORIMENS_DOLL_POWER_FLESH_DETACHED_POWER.description": "回復生命時獲得[blue]{Amount}[/blue]點[gold]格擋[/gold]。"
+  "MORIMENS_DOLL_POWER_FLESH_DETACHED_POWER.description": "回復生命時獲得[blue]X[/blue]點[gold]格擋[/gold]。",
+  "MORIMENS_DOLL_POWER_FLESH_DETACHED_POWER.smartDescription": "回復生命時獲得[blue]{Amount}[/blue]點[gold]格擋[/gold]。"
 }

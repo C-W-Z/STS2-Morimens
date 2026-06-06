@@ -10,5 +10,7 @@
   "MORIMENS_DOLL_CARD_FLESH_DETACHED.title": "靈肉兩分",
   "MORIMENS_DOLL_CARD_FLESH_DETACHED.description": "回復生命時獲得{FleshDetachedPower:diff()}點[gold]格擋[/gold]。",
   "MORIMENS_DOLL_CARD_DISSOLUTION.title": "融蝕症",
-  "MORIMENS_DOLL_CARD_DISSOLUTION.description": "給予{DoomPower:diff()}災厄。"
+  "MORIMENS_DOLL_CARD_DISSOLUTION.description": "給予{DoomPower:diff()}[gold]災厄[/gold]。",
+  "MORIMENS_DOLL_CARD_DEATH_CUT.title": "死亡切割",
+  "MORIMENS_DOLL_CARD_DEATH_CUT.description": "造成{Damage:diff()}點傷害。給予等量於所造成傷害的[gold]災厄[/gold]。"
 }
