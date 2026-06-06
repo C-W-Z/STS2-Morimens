@@ -13,7 +13,7 @@ namespace MorimensDoll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
 [RegisterCharacterStarterCard(typeof(Doll), 1)]
-public sealed class HealBlockSelfDiscardAll() : AbstractDollCard(3, CardType.Skill, CardRarity.Common, TargetType.Self)
+public sealed class HealBlockSelfDiscardAll() : AbstractDollCard(3, CardType.Skill, CardRarity.Basic, TargetType.Self)
 {
     protected override HashSet<CardTag> CanonicalTags => [DollCardTag.Heal];
 
