@@ -14,12 +14,12 @@ namespace MorimensDoll.Minion;
 
 public static class DollMinionCmd
 {
-    public static async Task<Creature> Summon(PlayerChoiceContext choiceContext, Player player, CardModel? cardSource, decimal? maxHp = null, decimal atk = 1m, decimal? hp = null)
+    public static async Task<Creature> Summon(PlayerChoiceContext choiceContext, Player player, CardModel? cardSource, decimal? maxHp = null, decimal? hp = null, decimal? atk = null)
     {
         return await MinionCmd.AddMinion<DollMinion>(choiceContext, player, new MinionSummonOptions(
             MaxHp: maxHp,               // 血量
-            PrimaryStatAmount: atk,     // 力量
-            SecondaryStatAmount: hp,    // 目前血量
+            PrimaryStatAmount: hp,      // 目前血量
+            SecondaryStatAmount: atk,   // 力量
             Source: cardSource,         // 召喚來源（牌）
             Position: MinionPosition.Front)); // 站位但不重要因為 DollMinionLayout 會自動調整
     }
@@ -27,7 +27,7 @@ public static class DollMinionCmd
     public static async Task<Creature> SummonCopy(PlayerChoiceContext choiceContext, Player player, DollMinion origin, CardModel? cardSource)
     {
         var powers = origin.Creature.Powers.ToList();
-        Creature newMinion = await Summon(choiceContext, player, cardSource, origin.Creature.MaxHp, 0, origin.Creature.CurrentHp);
+        Creature newMinion = await Summon(choiceContext, player, cardSource, origin.Creature.MaxHp, origin.Creature.CurrentHp, 0);
         // TODO: 用PowerCmd.Apply會受到能力加成影響（如力量加成、災厄加成等），要改成更底層的賦予powers
         await PowerUtils.ApplyPowersDynamically(choiceContext, newMinion, powers, player, cardSource);
         return newMinion;
@@ -49,7 +49,7 @@ public static class DollMinionCmd
             await CreatureCmd.Kill(minion.Creature);
         }
 
-        Creature newMinion = await Summon(choiceContext, player, cardSource, maxHp, 0, hp);
+        Creature newMinion = await Summon(choiceContext, player, cardSource, maxHp, hp, 0);
         // TODO: 用PowerCmd.Apply會受到能力加成影響（如力量加成、災厄加成等），要改成更底層的賦予powers
         await PowerUtils.ApplyPowersDynamically(choiceContext, newMinion, powers, player, cardSource);
         return newMinion;
