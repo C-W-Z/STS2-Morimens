@@ -14,7 +14,7 @@ public sealed class EnemyDeathToSummon() : AbstractDollCard(1, CardType.Power, C
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<EnemyDeathToSummonPower>(1m)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<EnemyDeathToSummonPower>(2m)];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {

@@ -11,7 +11,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace MorimensDoll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class SummonOnTurnEnd() : AbstractDollCard(2, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+public sealed class SummonOnTurnEnd() : AbstractDollCard(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 

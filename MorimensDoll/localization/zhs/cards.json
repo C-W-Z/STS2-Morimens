@@ -38,5 +38,5 @@
   "MORIMENS_DOLL_CARD_DAMAGE_AND_DOOM.title": "死亡切割",
   "MORIMENS_DOLL_CARD_DAMAGE_AND_DOOM.description": "造成{Damage:diff()}點傷害。給予等量於所造成傷害的[gold]災厄[/gold]。",
   "MORIMENS_DOLL_CARD_ALL_CREATURES_LOSE_DOOM_HP.title": "融蝕爆發",
-  "MORIMENS_DOLL_CARD_ALL_CREATURES_LOSE_DOOM_HP.description": "全體單位失去等量於身上[gold]災厄[/gold]層數的生命。"
+  "MORIMENS_DOLL_CARD_ALL_CREATURES_LOSE_DOOM_HP.description": "全體生物失去等量於身上[gold]災厄[/gold]層數的生命。"
 }
