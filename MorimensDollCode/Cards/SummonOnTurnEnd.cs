@@ -4,7 +4,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MorimensDoll.Anims;
 using MorimensDoll.Characters;
-using MorimensDoll.Minion;
+using MorimensDoll.Minions;
 using MorimensDoll.Powers;
 using STS2RitsuLib.Interop.AutoRegistration;
 

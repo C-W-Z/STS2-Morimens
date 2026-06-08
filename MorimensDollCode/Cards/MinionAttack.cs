@@ -5,7 +5,6 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MorimensDoll.Characters;
-using MorimensDoll.Minion;
 using MorimensDoll.Minions;
 using MorimensDoll.Powers.Tmp;
 using MorimensDoll.Targeting;

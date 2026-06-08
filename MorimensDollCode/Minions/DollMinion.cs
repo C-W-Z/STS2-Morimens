@@ -8,7 +8,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MinionLib.Minion;
 using MorimensDoll.Anims;
-using MorimensDoll.Minion;
+using MorimensDoll.Minions;
 using STS2RitsuLib.Scaffolding.Content;
 
 namespace MorimensDoll.Minions;

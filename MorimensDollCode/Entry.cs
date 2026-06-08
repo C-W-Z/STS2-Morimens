@@ -2,7 +2,7 @@ using System.Reflection;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
 using MinionLib.Layout;
-using MorimensDoll.Minion;
+using MorimensDoll.Minions;
 using MorimensDoll.Patches;
 using STS2RitsuLib;
 using STS2RitsuLib.Audio;

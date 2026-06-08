@@ -10,7 +10,7 @@ using MorimensDoll.Anims;
 using MorimensDoll.Minions;
 using MorimensDoll.Utils;
 
-namespace MorimensDoll.Minion;
+namespace MorimensDoll.Minions;
 
 public static class DollMinionCmd
 {

@@ -1,4 +1,3 @@
-using System;
 using Godot;
 using MegaCrit.Sts2.Core.Animation;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
@@ -10,7 +9,7 @@ using STS2RitsuLib.Scaffolding.Content.Patches;
 using STS2RitsuLib.Scaffolding.Godot;
 using STS2RitsuLib.Scaffolding.Visuals.StateMachine;
 
-namespace MinionLib.RitsuAdapters;
+namespace MorimensDoll.Minions;
 
 /// <summary>
 ///     Base <see cref="MonsterModel" /> for mods: <see cref="IModMonsterAssetOverrides" /> supplies the visuals scene
@@ -37,7 +36,7 @@ namespace MinionLib.RitsuAdapters;
 #pragma warning disable CS0618
 // Template keeps the obsolete IModMonsterCreatureVisualsFactory wired so existing derived classes and external
 // consumers that type-check against the old interface name continue to work.
-internal abstract class ModMinionTemplate : MinionModel, IModMonsterAssetOverrides,
+public abstract class ModMinionTemplate : MinionModel, IModMonsterAssetOverrides,
     IModCreatureVisualsFactory, IModMonsterCreatureVisualsFactory, IModCreatureAnimatorFactory,
     IModCreatureCombatAnimationStateMachineFactory, IModNonSpineAnimationStateMachineFactory
 #pragma warning restore CS0618
