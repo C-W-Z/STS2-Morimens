@@ -37,7 +37,6 @@
         <Publicize Include="sts2" IncludeVirtualMembers="false" IncludeCompilerGeneratedMembers="false"/>
         <!-- 讓 MinionLib 裡面所有的 internal 和 private 成員在你的專案中全部變成 public -->
         <Publicize Include="MinionLib"/>
-        <Publicize Include="MinionLib.RitsuAdapters"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -46,7 +45,6 @@
         <Reference Include="Steamworks.NET" HintPath="$(Sts2DataDir)\Steamworks.NET.dll" Private="True"/>
         <!-- Private="False" 可以防止編譯時把 MinionLib.dll 複製到你自己的模組資料夾中造成冗餘 -->
         <Reference Include="MinionLib" HintPath="$(Sts2Dir)\mods\MinionLib\MinionLib.dll" Private="False"/>
-        <Reference Include="MinionLib.RitsuLibAdapters" HintPath="$(Sts2Dir)\mods\MinionLib.RitsuAdapters\MinionLib.RitsuAdapters.dll" Private="False"/>
     </ItemGroup>
 
     <ItemGroup>

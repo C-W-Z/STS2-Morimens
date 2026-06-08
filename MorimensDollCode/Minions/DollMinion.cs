@@ -7,7 +7,6 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MinionLib.Minion;
-using MinionLib.RitsuAdapters;
 using MorimensDoll.Anims;
 using MorimensDoll.Minion;
 using STS2RitsuLib.Scaffolding.Content;
@@ -60,7 +59,7 @@ public class DollMinion : ModMinionTemplate
         await DollMinionCmd.AttackRandomEnemy(choiceContext, this, null);
     }
 
-    public override CreatureAnimator? SetupCustomCreatureAnimator(MegaSprite controller)
+    protected override CreatureAnimator? SetupCustomCreatureAnimator(MegaSprite controller)
     {
         return DollSpine.GetCreatureAnimator(controller);
     }

@@ -3,8 +3,6 @@
   "MORIMENS_DOLL_POWER_MINION_GUARDIAN_POWER.description": "替你吸收未被格擋的攻擊傷害。",
   "MORIMENS_DOLL_POWER_MINION_LIMIT_UP_POWER.title": "人偶上限提升",
   "MORIMENS_DOLL_POWER_MINION_LIMIT_UP_POWER.description": "前排人偶上限提升[blue]{Amount}[/blue]。",
-  "MORIMENS_DOLL_POWER_MINION_ATTACK_ACTION.title": "攻擊點數",
-  "MORIMENS_DOLL_POWER_MINION_ATTACK_ACTION.description": "本回合可以攻擊[blue]{Amount}[/blue]次。",
   "MORIMENS_DOLL_POWER_MINION_DEATH_TO_DRAW_POWER.title": "殘骸分析",
   "MORIMENS_DOLL_POWER_MINION_DEATH_TO_DRAW_POWER.description": "每當人偶死亡時抽[blue]{Amount}[/blue]張牌。",
   "MORIMENS_DOLL_POWER_MINION_DEATH_TO_DOOM_ENEMIES_POWER.title": "融蝕擴散",
