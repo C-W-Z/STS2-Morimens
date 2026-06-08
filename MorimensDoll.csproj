@@ -37,6 +37,7 @@
         <Publicize Include="sts2" IncludeVirtualMembers="false" IncludeCompilerGeneratedMembers="false"/>
         <!-- 讓 MinionLib 裡面所有的 internal 和 private 成員在你的專案中全部變成 public -->
         <Publicize Include="MinionLib"/>
+        <Publicize Include="MinionLib.RitsuAdapters"/>
     </ItemGroup>
 
     <ItemGroup>

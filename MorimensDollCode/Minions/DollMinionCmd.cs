@@ -16,7 +16,7 @@ public static class DollMinionCmd
 {
     public static async Task<Creature> Summon(PlayerChoiceContext choiceContext, Player player, CardModel? cardSource, decimal? maxHp = null, decimal? hp = null, decimal? atk = null)
     {
-        return await MinionCmd.AddMinion<DollMinion>(choiceContext, player, new MinionSummonOptions(
+        return await MinionCmd.AddMinion<DollMinion>(player, new MinionSummonOptions(
             MaxHp: maxHp,               // 血量
             PrimaryStatAmount: hp,      // 目前血量
             SecondaryStatAmount: atk,   // 力量

@@ -33,7 +33,7 @@ public class DollMinion : ModMinionTemplate
 
     // 召唤时执行的代码，通常用来设置血量、应用初始能力等，options 是在召唤随从时传入的参数
     // 注意使用 self 而非 this
-    public override async Task OnSummon(PlayerChoiceContext choiceContext, Player owner, Creature self, MinionSummonOptions options)
+    public override async Task OnSummon(Player owner, Creature self, MinionSummonOptions options)
     {
 
         if (options.MaxHp is decimal maxHp && maxHp > 0)
@@ -47,9 +47,9 @@ public class DollMinion : ModMinionTemplate
             await CreatureCmd.SetCurrentHp(self, self.MaxHp);
 
         if (options.SecondaryStatAmount is decimal strength && strength > 0m)
-            await PowerCmd.Apply<StrengthPower>(choiceContext, self, strength, owner.Creature, options.Source);
+            await PowerCmd.Apply<StrengthPower>(new ThrowingPlayerChoiceContext(), self, strength, owner.Creature, options.Source);
         else
-            await PowerCmd.Apply<StrengthPower>(choiceContext, self, BASE_ATK, owner.Creature, options.Source);
+            await PowerCmd.Apply<StrengthPower>(new ThrowingPlayerChoiceContext(), self, BASE_ATK, owner.Creature, options.Source);
     }
 
     public override async Task BeforeSideTurnEndVeryEarly(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
@@ -60,7 +60,7 @@ public class DollMinion : ModMinionTemplate
         await DollMinionCmd.AttackRandomEnemy(choiceContext, this, null);
     }
 
-    protected override CreatureAnimator? SetupCustomCreatureAnimator(MegaSprite controller)
+    public override CreatureAnimator? SetupCustomCreatureAnimator(MegaSprite controller)
     {
         return DollSpine.GetCreatureAnimator(controller);
     }
