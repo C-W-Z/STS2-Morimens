@@ -13,7 +13,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace Morimens.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class AllCreaturesLoseDoomHp() : AbstractDollCard(2, CardType.Attack, CardRarity.Rare, MinionTargetTypes.AllCreatures)
+public sealed class EveryoneLoseHpByDoom() : AbstractDollCard(2, CardType.Attack, CardRarity.Rare, MinionTargetTypes.AllCreatures)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 
@@ -43,7 +43,7 @@ public sealed class AllCreaturesLoseDoomHp() : AbstractDollCard(2, CardType.Atta
             if (e == null || !e.IsHittable) continue;
             int amount = e.GetPowerAmount<DoomPower>();
             if (amount > 0)
-                await CreatureCmd.Damage(choiceContext, e, amount, ValueProp.Unblockable, Owner.Creature, this);
+                await CreatureCmd.Damage(choiceContext, e, amount, ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, Owner.Creature, this);
         }
     }
 

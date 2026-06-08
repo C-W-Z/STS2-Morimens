@@ -12,7 +12,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace Morimens.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class DoomAllCreatures() : AbstractDollCard(0, CardType.Attack, CardRarity.Uncommon, MinionTargetTypes.AllCreatures)
+public sealed class DoomEveryone() : AbstractDollCard(0, CardType.Attack, CardRarity.Uncommon, MinionTargetTypes.AllCreatures)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 

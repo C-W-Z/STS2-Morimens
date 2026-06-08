@@ -20,7 +20,7 @@ public sealed class SummonFew() : AbstractDollCard(1, CardType.Skill, CardRarity
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await CreatureCmd.Damage(choiceContext, Owner.Creature, DynamicVars.HpLoss.BaseValue, ValueProp.Unblockable, Owner.Creature, this);
+        await CreatureCmd.Damage(choiceContext, Owner.Creature, DynamicVars.HpLoss.BaseValue, ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, Owner.Creature, this);
         for (int i = 0; i < DynamicVars.Repeat.BaseValue; i++)
             await DollMinionCmd.Summon(choiceContext, Owner, this);
     }
