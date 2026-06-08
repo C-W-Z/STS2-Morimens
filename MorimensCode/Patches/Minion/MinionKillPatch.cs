@@ -2,7 +2,7 @@ using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Hooks;
-using MinionLib.Minion;
+using Morimens.Minions;
 using STS2RitsuLib.Patching.Models;
 
 namespace Morimens.Patches.Minion;
@@ -35,7 +35,7 @@ public class MinionKillPatch : IPatchMethod
 
         // 2. 檢查這隻死去的生物，是不是被官方遺忘的「玩家方隨從」
         if (creature != null && creature.Side == CombatSide.Player && creature.IsPet &&
-            creature.Monster is MinionModel && creature.CombatState != null)
+            creature.Monster is ModMinionTemplate && creature.CombatState != null)
         {
             ICombatState combatState = creature.CombatState;
 
