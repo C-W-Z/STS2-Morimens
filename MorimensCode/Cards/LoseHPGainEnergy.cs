@@ -16,11 +16,8 @@ public sealed class LoseHPGainEnergy() : AbstractDollCard(0, CardType.Skill, Car
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [new HpLossVar(7m), new EnergyVar(2)];
 
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [CardKeyword.Exhaust];
-
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        ArgumentNullException.ThrowIfNull(cardPlay.Target);
         await CreatureCmd.TriggerAnim(Owner.Creature, DollSpine.State.Skill2, DollSpine.Skill2AnimDelay);
         await CreatureCmd.Damage(choiceContext, Owner.Creature, DynamicVars.HpLoss.BaseValue, ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, this);
         await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue, Owner);
