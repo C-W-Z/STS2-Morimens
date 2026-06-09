@@ -11,8 +11,6 @@ public static class PatchRegister
         ModPatcher minionLibPatcher = RitsuLibFramework.CreatePatcher(Entry.ModId, "minion-patches");
         minionLibPatcher.RegisterPatch<MinionGuardianPatch>();
         minionLibPatcher.RegisterPatch<MinionTurnEndPatch>();
-        // minionLibPatcher.RegisterPatch<DebugDoomPowerPatch>();
-        minionLibPatcher.RegisterPatch<MinionKillPatch>();
         if (!minionLibPatcher.PatchAll())
             throw new InvalidOperationException("Morimens critical minion-patches failed!");
     }
