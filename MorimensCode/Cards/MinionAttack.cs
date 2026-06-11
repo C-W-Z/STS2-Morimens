@@ -13,7 +13,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace Morimens.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class MinionAttack() : AbstractMinionCard(1, CardType.Attack, CardRarity.Common, DollTargetTypes.AllDollMinions)
+public sealed class MinionAttack() : AbstractMinionCard(1, CardType.Attack, CardRarity.Common, DollTargetType.AllDollMinions)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<MinionAttackPower>(1m)];
 

@@ -8,7 +8,7 @@ using Morimens.Minions;
 
 namespace Morimens.Targeting;
 
-public class AnyDollMinionOrNoneTargetType : CustomTargetType
+internal class AnyDollMinionOrNoneTargetType : CustomTargetType
 {
     // 核心魔術：讓 IsSingleTarget 變成動態的
     public override bool IsSingleTarget

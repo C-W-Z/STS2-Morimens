@@ -14,7 +14,7 @@ namespace Morimens.Cards;
 // TODO: 測試聯機時是否作用在別人和別人的人偶身上
 [RegisterCard(typeof(DollCardPool))]
 [RegisterCharacterStarterCard(typeof(Doll), 1)]
-public sealed class HealAllies() : AbstractDollCard(1, CardType.Skill, CardRarity.Common, DollTargetTypes.AllAllies)
+public sealed class HealAllies() : AbstractDollCard(1, CardType.Skill, CardRarity.Common, GenericTargetType.AllAllies)
 {
     protected override HashSet<CardTag> CanonicalTags => [DollCardTag.Heal];
 

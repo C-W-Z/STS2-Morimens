@@ -9,7 +9,7 @@ using Morimens.Minions;
 
 namespace Morimens.Targeting;
 
-public static class DollTargetTypes
+public static class DollTargetType
 {
     private static bool IsMyDollMinion(CardModel card, Creature target)
     {
@@ -52,18 +52,5 @@ public static class DollTargetTypes
         new AnyDollMinionOrNoneTargetType(),
         Entry.ModId,
         nameof(AnyDollMinionOrNone)
-    );
-
-    /// <summary>
-    /// 所有友方生物
-    /// </summary>
-    public static readonly TargetType AllAllies = CustomTargetTypeManager.Register(
-        new LambdaTargetType(
-            false, // IsSingleTarget = false
-            target => target is { IsAlive: true, Side: CombatSide.Player },
-            (card, target) => target is { IsAlive: true, Side: CombatSide.Player }
-        ),
-        Entry.ModId,
-        nameof(AllAllies)
     );
 }
