@@ -1,9 +1,16 @@
 using Godot;
 using MegaCrit.Sts2.Core.Animation;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Characters;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
+using MegaCrit.Sts2.Core.ValueProps;
 using Morimens.Anims;
+using Morimens.ExEnergy;
+using STS2RitsuLib.Combat.SecondaryResources;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Characters;
 using STS2RitsuLib.Scaffolding.Godot;
@@ -11,7 +18,7 @@ using STS2RitsuLib.Scaffolding.Godot;
 namespace Morimens.Characters;
 
 [RegisterCharacter]
-public sealed class Doll : ModCharacterTemplate<DollCardPool, DollRelicPool, DollPotionPool>
+public sealed class Doll : ModCharacterTemplate<DollCardPool, DollRelicPool, DollPotionPool>, ISecondaryResourceHookListener
 {
     public static readonly Color ThemeColor = new(0.42f, 0.65f, 0.72f);
 
@@ -100,5 +107,19 @@ public sealed class Doll : ModCharacterTemplate<DollCardPool, DollRelicPool, Dol
     protected override CreatureAnimator? SetupCustomCreatureAnimator(MegaSprite controller)
     {
         return DollSpine.GetCreatureAnimator(controller);
+    }
+
+    public decimal ModifyMaxSecondaryResource(SecondaryResourceMaxContext context, decimal amount)
+    {
+        if (context.Definition.Id == ExEnergyManager.AliemusId)
+            return amount + 100 - (ExEnergyManager.AliemusDefinition.BaseMaxAmount ?? 0);
+        return amount;
+    }
+
+    public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult result, ValueProp props, Creature? dealer, CardModel? cardSource)
+    {
+        Entry.Logger.Debug($"AfterDamageReceived: {target.Player}");
+        // 获得 5 点狂氣（会经过 Gain Hook 修正）
+        await SecondaryResourceCmd.Gain(target.Player, ExEnergyManager.AliemusId, 1, this);
     }
 }

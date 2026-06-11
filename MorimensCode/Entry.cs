@@ -2,6 +2,7 @@ using System.Reflection;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
 using MinionLib.Layout;
+using Morimens.ExEnergy;
 using Morimens.Minions;
 using Morimens.Patches;
 using STS2RitsuLib;
@@ -38,6 +39,8 @@ public static partial class Entry
         ModTypeDiscoveryHub.RegisterModAssembly(ModId, assembly);
 
         PatchRegister.Register();
+
+        ExEnergyManager.Register();
 
         FmodStudioDeferredBankRegistration.RegisterBank("res://Morimens/audio/Morimens.bank");
         FmodStudioDeferredBankRegistration.RegisterStudioGuidMappings("res://Morimens/audio/GUIDs.txt");
