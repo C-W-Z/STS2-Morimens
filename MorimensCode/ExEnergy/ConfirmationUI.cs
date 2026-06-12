@@ -1,61 +1,75 @@
 using Godot;
+using static Godot.TextServer;
 
 namespace Morimens.ExEnergy;
 
 public sealed partial class SkillConfirmationDialog : Control
 {
     private Panel _backgroundPanel = null!;
+    private Label _titleLabel = null!;       // 🔴 新增：技能標題
+    private Label _descriptionLabel = null!; // 🔴 新增：技能描述
     private Button _confirmButton = null!;
     private Button _cancelButton = null!;
     private Action? _onConfirmAction;
 
     public override void _Ready()
     {
-        // 1. 建立一個置中的對話框面板
+        // 1. 建立置中面板（加大尺寸以容納描述）
         _backgroundPanel = new Panel
         {
-            Size = new Vector2(400f, 200f),
-            // 這裡可以透過程式碼或樣式讓它居中，暫時給個固定坐標
-            Position = new Vector2(760f, 440f)
+            Size = new Vector2(450f, 250f),
+            Position = new Vector2(735f, 415f)
         };
         AddChild(_backgroundPanel);
 
-        // 2. 加上提示文字
-        var label = new Label
+        // 2. 建立標題 Label
+        _titleLabel = new Label
         {
-            Text = "確定要釋放技能嗎？",
-            Position = new Vector2(50f, 40f),
-            Size = new Vector2(300f, 40f)
+            Position = new Vector2(30f, 20f),
+            Size = new Vector2(390f, 30f),
+            HorizontalAlignment = HorizontalAlignment.Center
         };
-        _backgroundPanel.AddChild(label);
+        // 這裡可以透過設定主題或微調字型讓標題變粗/變大
+        _backgroundPanel.AddChild(_titleLabel);
 
-        // 3. 建立確認按鈕
+        // 3. 建立描述 Label
+        _descriptionLabel = new Label
+        {
+            Position = new Vector2(40f, 65f),
+            Size = new Vector2(370f, 100f),
+            AutowrapMode = AutowrapMode.Word, // 讓長文字自動縮放或換行
+            HorizontalAlignment = HorizontalAlignment.Center
+        };
+        _backgroundPanel.AddChild(_descriptionLabel);
+
+        // 4. 確認按鈕
         _confirmButton = new Button
         {
             Text = "確認釋放",
-            Position = new Vector2(50f, 120f),
+            Position = new Vector2(50f, 180f),
             Size = new Vector2(120f, 40f)
         };
         _confirmButton.Pressed += OnConfirmPressed;
         _backgroundPanel.AddChild(_confirmButton);
 
-        // 4. 建立取消按鈕
+        // 5. 取消按鈕
         _cancelButton = new Button
         {
             Text = "取消",
-            Position = new Vector2(230f, 120f),
+            Position = new Vector2(280f, 180f),
             Size = new Vector2(120f, 40f)
         };
         _cancelButton.Pressed += OnCancelPressed;
         _backgroundPanel.AddChild(_cancelButton);
 
-        // 預設隱藏，只有被呼叫時才顯示
         Visible = false;
     }
 
-    // 開啟彈窗的方法，允許傳入「按了確認後要執行的代碼 (Callback)」
-    public void Open(Action onConfirm)
+    // 🔴 讓 Open 方法接收 標題、描述 與 回調動作
+    public void Open(string title, string description, Action onConfirm)
     {
+        _titleLabel.Text = title;
+        _descriptionLabel.Text = description;
         _onConfirmAction = onConfirm;
         Visible = true;
     }
@@ -63,11 +77,11 @@ public sealed partial class SkillConfirmationDialog : Control
     private void OnConfirmPressed()
     {
         Visible = false;
-        _onConfirmAction?.Invoke(); // 執行傳進來的技能釋放邏輯
+        _onConfirmAction?.Invoke();
     }
 
     private void OnCancelPressed()
     {
-        Visible = false; // 單純關閉，什麼都不做
+        Visible = false;
     }
 }

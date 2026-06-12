@@ -19,6 +19,9 @@ public static class ExEnergyManager
     public static string AliemusId { get; private set; } = string.Empty;
     public static string KeyflareId { get; private set; } = string.Empty;
 
+    // 🔴 修正 1：這裡只宣告，不進行 Inline 初始化賦值
+    private static readonly Dictionary<string, EnergySkillContext> EnergyContexts = new(StringComparer.OrdinalIgnoreCase);
+
     public static void Register()
     {
         var registry = RitsuLibFramework.GetSecondaryResourceRegistry(Entry.ModId);
@@ -43,17 +46,10 @@ public static class ExEnergyManager
         ));
         KeyflareId = KeyflareDefinition.Id;
 
-        // 限定仅对特定角色始终显示
-        // registry.AlwaysShowInCombatUiForCharacter<Doll>(AliemusDefinition.LocalId);
-        // registry.AlwaysShowInCombatUiForCharacter<Doll>(KeyflareDefinition.LocalId);
+        // 🔴 修正 2：確保 ID 都有值之後，再塞入字典中
+        PopulateEnergyContexts();
 
-        // registry.RegisterCombatUiAlwaysVisibleWhen(AliemusDefinition.LocalId, IsMorimensCharacter);
-        // registry.RegisterCombatUiAlwaysVisibleWhen(KeyflareDefinition.LocalId, _ => false);
-
-        // 永远显示（不受角色限制）
-        // registry.AlwaysShowInCombatUi(AliemusDefinition.LocalId);
-
-        // 战斗计数器。使用的图标就是你注册时提供的图标
+        // 戰鬥計數器。使用的圖標就是你註冊時提供的圖標
         registry.RegisterCombatUi(
             "aliemus_combat_ui",
             parent =>
@@ -62,7 +58,6 @@ public static class ExEnergyManager
                 {
                     FontSize = 32,
                     PositiveColor = Colors.Yellow,
-                    // FormatAmount = (amount, max) => amount.ToString(),
                     AmountLabelOffset = new Vector2(100, 20),
                     IconStyle = SecondaryResourceIconStyle.Default with
                     {
@@ -97,7 +92,6 @@ public static class ExEnergyManager
                 {
                     FontSize = 32,
                     PositiveColor = Colors.Silver,
-                    // FormatAmount = (amount, max) => amount.ToString(),
                     AmountLabelOffset = new Vector2(100, 20),
                     IconStyle = SecondaryResourceIconStyle.Default with
                     {
@@ -111,6 +105,7 @@ public static class ExEnergyManager
                 // 自由指定位置。例如这里我们找到能量计数器的位置，放在它旁边
                 var energyCounter = parent.GetNode<Control>("%EnergyCounterContainer");
                 row.Position = energyCounter.Position + new Vector2(-80, -120);
+                SetupExEnergyUi(row);
                 return row;
             },
             ctx =>
@@ -122,24 +117,6 @@ public static class ExEnergyManager
             }
         );
 
-        // 卡牌面上的次级资源费用显示。使用的图标就是你注册时提供的图标
-        // registry.RegisterCardUi(
-        //     "mana_card_ui",
-        //     parent =>
-        //     {
-        //         var ui = NSecondaryResourceCardCostUi.Create(ManaId, new SecondaryResourceCardCostUiStyle
-        //         {
-        //             IconSize = new Vector2(48, 48),
-        //             FontSize = 24,
-        //         });
-        //         // 自由指定位置。例如这里我们找到能量图标的位置，放在它旁边
-        //         var energyIcon = parent.GetNode<TextureRect>("%EnergyIcon");
-        //         ui.Position = energyIcon.Position + new Vector2(0, 80);
-        //         return ui;
-        //     },
-        //     ctx => ctx.Node.Refresh(ctx)
-        // );
-
         RitsuLibFramework.SubscribeLifecycle<CardsFlushedEvent>(async evt =>
         {
             Entry.Logger.Debug($"回合結束：{evt.Player}");
@@ -149,6 +126,37 @@ public static class ExEnergyManager
             await SecondaryResourceCmd.Gain(evt.Player, AliemusId, 5, null);
         });
 
+        RegisterSkillConfirmationUi();
+    }
+
+    // 🔴 修正 3：抽取出來的字典配置方法
+    private static void PopulateEnergyContexts()
+    {
+        EnergyContexts[AliemusId] = new EnergySkillContext
+        {
+            ResourceId = AliemusId,
+            GetBaseCost = awaker => awaker.BaseAliemus,
+            GetTitle = awaker => awaker.ExaltTitle,
+            GetDescription = awaker => awaker.ExaltDescription,
+            ExecuteCoreAction = (awaker, player) => awaker.Exalt(player),
+            ToastTitle = "狂氣不足",
+            ToastMessageSuffix = "點狂氣才能釋放狂氣爆發。"
+        };
+
+        EnergyContexts[KeyflareId] = new EnergySkillContext
+        {
+            ResourceId = KeyflareId,
+            GetBaseCost = awaker => awaker.BaseKeyflare,
+            GetTitle = awaker => awaker.SuperExaltTitle,
+            GetDescription = awaker => awaker.SuperExaltDescription,
+            ExecuteCoreAction = (awaker, player) => awaker.SuperExalt(player),
+            ToastTitle = "能量不足",
+            ToastMessageSuffix = "點能量才能釋放超凡爆發。"
+        };
+    }
+
+    private static void RegisterSkillConfirmationUi()
+    {
         // 當 NCombatUi 生成時，自動把我們的 SkillConfirmationDialog 掛進去
         ModNodeAttachmentRegistry.For(Entry.ModId)
             .RegisterReadyChild<NCombatUi, SkillConfirmationDialog>(
@@ -168,115 +176,106 @@ public static class ExEnergyManager
                 });
     }
 
-    private static bool IsMorimensCharacter(SecondaryResourceCombatVisibilityContext context)
+    private sealed class EnergySkillContext
     {
-        Entry.Logger.Debug($"IsMorimensCharacter: {context.Player?.Character}, {context.Player?.Character is IAwaker}");
-        return context.Player?.Character is IAwaker;
+        public string ResourceId { get; init; } = "";
+        public Func<IAwaker, int> GetBaseCost { get; init; } = null!;
+        public Func<IAwaker, string> GetTitle { get; init; } = null!;
+        public Func<IAwaker, string> GetDescription { get; init; } = null!;
+        public Func<IAwaker, Player, Task> ExecuteCoreAction { get; init; } = null!;
+        public string ToastTitle { get; init; } = "";
+        public string ToastMessageSuffix { get; init; } = "";
     }
 
     private static void SetupExEnergyUi(NSecondaryResourceCounter counter)
     {
-        // 異步等待 counter 真正進入場景樹並執行完 _Ready()
-        counter.Ready += () =>
-        {
-            // 進到肚子裡尋找真正吃掉滑鼠事件的 NSecondaryResourceIcon
-            NSecondaryResourceIcon? realIcon = null;
-            foreach (var child in counter.GetChildren())
-            {
-                if (child is NSecondaryResourceIcon icon)
-                {
-                    realIcon = icon;
-                    break;
-                }
-            }
-
-            if (realIcon != null)
-            {
-                Entry.Logger.Debug("[ExEnergy] 成功找到內建 Icon 節點，開始綁定右鍵事件！");
-
-                // 直接把右鍵監聽掛在 Icon 上
-                realIcon.GuiInput += (inputEvent) => // 🔴 這裡拿掉 async，因為改在內部 Callback 處理
-                {
-                    if (inputEvent is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Right })
-                    {
-                        Entry.Logger.Debug("[ExEnergy] 檢測到右鍵點擊！準備彈出確認 UI！");
-
-                        // 告訴 Godot 這個事件我們處理了，不要再往後傳
-                        realIcon.AcceptEvent();
-
-                        // ======= 🛠️ 這裡加入「尋找彈窗並打開」的邏輯 =======
-
-                        // 1. 沿著 UI 樹往上爬，找出頂層的 NCombatUi
-                        Node? current = counter;
-                        while (current != null && current is not NCombatUi)
-                        {
-                            current = current.GetParent();
-                        }
-
-                        if (current is NCombatUi combatUi)
-                        {
-                            // 2. 透過 RitsuLib 的附加節點系統，抓到我們掛在戰鬥主畫面上的彈窗
-                            if (ModNodeAttachmentRegistry.For(Entry.ModId)
-                                .TryGetAttached<NCombatUi, SkillConfirmationDialog>(combatUi, "skill_confirm_dialog", out var dialog))
-                            {
-                                // 3. 亮出彈窗！把「點下確認後才要執行的非同步技能」包成 async lambda 丟進去
-                                dialog.Open(async () =>
-                                {
-                                    Entry.Logger.Debug("[ExEnergy] 玩家點擊了確認！開始釋放技能！");
-                                    await TryTriggerExalt();
-                                });
-                            }
-                            else
-                            {
-                                Entry.Logger.Error("[ExEnergy] 錯誤：在 NCombatUi 上找不到註冊的 skill_confirm_dialog 附加節點！");
-                            }
-                        }
-                        else
-                        {
-                            Entry.Logger.Error("[ExEnergy] 錯誤：找不到 NCombatUi 父節點，無法掛載彈窗！");
-                        }
-                        // =================================================
-                    }
-                };
-            }
-            else
-            {
-                Entry.Logger.Error("[ExEnergy] 錯誤：在 Counter 內找不到 NSecondaryResourceIcon 子節點！");
-            }
-        };
+        counter.Ready += () => OnCounterReady(counter);
     }
 
-    private static async Task TryTriggerExalt()
+    private static void OnCounterReady(NSecondaryResourceCounter counter)
     {
-        // 確保目前在戰鬥中，且輪到玩家的回合
+        var energyId = GetResourceDefinitionId(counter);
+        if (string.IsNullOrEmpty(energyId) || !EnergyContexts.ContainsKey(energyId)) return;
+
+        var realIcon = FindChildIcon(counter);
+        if (realIcon == null) return;
+
+        realIcon.GuiInput += (inputEvent) => OnIconGuiInput(inputEvent, counter, realIcon, energyId);
+    }
+
+    private static void OnIconGuiInput(InputEvent @event, NSecondaryResourceCounter counter, NSecondaryResourceIcon icon, string energyId)
+    {
+        if (@event is not InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Right }) return;
+        icon.AcceptEvent();
+
         if (!CombatManager.Instance.IsInProgress || CombatManager.Instance._state?.CurrentSide != CombatSide.Player)
             return;
 
-        Player? player = LocalContext.GetMe(CombatManager.Instance._state); // 獲取本地玩家
+        Player? player = LocalContext.GetMe(CombatManager.Instance._state);
         if (player == null || player.Character is not IAwaker awaker)
             return;
 
-        int aliemus = SecondaryResourceCmd.Get(player, AliemusId);
-        int maxAliemus = SecondaryResourceCmd.GetMax(player, AliemusId) ?? awaker.BaseAliemus;
+        var context = EnergyContexts[energyId];
 
-        if (aliemus < maxAliemus)
+        int currentAmount = SecondaryResourceCmd.Get(player, context.ResourceId);
+        int requiredAmount = SecondaryResourceCmd.GetMax(player, context.ResourceId) ?? context.GetBaseCost(awaker);
+
+        if (currentAmount < requiredAmount)
         {
-            RitsuToastService.Show(new RitsuToastRequest(
-                body: $"需要{maxAliemus}點狂氣才能釋放狂氣爆發。", // 正文，必填
-                title: "狂氣不足", // 标题，可空
-                               // image: null, // 左侧图片，可空
-                level: RitsuToastLevel.Warning,
-                durationSeconds: 3.0, // 显示秒数，null 用默认 3.5 秒
-                                      // onClick: () => Entry.Logger.Info(""), // 点击正文时触发，可空
-                                      // Fade：仅淡入淡出
-                                      // FadeSlide：淡入淡出并滑动，全局默认
-                                      // FadeScale：淡入淡出并缩放
-                animationOverride: RitsuToastAnimationPreset.FadeSlide
-            ));
+            ShowInsufficientToast(context.ToastTitle, requiredAmount, context.ToastMessageSuffix);
             return;
         }
 
-        await SecondaryResourceCmd.Lose(player, AliemusId, maxAliemus);
-        await awaker.Exalt(player);
+        // 4. 尋找 UI 樹中的 NCombatUi 與彈窗
+        var combatUi = FindParentCombatUi(counter);
+        if (combatUi == null) return;
+
+        if (TryGetConfirmationDialog(combatUi, out var dialog))
+        {
+            dialog.Open(context.GetTitle(awaker), context.GetDescription(awaker), async () =>
+            {
+                await SecondaryResourceCmd.Lose(player, context.ResourceId, requiredAmount);
+                await context.ExecuteCoreAction(awaker, player);
+            });
+        }
+    }
+
+    private static string? GetResourceDefinitionId(NSecondaryResourceCounter counter)
+    {
+        return counter.GetType()
+            .GetField("_definition", BindingFlags.NonPublic | BindingFlags.Instance)
+            ?.GetValue(counter) is SecondaryResourceDefinition def ? def.Id : null;
+    }
+
+    private static NSecondaryResourceIcon? FindChildIcon(Node parent)
+    {
+        foreach (var child in parent.GetChildren())
+            if (child is NSecondaryResourceIcon icon)
+                return icon;
+        return null;
+    }
+
+    private static NCombatUi? FindParentCombatUi(Node? node)
+    {
+        while (node != null && node is not NCombatUi)
+            node = node.GetParent();
+        return node as NCombatUi;
+    }
+
+    private static bool TryGetConfirmationDialog(NCombatUi combatUi, out SkillConfirmationDialog dialog)
+    {
+        return ModNodeAttachmentRegistry.For(Entry.ModId)
+            .TryGetAttached(combatUi, "skill_confirm_dialog", out dialog);
+    }
+
+    private static void ShowInsufficientToast(string title, int cost, string messageSuffix)
+    {
+        RitsuToastService.Show(new RitsuToastRequest(
+            body: $"需要{cost}{messageSuffix}",
+            title: title,
+            level: RitsuToastLevel.Warning,
+            durationSeconds: 3.0,
+            animationOverride: RitsuToastAnimationPreset.FadeSlide
+        ));
     }
 }

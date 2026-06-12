@@ -5,6 +5,11 @@ namespace Morimens.Characters;
 public interface IAwaker
 {
     int BaseAliemus { get; }
+    int BaseKeyflare { get; }
+    string ExaltTitle { get; }
+    string ExaltDescription { get; }
     Task Exalt(Player player);
+    string SuperExaltTitle { get; }
+    string SuperExaltDescription { get; }
     Task SuperExalt(Player player);
 }

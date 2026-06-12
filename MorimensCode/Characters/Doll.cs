@@ -44,9 +44,6 @@ public sealed class Doll : Awaker<DollCardPool, DollRelicPool, DollPotionPool>
     public override int StartingHp => 58;
     public override int StartingGold => 99;
 
-    // 基礎狂氣上限
-    public override int BaseAliemus => 100;
-
     // CharacterAssetProfile 按类别拆分。你只写需要替换的部分，其他字段会保留回退。
     // AssetProfile 只指定模板自带的静态占位资源；没有复制的音频、拖尾、转场等资源继续从占位角色回退。
     public override CharacterAssetProfile AssetProfile => new(
@@ -111,6 +108,14 @@ public sealed class Doll : Awaker<DollCardPool, DollRelicPool, DollPotionPool>
     {
         return DollSpine.GetCreatureAnimator(controller);
     }
+
+    public override string ExaltTitle => "狂氣爆發：理性，真理與現實";
+
+    public override string ExaltDescription => "驅散所有友方易傷狀態，全體友方回10血，全體友方+20狂。";
+
+    public override string SuperExaltTitle => "超限爆發：心智分析";
+
+    public override string SuperExaltDescription => "驅散友方易傷狀態，全體友方回10血，全體友方+20狂。接下來3回合每回合開始時全體友方回復10血。";
 
     public override async Task Exalt(Player player)
     {

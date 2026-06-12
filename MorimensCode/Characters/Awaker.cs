@@ -18,7 +18,11 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
     where TPotionPool : PotionPoolModel
 {
     public virtual int BaseAliemus => 100;
-
+    public virtual int BaseKeyflare => 1000;
+    public abstract string ExaltTitle { get; }
+    public abstract string ExaltDescription { get; }
+    public abstract string SuperExaltTitle { get; }
+    public abstract string SuperExaltDescription { get; }
     public virtual async Task Exalt(Player player) { }
     public virtual async Task SuperExalt(Player player) { }
 
