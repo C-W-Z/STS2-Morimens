@@ -1,3 +1,5 @@
+using Morimens.Patches.Exnergy;
+using Morimens.Patches.Hooks;
 using Morimens.Patches.Minion;
 using STS2RitsuLib;
 using STS2RitsuLib.Patching.Core;
@@ -17,6 +19,11 @@ public static class PatchRegister
         ModPatcher hookPatcher = RitsuLibFramework.CreatePatcher(Entry.ModId, "hook-patches");
         hookPatcher.RegisterPatch<CharacterModelHookPatch>();
         if (!hookPatcher.PatchAll())
+            throw new InvalidOperationException("Morimens critical hook-patches failed!");
+
+        ModPatcher exEnergyPatcher = RitsuLibFramework.CreatePatcher(Entry.ModId, "ex-energy-patches");
+        exEnergyPatcher.RegisterPatch<ExEnergyFontSizePatch>();
+        if (!exEnergyPatcher.PatchAll())
             throw new InvalidOperationException("Morimens critical hook-patches failed!");
     }
 }

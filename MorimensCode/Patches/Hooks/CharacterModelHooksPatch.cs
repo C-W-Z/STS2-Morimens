@@ -2,11 +2,11 @@ using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Models;
 using STS2RitsuLib.Patching.Models;
 
-namespace Morimens.Patches;
+namespace Morimens.Patches.Hooks;
 
 public class CharacterModelHookPatch : IPatchMethod
 {
-    public static string PatchId => "MORIMENS_character_model_hook";
+    public static string PatchId => "MORIMENS_character_model_hooks";
 
     public static string Description => "將Player.Character放入CombatState.IterateHookListeners()的結果中，以觸發CharacterModel身上的Hooks";
 
