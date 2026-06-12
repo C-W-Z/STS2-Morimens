@@ -6,15 +6,14 @@ namespace Morimens.ExEnergy;
 public sealed partial class SkillConfirmationDialog : Control
 {
     private Panel _backgroundPanel = null!;
-    private Label _titleLabel = null!;       // 🔴 新增：技能標題
-    private Label _descriptionLabel = null!; // 🔴 新增：技能描述
+    private Label _titleLabel = null!;
+    private RichTextLabel _descriptionLabel = null!; // 🔴 1. 將 Label 改為 RichTextLabel
     private Button _confirmButton = null!;
     private Button _cancelButton = null!;
     private Action? _onConfirmAction;
 
     public override void _Ready()
     {
-        // 1. 建立置中面板（加大尺寸以容納描述）
         _backgroundPanel = new Panel
         {
             Size = new Vector2(450f, 250f),
@@ -22,23 +21,22 @@ public sealed partial class SkillConfirmationDialog : Control
         };
         AddChild(_backgroundPanel);
 
-        // 2. 建立標題 Label
         _titleLabel = new Label
         {
             Position = new Vector2(30f, 20f),
             Size = new Vector2(390f, 30f),
             HorizontalAlignment = HorizontalAlignment.Center
         };
-        // 這裡可以透過設定主題或微調字型讓標題變粗/變大
         _backgroundPanel.AddChild(_titleLabel);
 
-        // 3. 建立描述 Label
-        _descriptionLabel = new Label
+        // 🔴 2. 實例化改為 RichTextLabel
+        _descriptionLabel = new RichTextLabel
         {
             Position = new Vector2(40f, 65f),
             Size = new Vector2(370f, 100f),
-            AutowrapMode = AutowrapMode.Word, // 讓長文字自動縮放或換行
-            HorizontalAlignment = HorizontalAlignment.Center
+            BbcodeEnabled = true,   // 🔴 核心：啟用 BBCode 標籤支援
+            ScrollActive = false,   // 關閉滾動條
+            AutowrapMode = TextServer.AutowrapMode.WordSmart // 自動換行
         };
         _backgroundPanel.AddChild(_descriptionLabel);
 

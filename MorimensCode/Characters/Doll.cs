@@ -4,11 +4,18 @@ using MegaCrit.Sts2.Core.Bindings.MegaSpine;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Characters;
 using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.Localization;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Cards.Mocks;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
+using MegaCrit.Sts2.Core.ValueProps;
 using Morimens.Anims;
+using Morimens.Cards;
 using Morimens.ExEnergy;
 using STS2RitsuLib.Combat.SecondaryResources;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -109,13 +116,16 @@ public sealed class Doll : Awaker<DollCardPool, DollRelicPool, DollPotionPool>
         return DollSpine.GetCreatureAnimator(controller);
     }
 
-    public override string ExaltTitle => "狂氣爆發：理性，真理與現實";
+    private readonly ExSkillModel _exaltSkill = new("characters", "MORIMENS_CHARACTER_DOLL.EXALT.description", [new DamageVar(5m, ValueProp.Move)]);
+    private readonly ExSkillModel _superExaltSkill = new("characters", "MORIMENS_CHARACTER_DOLL.SUPER_EXALT.description", [new DamageVar(5m, ValueProp.Move)]);
 
-    public override string ExaltDescription => "驅散所有友方易傷狀態，全體友方回10血，全體友方+20狂。";
+    public override string ExaltTitle => LocManager.Instance.GetTable("characters").GetRawText("MORIMENS_CHARACTER_DOLL.EXALT.title");
 
-    public override string SuperExaltTitle => "超限爆發：心智分析";
+    public override string ExaltDescription => _exaltSkill.GetDescription(Dummy);
 
-    public override string SuperExaltDescription => "驅散友方易傷狀態，全體友方回10血，全體友方+20狂。接下來3回合每回合開始時全體友方回復10血。";
+    public override string SuperExaltTitle => LocManager.Instance.GetTable("characters").GetRawText("MORIMENS_CHARACTER_DOLL.SUPER_EXALT.title");
+
+    public override string SuperExaltDescription => _superExaltSkill.GetDescription(Dummy);
 
     public override async Task Exalt(Player player)
     {
@@ -124,12 +134,32 @@ public sealed class Doll : Awaker<DollCardPool, DollRelicPool, DollPotionPool>
         // 驅散友方易傷狀態，全體友方回10血，全體友方+20狂
         foreach (var ally in CombatManager.Instance._state.Allies)
             await PowerCmd.Remove<VulnerablePower>(ally);
-        foreach (var ally in CombatManager.Instance._state.Allies)
-            await CreatureCmd.Heal(ally, 10);
+        // foreach (var ally in CombatManager.Instance._state.Allies)
+        //     await CreatureCmd.Heal(ally, _exaltSkill.DynamicVars.Damage.BaseValue);
         foreach (var ally in CombatManager.Instance._state.Players)
             if (!LocalContext.IsMe(ally))
                 await SecondaryResourceCmd.Gain(ally, ExEnergyManager.AliemusId, 20, this);
+
+        await DamageCmd.Attack(_exaltSkill.DynamicVars.Damage.BaseValue)
+            .FromCard(Dummy)
+            .TargetingRandomOpponents(CombatManager.Instance._state)
+            .Execute(null);
+    }
+
+    private CardModel Dummy
+    {
+        get
+        {
+            var card = ModelDb.Get<DummyCard>().ToMutable();
+            card.Owner = LocalContext.GetMe(CombatManager.Instance._state);
+            return card;
+        }
     }
 
     public override async Task SuperExalt(Player player) { }
+
+    public class DummyCard() : AbstractDollCard(0, CardType.None, CardRarity.None, TargetType.None)
+    {
+        protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(10m, ValueProp.Move)];
+    }
 }
