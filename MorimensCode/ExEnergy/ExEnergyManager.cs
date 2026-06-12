@@ -1,10 +1,11 @@
 using Godot;
 using MegaCrit.Sts2.Core.Combat;
-using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
+using MegaCrit.Sts2.Core.Entities.Players;
 using Morimens.Characters;
 using STS2RitsuLib;
 using STS2RitsuLib.Combat.SecondaryResources;
+using STS2RitsuLib.Ui.Toast;
 
 namespace Morimens.ExEnergy;
 
@@ -24,7 +25,7 @@ public static class ExEnergyManager
             baseMaxAmount: 100,
             turnStartPolicy: SecondaryResourceTurnStartPolicy.None,
             persistencePolicy: SecondaryResourcePersistencePolicy.Run,
-            smallIconPath: "res://Morimens/images/ui/Aliemus.png",
+            smallIconPath: "res://Morimens/images/ui/AliemusText.png",
             largeIconPath: "res://Morimens/images/ui/Aliemus.png"
         ));
         AliemusId = AliemusDefinition.Id;
@@ -34,7 +35,7 @@ public static class ExEnergyManager
             baseMaxAmount: 1000,
             turnStartPolicy: SecondaryResourceTurnStartPolicy.None,
             persistencePolicy: SecondaryResourcePersistencePolicy.Run,
-            smallIconPath: "res://Morimens/images/ui/Keyflare.png",
+            smallIconPath: "res://Morimens/images/ui/KeyflareText.png",
             largeIconPath: "res://Morimens/images/ui/Keyflare.png"
         ));
         KeyflareId = KeyflareDefinition.Id;
@@ -130,25 +131,15 @@ public static class ExEnergyManager
 
     private static bool IsMorimensCharacter(SecondaryResourceCombatVisibilityContext context)
     {
-        if (context.Player?.Character == null) return false;
-
-        var type = context.Player.Character.GetType();
-        while (type != null && type != typeof(object))
-        {
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(MorimensCharacter<,,>))
-                return true;
-
-            type = type.BaseType;
-        }
-        return false;
+        return context.Player?.Character is IAwaker;
     }
 
-    public static void SetupExEnergyUi(NSecondaryResourceCounter counter)
+    private static void SetupExEnergyUi(NSecondaryResourceCounter counter)
     {
-        // 💡 關鍵 1：異步等待！等 counter 真正進入場景樹並執行完 _Ready()
+        // 異步等待 counter 真正進入場景樹並執行完 _Ready()
         counter.Ready += () =>
         {
-            // 💡 關鍵 2：進到肚子裡尋找真正吃掉滑鼠事件的 NSecondaryResourceIcon
+            // 進到肚子裡尋找真正吃掉滑鼠事件的 NSecondaryResourceIcon
             NSecondaryResourceIcon? realIcon = null;
             foreach (var child in counter.GetChildren())
             {
@@ -163,7 +154,7 @@ public static class ExEnergyManager
             {
                 Entry.Logger.Debug("[ExEnergy] 成功找到內建 Icon 節點，開始綁定右鍵事件！");
 
-                // 💡 關鍵 3：直接把右鍵監聽掛在 Icon 上
+                // 直接把右鍵監聽掛在 Icon 上
                 realIcon.GuiInput += async (inputEvent) =>
                 {
                     if (inputEvent is InputEventMouseButton { Pressed: true, ButtonIndex: MouseButton.Right })
@@ -173,8 +164,7 @@ public static class ExEnergyManager
 
                         Entry.Logger.Debug("[ExEnergy] 檢測到右鍵點擊！準備釋放技能！");
 
-                        // 執行你的技能釋放邏輯
-                        await TryTriggerSkillRelease();
+                        await TryTriggerExalt();
                     }
                 };
             }
@@ -185,25 +175,37 @@ public static class ExEnergyManager
         };
     }
 
-    private static async Task TryTriggerSkillRelease()
+    private static async Task TryTriggerExalt()
     {
-        // 1. 安全檢查：確保目前在戰鬥中，且輪到玩家的回合
+        // 確保目前在戰鬥中，且輪到玩家的回合
         if (!CombatManager.Instance.IsInProgress || CombatManager.Instance._state?.CurrentSide != CombatSide.Player)
             return;
 
-        var player = LocalContext.GetMe(CombatManager.Instance._state); // 獲取本地玩家
-        if (player == null)
+        Player? player = LocalContext.GetMe(CombatManager.Instance._state); // 獲取本地玩家
+        if (player == null || player.Character is not IAwaker awaker)
             return;
 
-        // 2. 檢查資源是否足夠（例如：ExEnergy 是否大於 0）
-        int currentEnergy = SecondaryResourceCmd.Get(player, AliemusId);
-        if (currentEnergy <= 0)
+        int aliemus = SecondaryResourceCmd.Get(player, AliemusId);
+        int maxAliemus = SecondaryResourceCmd.GetMax(player, AliemusId) ?? awaker.BaseAliemus;
+
+        if (aliemus < maxAliemus)
         {
-            // 可以播放一個錯誤音效或提示框
+            RitsuToastService.Show(new RitsuToastRequest(
+                body: $"需要{maxAliemus}點狂氣才能釋放狂氣爆發。", // 正文，必填
+                title: "狂氣不足", // 标题，可空
+                // image: null, // 左侧图片，可空
+                level: RitsuToastLevel.Warning,
+                durationSeconds: 3.0, // 显示秒数，null 用默认 3.5 秒
+                // onClick: () => Entry.Logger.Info(""), // 点击正文时触发，可空
+                // Fade：仅淡入淡出
+                // FadeSlide：淡入淡出并滑动，全局默认
+                // FadeScale：淡入淡出并缩放
+                animationOverride: RitsuToastAnimationPreset.FadeSlide
+            ));
             return;
         }
 
-        await SecondaryResourceCmd.Lose(player, AliemusId, 10);
-        await PlayerCmd.GainEnergy(10, player);
+        await SecondaryResourceCmd.Lose(player, AliemusId, maxAliemus);
+        await awaker.Exalt(player);
     }
 }

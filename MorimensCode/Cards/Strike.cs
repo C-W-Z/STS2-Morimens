@@ -4,6 +4,8 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using Morimens.Characters;
+using Morimens.ExEnergy;
+using STS2RitsuLib.Combat.SecondaryResources;
 using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace Morimens.Cards;
@@ -18,7 +20,10 @@ public sealed class Strike() : AbstractDollCard(1, CardType.Attack, CardRarity.B
 
     // CanonicalVars 翻译是“规范值”，指卡牌的基础数值。
     // 添加一个 DamageVar 意为指定卡牌的基础伤害是多少；它会自动绑定到本地化里的 {Damage:diff()} 占位符。
-    protected override IEnumerable<DynamicVar> CanonicalVars => [new DamageVar(6, ValueProp.Move)];
+    protected override IEnumerable<DynamicVar> CanonicalVars => [
+        new DamageVar(6, ValueProp.Move),
+        SecondaryResourceVars.For("Aliemus", ExEnergyManager.AliemusId, 5)
+    ];
 
     // 打出时的效果逻辑。
     // 尖塔2使用了 async 和 await 来控制效果逻辑顺序执行，和尖塔1的 action 类似。
@@ -26,16 +31,17 @@ public sealed class Strike() : AbstractDollCard(1, CardType.Attack, CardRarity.B
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target);
-
         await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
+        await SecondaryResourceCmd.Gain(Owner, ExEnergyManager.AliemusId, DynamicVars["Aliemus"].IntValue);
     }
 
     // 升级后的效果逻辑。
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.UpgradeValueBy(3);
+        DynamicVars["Aliemus"].UpgradeValueBy(5);
     }
 }

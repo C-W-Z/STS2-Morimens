@@ -1,6 +1,7 @@
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -11,12 +12,15 @@ using STS2RitsuLib.Scaffolding.Characters;
 
 namespace Morimens.Characters;
 
-public abstract class MorimensCharacter<TCardPool, TRelicPool, TPotionPool> : ModCharacterTemplate<TCardPool, TRelicPool, TPotionPool>, ISecondaryResourceHookListener
+public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterTemplate<TCardPool, TRelicPool, TPotionPool>, ISecondaryResourceHookListener, IAwaker
     where TCardPool : CardPoolModel
     where TRelicPool : RelicPoolModel
     where TPotionPool : PotionPoolModel
 {
     public virtual int BaseAliemus => 100;
+
+    public virtual async Task Exalt(Player player) { }
+    public virtual async Task SuperExalt(Player player) { }
 
     public decimal ModifyMaxSecondaryResource(SecondaryResourceMaxContext context, decimal amount)
     {

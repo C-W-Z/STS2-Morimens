@@ -1,8 +1,8 @@
 {
   "MORIMENS_CARD_STRIKE.title": "打擊",
-  "MORIMENS_CARD_STRIKE.description": "造成{Damage:diff()}點傷害。",
+  "MORIMENS_CARD_STRIKE.description": "造成{Damage:diff()}點傷害。\n獲得{Aliemus:secondaryResourceIcons()}。",
   "MORIMENS_CARD_DEFEND.title": "防禦",
-  "MORIMENS_CARD_DEFEND.description": "獲得{Block:diff()}點[gold]格擋[/gold]。",
+  "MORIMENS_CARD_DEFEND.description": "獲得{Block:diff()}點[gold]格擋[/gold]。\n獲得{Aliemus:secondaryResourceIcons()}。",
   "MORIMENS_CARD_HEAL_SELF_WEAK_ENEMIES.title": "域外手術",
   "MORIMENS_CARD_HEAL_SELF_WEAK_ENEMIES.description": "回復{Heal:diff()}點生命。\n給予所有敵人{WeakPower:diff()}層[gold]虛弱[/gold]。",
   "MORIMENS_CARD_HEAL_BLOCK_SELF_DISCARD_ALL.title": "等價交換",

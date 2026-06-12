@@ -1,9 +1,16 @@
 using Godot;
 using MegaCrit.Sts2.Core.Animation;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Characters;
+using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using Morimens.Anims;
+using Morimens.ExEnergy;
+using STS2RitsuLib.Combat.SecondaryResources;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Characters;
 using STS2RitsuLib.Scaffolding.Godot;
@@ -11,7 +18,7 @@ using STS2RitsuLib.Scaffolding.Godot;
 namespace Morimens.Characters;
 
 [RegisterCharacter]
-public sealed class Doll : MorimensCharacter<DollCardPool, DollRelicPool, DollPotionPool>
+public sealed class Doll : Awaker<DollCardPool, DollRelicPool, DollPotionPool>
 {
     public static readonly Color ThemeColor = new(0.42f, 0.65f, 0.72f);
 
@@ -104,4 +111,20 @@ public sealed class Doll : MorimensCharacter<DollCardPool, DollRelicPool, DollPo
     {
         return DollSpine.GetCreatureAnimator(controller);
     }
+
+    public override async Task Exalt(Player player)
+    {
+        ArgumentNullException.ThrowIfNull(CombatManager.Instance._state);
+        await CreatureCmd.TriggerAnim(player.Creature, DollSpine.State.ExSkill, DollSpine.ExSkillAnimDelay);
+        // 驅散友方易傷狀態，全體友方回10血，全體友方+20狂
+        foreach (var ally in CombatManager.Instance._state.Allies)
+            await PowerCmd.Remove<VulnerablePower>(ally);
+        foreach (var ally in CombatManager.Instance._state.Allies)
+            await CreatureCmd.Heal(ally, 10);
+        foreach (var ally in CombatManager.Instance._state.Players)
+            if (!LocalContext.IsMe(ally))
+                await SecondaryResourceCmd.Gain(ally, ExEnergyManager.AliemusId, 20, this);
+    }
+
+    public override async Task SuperExalt(Player player) { }
 }
