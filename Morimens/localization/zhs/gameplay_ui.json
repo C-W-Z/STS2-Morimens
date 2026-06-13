@@ -1,0 +1,6 @@
+{
+  "ALIEMUS_INSUFFICIENT.title": "狂氣不足",
+  "ALIEMUS_INSUFFICIENT.description": "需要{Cost}狂氣才能釋放狂氣爆發。",
+  "KEYFLARE_INSUFFICIENT.title": "銀鑰不足",
+  "KEYFLARE_INSUFFICIENT.description": "需要{Cost}銀鑰才能釋放鑰令。"
+}
