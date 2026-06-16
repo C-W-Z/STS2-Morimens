@@ -24,16 +24,16 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
 
     // ─── 快取欄位 ───
     private CombatState? _cachedCombatState;
-    private AbstractExaltCard? _cachedExaltCard;
-    private AbstractExaltCard? _cachedOverExaltCard;
+    private CardModel? _cachedExaltCard;
+    private CardModel? _cachedOverExaltCard;
 
     // ─── 工廠方法 (Factory Methods) ───
     // 子類別只需要實作這兩個方法，回傳對應的卡牌範本即可
-    protected abstract AbstractExaltCard CreateExaltCardInstance();
-    protected abstract AbstractExaltCard CreateOverExaltCardInstance();
+    protected abstract CardModel CreateExaltCardInstance();
+    protected abstract CardModel CreateOverExaltCardInstance();
 
     // ─── 核心輔助方法：獲取並動態更新快取的卡牌 ───
-    protected AbstractExaltCard GetExaltCard()
+    protected CardModel GetExaltCard()
     {
         // 只有第一次會執行 ToMutable() 分配記憶體，後續皆重複使用
         var combatState = CombatManager.Instance._state;
@@ -57,7 +57,7 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
         return _cachedExaltCard;
     }
 
-    protected AbstractExaltCard GetOverExaltCard()
+    protected CardModel GetOverExaltCard()
     {
         var combatState = CombatManager.Instance._state;
 
@@ -81,10 +81,10 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
 
     public virtual string ExaltTitle => GetExaltCard().Title;
     public virtual string ExaltDescription => GetExaltCard().GetDescriptionForPile(PileType.Hand);
-    public virtual async Task Exalt() => await GetExaltCard().Execute();
+    public virtual async Task Exalt() => await ((IExaltCard)GetExaltCard()).Execute();
     public virtual string OverExaltTitle => GetOverExaltCard().Title;
     public virtual string OverExaltDescription => GetOverExaltCard().GetDescriptionForPile(PileType.Hand);
-    public virtual async Task OverExalt() => await GetOverExaltCard().Execute();
+    public virtual async Task OverExalt() => await ((IExaltCard)GetExaltCard()).Execute();
 
     public decimal ModifyMaxSecondaryResource(SecondaryResourceMaxContext context, decimal amount)
     {

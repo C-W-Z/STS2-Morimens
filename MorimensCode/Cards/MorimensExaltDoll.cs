@@ -1,10 +1,7 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
-using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
-using MegaCrit.Sts2.Core.ValueProps;
 using Morimens.Anims;
 using Morimens.Characters;
 using Morimens.ExEnergy;
@@ -13,10 +10,8 @@ using STS2RitsuLib.Combat.SecondaryResources;
 
 namespace Morimens.Cards;
 
-public sealed class MorimensExaltDoll : AbstractExaltCard
+public sealed class MorimensExaltDoll : AbstractExaltCard<DollCardPool>
 {
-    public override CardPoolModel Pool => ModelDb.Get<DollCardPool>();
-
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new HealVar(10m),
         ModCardVars.Int("Aliemus", 20),
