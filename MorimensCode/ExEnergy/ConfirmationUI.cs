@@ -1,5 +1,6 @@
 using Godot;
 using MegaCrit.Sts2.addons.mega_text;
+using MegaCrit.Sts2.Core.Localization;
 
 namespace Morimens.ExEnergy;
 
@@ -97,7 +98,7 @@ public sealed partial class ConfirmationUi : Control
 
         _confirmButton = new Button
         {
-            Text = "確認釋放",
+            Text = new LocString("gameplay_ui", "MORIMENS_CONFIRM").GetFormattedText() ?? "Confirm",
             Position = new Vector2(70f, 225f),
             Size = new Vector2(200f, 50f)
         };
@@ -109,7 +110,7 @@ public sealed partial class ConfirmationUi : Control
 
         _cancelButton = new Button
         {
-            Text = "取消",
+            Text = new LocString("gameplay_ui", "MORIMENS_CANCEL").GetFormattedText() ?? "Cancel",
             Position = new Vector2(330f, 225f),
             Size = new Vector2(200f, 50f)
         };
@@ -122,17 +123,21 @@ public sealed partial class ConfirmationUi : Control
         Visible = false;
     }
 
-    public void Open(string title, string description, Action onConfirm)
+    public void Open(string title, string description, bool normal, Action onConfirm)
     {
         _titleLabel.Text = title;
         _descriptionLabel.Text = description;
         _onConfirmAction = onConfirm;
+
+        // 如果能量不足，將確認按鈕調製為灰色（但保持可點擊狀態以利關閉和跳出提示）
+        _confirmButton.Modulate = normal ? Colors.White : new Color(0.5f, 0.5f, 0.5f);
+
         Visible = true;
     }
 
     private void OnConfirmPressed()
     {
-        Visible = false;
+        Visible = false; // 點擊後立刻隱藏 UI
         _onConfirmAction?.Invoke();
     }
 

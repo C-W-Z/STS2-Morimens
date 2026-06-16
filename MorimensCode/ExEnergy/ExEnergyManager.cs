@@ -82,7 +82,7 @@ public static class ExEnergyManager
                         Size = new Vector2(80, 80),
                         HoverTip = SecondaryResourceHoverTipStyle.Default with
                         {
-                            ScreenOffset = new Vector2(150, -50),
+                            ScreenOffset = new Vector2(150, -150),
                         }
                     },
                 });
@@ -116,7 +116,7 @@ public static class ExEnergyManager
                         Size = new Vector2(80, 80),
                         HoverTip = SecondaryResourceHoverTipStyle.Default with
                         {
-                            ScreenOffset = new Vector2(150, -50),
+                            ScreenOffset = new Vector2(150, -90),
                         }
                     },
                 });
@@ -166,8 +166,8 @@ public static class ExEnergyManager
                     ? a => a.OverExalt()
                     : a => a.Exalt(),
 
-            ToastTitle = new(ToastLocTable, "ALIEMUS_INSUFFICIENT.title"),
-            ToastBody = new(ToastLocTable, "ALIEMUS_INSUFFICIENT.description")
+            ToastTitle = new(ToastLocTable, "MORIMENS_ALIEMUS_INSUFFICIENT.title"),
+            ToastBody = new(ToastLocTable, "MORIMENS_ALIEMUS_INSUFFICIENT.description")
         };
 
         EnergyContexts[KeyflareId] = new EnergySkillContext
@@ -181,8 +181,8 @@ public static class ExEnergyManager
             GetDescription = (awaker, current, max) => awaker.OverExaltDescription,
             GetExecuteCoreAction = (awaker, current, max) => a => a.OverExalt(),
 
-            ToastTitle = new(ToastLocTable, "KEYFLARE_INSUFFICIENT.title"),
-            ToastBody = new(ToastLocTable, "KEYFLARE_INSUFFICIENT.description")
+            ToastTitle = new(ToastLocTable, "MORIMENS_KEYFLARE_INSUFFICIENT.title"),
+            ToastBody = new(ToastLocTable, "MORIMENS_KEYFLARE_INSUFFICIENT.description")
         };
     }
 
@@ -260,12 +260,8 @@ public static class ExEnergyManager
         // 2. 透過 Context 策略動態計算實際所需的消耗量
         int requiredAmount = context.GetActualCost(awaker, currentAmount, baseMaxAmount);
 
-        // 3. 檢查當前資源是否足夠 (若 Aliemus 不足基礎上限，requiredAmount會算成baseMaxAmount，完美擋下)
-        if (currentAmount < requiredAmount)
-        {
-            ShowInsufficientToast(context.ToastTitle, context.ToastBody, requiredAmount);
-            return;
-        }
+        // 3. 檢查當前資源是否足夠
+        bool isSufficient = currentAmount >= requiredAmount;
 
         // 4. 尋找 UI 樹中的 NCombatUi 與彈窗
         var combatUi = FindParentCombatUi(counter);
@@ -279,10 +275,20 @@ public static class ExEnergyManager
             string description = context.GetDescription(awaker, currentAmount, baseMaxAmount);
             var executeAction = context.GetExecuteCoreAction(awaker, currentAmount, baseMaxAmount);
 
-            dialog.Open(title, description, async () =>
+            // 6. 無論充足與否都正常開啟 UI，並將是否充足與對應的按鈕行為傳遞進去
+            dialog.Open(title, description, isSufficient, async () =>
             {
-                await SecondaryResourceCmd.Lose(player, context.ResourceId, requiredAmount);
-                await executeAction(awaker);
+                if (isSufficient)
+                {
+                    // 能量足夠：正常扣除資源並施放技能
+                    await SecondaryResourceCmd.Lose(player, context.ResourceId, requiredAmount);
+                    await executeAction(awaker);
+                }
+                else
+                {
+                    // 能量不足：點擊灰色按鈕後，關閉 UI 的同時跳出 Toast 警告
+                    ShowInsufficientToast(context.ToastTitle, context.ToastBody, requiredAmount);
+                }
             });
         }
     }
