@@ -69,6 +69,8 @@ public sealed class Doll : Awaker<DollCardPool, DollRelicPool, DollPotionPool>
             IconTexturePath: $"{ImageRoot}/Doll_character_icon.png",
             // 人物头像轮廓。
             IconOutlineTexturePath: $"{ImageRoot}/Doll_character_icon_outline.png",
+            // 人物头像場景。
+            IconPath: $"{SceneRoot}/Doll_character_icon.tscn",
             // 人物选择背景。
             CharacterSelectBgPath: CharacterSelectBgScenePath,
             // 人物选择图标。
