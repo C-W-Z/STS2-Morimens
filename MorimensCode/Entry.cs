@@ -5,6 +5,7 @@ using MinionLib.Layout;
 using Morimens.ExEnergy;
 using Morimens.Minions;
 using Morimens.Patches;
+using Morimens.UI;
 using STS2RitsuLib;
 using STS2RitsuLib.Audio;
 using STS2RitsuLib.Interop;
@@ -38,8 +39,9 @@ public static partial class Entry
         // 新增内容类后，只要 attribute 写对，通常不需要在入口里手动逐个注册。
         ModTypeDiscoveryHub.RegisterModAssembly(ModId, assembly);
 
-        PatchRegister.Register();
+        PatchRegistry.Register();
 
+        CharacterBgUiRegistry.Register();
         ExEnergyManager.Register();
 
         FmodStudioDeferredBankRegistration.RegisterBank("res://Morimens/audio/Morimens.bank");
