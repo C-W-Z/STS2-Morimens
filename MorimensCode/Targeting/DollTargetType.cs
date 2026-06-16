@@ -1,4 +1,5 @@
 using System.Linq;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Models;
@@ -8,7 +9,7 @@ using Morimens.Minions;
 
 namespace Morimens.Targeting;
 
-public static class DollTargetTypes
+public static class DollTargetType
 {
     private static bool IsMyDollMinion(CardModel card, Creature target)
     {
@@ -27,7 +28,7 @@ public static class DollTargetTypes
             target => target is { IsAlive: true, IsPet: true },
             (card, target) => IsMyDollMinion(card, target) // 群體牌會對所有回傳 true 的目標生效
         ),
-        "Morimens",
+        Entry.ModId,
         nameof(AllDollMinions)
     );
 
@@ -40,7 +41,7 @@ public static class DollTargetTypes
             target => target is { IsAlive: true, IsPet: true }, // 基本預覽判斷
             (card, target) => IsMyDollMinion(card, target) // 卡牌打出時的嚴格判斷
         ),
-        "Morimens",
+        Entry.ModId,
         nameof(AnyDollMinion)
     );
 
@@ -49,7 +50,7 @@ public static class DollTargetTypes
     /// </summary>
     public static readonly TargetType AnyDollMinionOrNone = CustomTargetTypeManager.Register(
         new AnyDollMinionOrNoneTargetType(),
-        "Morimens",
+        Entry.ModId,
         nameof(AnyDollMinionOrNone)
     );
 }

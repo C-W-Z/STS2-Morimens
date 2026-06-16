@@ -11,7 +11,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace Morimens.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class MinionGrow() : AbstractMinionCard(1, CardType.Skill, CardRarity.Common, DollTargetTypes.AllDollMinions)
+public sealed class MinionAddMaxHp() : AbstractMinionCard(1, CardType.Skill, CardRarity.Common, DollTargetType.AllDollMinions)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [new MaxHpVar(5m)];
 

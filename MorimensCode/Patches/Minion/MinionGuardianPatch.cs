@@ -8,7 +8,7 @@ namespace Morimens.Patches.Minion;
 public class MinionGuardianPatch : IPatchMethod
 {
     // 1. 設定 RitsuLib 要求的唯一 ID 與功能說明
-    public static string PatchId => "MORIMENS_minion_guardian_patch";
+    public static string PatchId => "MORIMENS_minion_guardian";
 
     public static string Description => "擴充 MinionLib 的 IsFrontGuardian 判定，使其支援自訂的 DollMinionGuardianPower";
 

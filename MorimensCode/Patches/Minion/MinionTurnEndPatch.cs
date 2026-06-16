@@ -8,7 +8,7 @@ namespace Morimens.Patches.Minion;
 public class MinionTurnEndPatch : IPatchMethod
 {
     // 1. 填寫 RitsuLib 要求的唯一 ID 與說明
-    public static string PatchId => "MORIMENS_minion_before_turn_end";
+    public static string PatchId => "MORIMENS_minion_turn_end";
 
     public static string Description => "將戰鬥中存活的Minions放入回合結束的參與者名單中，主要為了修復災厄不會在Minions身上觸發的問題。";
 
@@ -24,7 +24,7 @@ public class MinionTurnEndPatch : IPatchMethod
     {
         if (participants == null) return;
 
-        Entry.Logger.Debug($"MinionBeforeTurnEndPatch: original participants");
+        Entry.Logger.Debug($"MinionTurnEndPatch: original participants");
         foreach (var p in participants)
             Entry.Logger.Debug(p.Name.ToString());
 
@@ -36,14 +36,14 @@ public class MinionTurnEndPatch : IPatchMethod
             // 只有玩家的回合結束需要把隨從拉進來結算
             if (!creature.IsPlayer || creature.Pets == null) continue;
 
-            Entry.Logger.Debug($"MinionBeforeTurnEndPatch: Find Player {creature.Name}, Pet Count {creature.Pets.Count}");
+            Entry.Logger.Debug($"MinionTurnEndPatch: Find Player {creature.Name}, Pet Count {creature.Pets.Count}");
 
             // 走訪收集到的所有隨從
             foreach (var pet in creature.Pets)
             {
                 if (pet == null || pet.Monster == null || pet.IsDead) continue;
 
-                Entry.Logger.Debug($"MinionBeforeTurnEndPatch: Find Pet {pet.Monster?.GetType().Namespace}");
+                Entry.Logger.Debug($"MinionTurnEndPatch: Find Pet {pet.Monster?.GetType().Namespace}");
 
                 // 利用命名空間排除原版和其他模組的召喚物，只保留我們的自訂召喚物
                 if (pet.Monster?.GetType().Namespace?.StartsWith(Entry.ModId) == false) continue;
@@ -62,7 +62,7 @@ public class MinionTurnEndPatch : IPatchMethod
             participants = updatedParticipants;
         }
 
-        Entry.Logger.Debug($"MinionBeforeTurnEndPatch: new participants");
+        Entry.Logger.Debug($"MinionTurnEndPatch: new participants");
         foreach (var p in participants)
             Entry.Logger.Debug(p.Name.ToString());
     }

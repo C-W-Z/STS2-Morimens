@@ -1,9 +1,24 @@
 using Godot;
 using MegaCrit.Sts2.Core.Animation;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Context;
+using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Characters;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.Localization;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Cards.Mocks;
+using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
+using MegaCrit.Sts2.Core.ValueProps;
 using Morimens.Anims;
+using Morimens.Cards;
+using Morimens.ExEnergy;
+using STS2RitsuLib.Combat.SecondaryResources;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Characters;
 using STS2RitsuLib.Scaffolding.Godot;
@@ -11,7 +26,7 @@ using STS2RitsuLib.Scaffolding.Godot;
 namespace Morimens.Characters;
 
 [RegisterCharacter]
-public sealed class Doll : ModCharacterTemplate<DollCardPool, DollRelicPool, DollPotionPool>
+public sealed class Doll : Awaker<DollCardPool, DollRelicPool, DollPotionPool>
 {
     public static readonly Color ThemeColor = new(0.42f, 0.65f, 0.72f);
 
@@ -54,6 +69,8 @@ public sealed class Doll : ModCharacterTemplate<DollCardPool, DollRelicPool, Dol
             IconTexturePath: $"{ImageRoot}/Doll_character_icon.png",
             // 人物头像轮廓。
             IconOutlineTexturePath: $"{ImageRoot}/Doll_character_icon_outline.png",
+            // 人物头像場景。
+            IconPath: $"{SceneRoot}/Doll_character_icon.tscn",
             // 人物选择背景。
             CharacterSelectBgPath: CharacterSelectBgScenePath,
             // 人物选择图标。
@@ -101,4 +118,7 @@ public sealed class Doll : ModCharacterTemplate<DollCardPool, DollRelicPool, Dol
     {
         return DollSpine.GetCreatureAnimator(controller);
     }
+
+    protected override CardModel CreateExaltCardInstance() => ModelDb.Get<MorimensExaltDoll>().ToMutable();
+    protected override CardModel CreateOverExaltCardInstance() => ModelDb.Get<MorimensOverExaltDoll>().ToMutable();
 }
