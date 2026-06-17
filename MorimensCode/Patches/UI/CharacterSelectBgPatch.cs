@@ -9,7 +9,7 @@ public class CharacterSelectBgPatch : IPatchMethod
 {
     public static string PatchId => "MORIMENS_character_selec_bg";
 
-    public static string Description => "";
+    public static string Description => "替換Morimens角色選擇頁面的背景";
 
     public static bool IsCritical => true;
 

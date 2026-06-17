@@ -67,6 +67,9 @@ public static class ExEnergyManager
         // 確保 ID 都有值之後，再塞入字典中
         PopulateEnergyContexts();
 
+        registry.RegisterCombatUiAlwaysVisibleWhen(AliemusDefinition.LocalId, context => context.Player.Character is IAwaker);
+        registry.RegisterCombatUiAlwaysVisibleWhen(KeyflareDefinition.LocalId, context => context.Player.Character is IAwaker);
+
         // 戰鬥計數器。使用的圖標就是你註冊時提供的圖標
         registry.RegisterCombatUi(
             "aliemus_combat_ui",
@@ -92,13 +95,7 @@ public static class ExEnergyManager
                 SetupExEnergyUi(row);
                 return row;
             },
-            ctx =>
-            {
-                // 只綁定在喚醒體身上
-                // TODO: 會有問題是原版角色和其他模組角色如果拿到了喚醒體的牌，獲得狂氣後也無法顯示
-                if (ctx.Player?.Character is IAwaker)
-                    ctx.Node.Bind(ctx.Player);
-            }
+            ctx => ctx.Node.Bind(ctx.Player)
         );
 
         // TODO: NSecondaryResourceIcon._Ready()時將Icon改成各個鑰令的圖案
@@ -126,13 +123,7 @@ public static class ExEnergyManager
                 SetupExEnergyUi(row);
                 return row;
             },
-            ctx =>
-            {
-                // 只綁定在喚醒體身上
-                // TODO: 會有問題是原版角色和其他模組角色如果拿到了喚醒體的牌，獲得狂氣後也無法顯示
-                if (ctx.Player?.Character is IAwaker)
-                    ctx.Node.Bind(ctx.Player);
-            }
+            ctx => ctx.Node.Bind(ctx.Player)
         );
 
         RegisterSkillConfirmationUi();

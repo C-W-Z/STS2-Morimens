@@ -93,6 +93,21 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
         return amount;
     }
 
+    public decimal ModifySecondaryResourceGain(SecondaryResourceContext context, decimal amount)
+    {
+        if (context.Definition.Id == ExEnergyManager.AliemusId)
+        {
+            int currentAmt = SecondaryResourceCmd.Get(context.Player, ExEnergyManager.AliemusId);
+            int maxAmt = SecondaryResourceCmd.GetMax(context.Player, ExEnergyManager.AliemusId) ?? BaseAliemus;
+            if (currentAmt + amount > 2 * maxAmt)
+            {
+                Entry.Logger.Debug($"currentAmt = {currentAmt}; maxAmt = {maxAmt}; 獲得 {2 * maxAmt - currentAmt} 點狂氣");
+                return 2 * maxAmt - currentAmt;
+            }
+        }
+        return amount;
+    }
+
     public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult result, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
         Entry.Logger.Debug($"AfterDamageReceived: {dealer?.Name} deals to {target.Name}");
