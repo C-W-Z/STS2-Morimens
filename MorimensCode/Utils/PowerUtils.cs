@@ -18,7 +18,7 @@ public static class PowerUtils
     /// </summary>
     private static MethodInfo? GetApplyMethodDefinition()
     {
-        if (_cachedApplyMethod == null)
+        if (_cachedApplyMethod is null)
         {
             _cachedApplyMethod = typeof(PowerCmd).GetMethods()
                 .FirstOrDefault(m => m.Name == "Apply"
@@ -39,12 +39,12 @@ public static class PowerUtils
         Player player,
         CardModel? cardSource)
     {
-        if (target == null || powers == null || !powers.Any()) return;
+        if (target is null || powers is null || !powers.Any()) return;
 
         MethodInfo? applyMethodDefinition = GetApplyMethodDefinition();
 
         // 安全防禦：萬一未來原版改版導致反射失敗，至少把最核心的力量（Strength）補上去
-        if (applyMethodDefinition == null)
+        if (applyMethodDefinition is null)
         {
             decimal totalStrength = powers.Where(p => p is StrengthPower).Sum(p => p.Amount);
             if (totalStrength > 0)

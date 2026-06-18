@@ -12,11 +12,11 @@
   "dependencies": [
     {
       "id": "STS2-RitsuLib",
-      "version": "0.4.20"
+      "version": "0.4.24"
     },
     {
       "id": "MinionLib",
-      "version": "0.5.1"
+      "version": "0.5.2"
     }
   ]
 }

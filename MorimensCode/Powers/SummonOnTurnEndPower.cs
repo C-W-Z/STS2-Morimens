@@ -17,7 +17,7 @@ public sealed class SummonOnTurnEndPower : AbstractDollPower
 
     public override async Task BeforeSideTurnEndEarly(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
     {
-        if (!participants.Contains(Owner) || Owner.Player == null)
+        if (!participants.Contains(Owner) || Owner.Player is null)
             return;
 
         await DollMinionCmd.Summon(choiceContext, Owner.Player, null);

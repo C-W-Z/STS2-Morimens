@@ -67,6 +67,9 @@ public static class ExEnergyManager
         // 確保 ID 都有值之後，再塞入字典中
         PopulateEnergyContexts();
 
+        registry.RegisterCombatUiAlwaysVisibleWhen(AliemusDefinition.LocalId, context => context.Player.Character is IAwaker);
+        registry.RegisterCombatUiAlwaysVisibleWhen(KeyflareDefinition.LocalId, context => context.Player.Character is IAwaker);
+
         // 戰鬥計數器。使用的圖標就是你註冊時提供的圖標
         registry.RegisterCombatUi(
             "aliemus_combat_ui",
@@ -92,13 +95,7 @@ public static class ExEnergyManager
                 SetupExEnergyUi(row);
                 return row;
             },
-            ctx =>
-            {
-                // 只綁定在喚醒體身上
-                // TODO: 會有問題是原版角色和其他模組角色如果拿到了喚醒體的牌，獲得狂氣後也無法顯示
-                if (ctx.Player?.Character is IAwaker)
-                    ctx.Node.Bind(ctx.Player);
-            }
+            ctx => ctx.Node.Bind(ctx.Player)
         );
 
         // TODO: NSecondaryResourceIcon._Ready()時將Icon改成各個鑰令的圖案
@@ -126,13 +123,7 @@ public static class ExEnergyManager
                 SetupExEnergyUi(row);
                 return row;
             },
-            ctx =>
-            {
-                // 只綁定在喚醒體身上
-                // TODO: 會有問題是原版角色和其他模組角色如果拿到了喚醒體的牌，獲得狂氣後也無法顯示
-                if (ctx.Player?.Character is IAwaker)
-                    ctx.Node.Bind(ctx.Player);
-            }
+            ctx => ctx.Node.Bind(ctx.Player)
         );
 
         RegisterSkillConfirmationUi();
@@ -231,7 +222,7 @@ public static class ExEnergyManager
             return;
 
         var realIcon = FindChildIcon(counter);
-        if (realIcon == null)
+        if (realIcon is null)
             return;
 
         realIcon.GuiInput += (inputEvent) => OnIconGuiInput(inputEvent, counter, realIcon, energyId);
@@ -248,7 +239,7 @@ public static class ExEnergyManager
             return;
 
         Player? player = LocalContext.GetMe(CombatManager.Instance._state);
-        if (player == null || player.Character is not IAwaker awaker)
+        if (player is null || player.Character is not IAwaker awaker)
             return;
 
         EnergySkillContext context = EnergyContexts[energyId];
@@ -265,7 +256,7 @@ public static class ExEnergyManager
 
         // 4. 尋找 UI 樹中的 NCombatUi 與彈窗
         var combatUi = FindParentCombatUi(counter);
-        if (combatUi == null)
+        if (combatUi is null)
             return;
 
         if (TryGetConfirmationDialog(combatUi, out var dialog))
@@ -310,7 +301,7 @@ public static class ExEnergyManager
 
     private static NCombatUi? FindParentCombatUi(Node? node)
     {
-        while (node != null && node is not NCombatUi)
+        while (node is not null && node is not NCombatUi)
             node = node.GetParent();
         return node as NCombatUi;
     }

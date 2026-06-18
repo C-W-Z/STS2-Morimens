@@ -58,7 +58,7 @@ public static class DollMinionCmd
     public static async Task AttackRandomEnemy(PlayerChoiceContext choiceContext, DollMinion minion, CardModel? cardSource)
     {
         Creature? enemy = minion.Creature.PetOwner?.RunState.Rng.CombatTargets.NextItem(minion.CombatState.HittableEnemies);
-        if (enemy == null)
+        if (enemy is null)
             return;
 
         // await MinionAnimCmd.PlayBumpAttackAsync(minion, enemy); // 播放撞击动画
@@ -69,7 +69,7 @@ public static class DollMinionCmd
     public static List<DollMinion> GetAllDollMinions(Player player)
     {
         IEnumerable<Creature>? pets = player.PlayerCombatState?.Pets;
-        if (pets == null)
+        if (pets is null)
             return [];
         return [.. pets.Select(p => p.Monster).OfType<DollMinion>()];
     }

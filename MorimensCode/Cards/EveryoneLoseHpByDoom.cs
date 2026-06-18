@@ -33,14 +33,14 @@ public sealed class EveryoneLoseHpByDoom() : AbstractDollCard(2, CardType.Attack
         var rawTargets = CombatState.Allies.Concat(CombatState.Enemies).ToList();
         // 重要排序：讓玩家（Owner）排在最前面，然後是Minion，最後才是敵人
         var sortedTargets = rawTargets
-            .Where(e => e != null && e.IsHittable)
+            .Where(e => e is not null && e.IsHittable)
             .OrderByDescending(e => e.IsPlayer) // 讓 IsPlayer == true 的排在最前面
             .ToList();
         // 放棄 Task.WhenAll，改用依序 await 確保 Patch 的數學計算正確
         foreach (var e in sortedTargets)
         {
             // 防禦性檢查，因為前面的受擊可能已經導致後面的怪暴斃了
-            if (e == null || !e.IsHittable) continue;
+            if (e is null || !e.IsHittable) continue;
             int amount = e.GetPowerAmount<DoomPower>();
             if (amount > 0)
                 await CreatureCmd.Damage(choiceContext, e, amount, ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, Owner.Creature, this);

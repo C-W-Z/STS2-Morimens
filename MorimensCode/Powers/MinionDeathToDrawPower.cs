@@ -16,7 +16,7 @@ public sealed class MinionDeathToDrawPower : AbstractDollPower
 
     public override async Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
     {
-        if (Owner.Player == null || wasRemovalPrevented || creature.Monster is not DollMinion)
+        if (Owner.Player is null || wasRemovalPrevented || creature.Monster is not DollMinion)
             return;
 
         await CardPileCmd.Draw(choiceContext, Amount, Owner.Player);

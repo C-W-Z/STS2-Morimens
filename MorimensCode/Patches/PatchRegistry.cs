@@ -1,12 +1,13 @@
 using Morimens.Patches.ExEnergy;
 using Morimens.Patches.Hooks;
 using Morimens.Patches.Minion;
+using Morimens.Patches.UI;
 using STS2RitsuLib;
 using STS2RitsuLib.Patching.Core;
 
 namespace Morimens.Patches;
 
-public static class PatchRegister
+public static class PatchRegistry
 {
     public static void Register()
     {
@@ -25,5 +26,11 @@ public static class PatchRegister
         exEnergyPatcher.RegisterPatch<ExEnergyFontSizePatch>();
         if (!exEnergyPatcher.PatchAll())
             throw new InvalidOperationException("Morimens critical hook-patches failed!");
+
+        ModPatcher uiPatcher = RitsuLibFramework.CreatePatcher(Entry.ModId, "ui-patches");
+        uiPatcher.RegisterPatch<CharacterSelectBgBtnPatch>();
+        uiPatcher.RegisterPatch<CharacterSelectBgPatch>();
+        if (!uiPatcher.PatchAll())
+            throw new InvalidOperationException("Morimens critical ui-patches failed!");
     }
 }

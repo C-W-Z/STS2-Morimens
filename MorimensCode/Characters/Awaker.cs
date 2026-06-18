@@ -39,7 +39,7 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
         var combatState = CombatManager.Instance._state;
 
         // 當戰鬥對局改變（例如重開局），或是快取尚未建立時，重新調用工廠獲取綁定新環境的卡牌
-        if (_cachedExaltCard == null || _cachedCombatState != combatState)
+        if (_cachedExaltCard is null || _cachedCombatState != combatState)
         {
             _cachedCombatState = combatState;
             _cachedExaltCard = CreateExaltCardInstance(); // 重新 ToMutable() 完美向新對局注入 CombatState
@@ -47,7 +47,7 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
 
         _cachedExaltCard.UpgradePreviewType = CardUpgradePreviewType.Combat;
 
-        if (combatState != null)
+        if (combatState is not null)
         {
             _cachedExaltCard.Owner ??= LocalContext.GetMe(combatState)!;
             _cachedExaltCard.DynamicVars.ClearPreview();
@@ -61,7 +61,7 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
     {
         var combatState = CombatManager.Instance._state;
 
-        if (_cachedOverExaltCard == null || _cachedCombatState != combatState)
+        if (_cachedOverExaltCard is null || _cachedCombatState != combatState)
         {
             _cachedCombatState = combatState;
             _cachedOverExaltCard = CreateOverExaltCardInstance();
@@ -69,7 +69,7 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
 
         _cachedOverExaltCard.UpgradePreviewType = CardUpgradePreviewType.Combat;
 
-        if (combatState != null)
+        if (combatState is not null)
         {
             _cachedOverExaltCard.Owner ??= LocalContext.GetMe(combatState)!;
             _cachedOverExaltCard.DynamicVars.ClearPreview();
@@ -93,6 +93,21 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
         return amount;
     }
 
+    public decimal ModifySecondaryResourceGain(SecondaryResourceContext context, decimal amount)
+    {
+        if (context.Definition.Id == ExEnergyManager.AliemusId)
+        {
+            int currentAmt = SecondaryResourceCmd.Get(context.Player, ExEnergyManager.AliemusId);
+            int maxAmt = SecondaryResourceCmd.GetMax(context.Player, ExEnergyManager.AliemusId) ?? BaseAliemus;
+            if (currentAmt + amount > 2 * maxAmt)
+            {
+                Entry.Logger.Debug($"currentAmt = {currentAmt}; maxAmt = {maxAmt}; 獲得 {2 * maxAmt - currentAmt} 點狂氣");
+                return 2 * maxAmt - currentAmt;
+            }
+        }
+        return amount;
+    }
+
     public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult result, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
         Entry.Logger.Debug($"AfterDamageReceived: {dealer?.Name} deals to {target.Name}");
@@ -113,7 +128,7 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
 
         // 获得 1 点狂氣
         // TODO: 会经过 Gain Hook 修正，要改掉
-        if (target.Player != null && LocalContext.IsMe(target.Player))
+        if (target.Player is not null && LocalContext.IsMe(target.Player))
             await SecondaryResourceCmd.Gain(target.Player, ExEnergyManager.AliemusId, 1, this);
     }
 }

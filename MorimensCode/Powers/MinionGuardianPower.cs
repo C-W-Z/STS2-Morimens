@@ -31,7 +31,7 @@ public sealed class MinionGuardianPower : AbstractDollPower
             var flag = true;
 
             // 檢查目標身上是否有守衛 Power
-            if (target.PetOwner == Owner.PetOwner && Owner.PetOwner != null && target.HasPower<MinionGuardianPower>())
+            if (target.PetOwner == Owner.PetOwner && Owner.PetOwner is not null && target.HasPower<MinionGuardianPower>())
             {
                 var pets = target.PetOwner!.PlayerCombatState!.Pets;
                 // 如果自己在寵物隊伍中的順位比對方更靠前，就把傷害從對方手中「搶過來」
