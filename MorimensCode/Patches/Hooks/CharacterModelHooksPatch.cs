@@ -23,17 +23,17 @@ public class CharacterModelHookPatch : IPatchMethod
         }
 
         // 補上原版遺漏的 Player.Character
-        if (__instance.Players != null)
+        if (__instance.Players is not null)
         {
             for (int i = 0; i < __instance.Players.Count; i++)
             {
                 var player = __instance.Players[i];
 
                 // 嚴格遵循原版的安全檢查：過濾 null、檢查 IsActiveForHooks, PlayerCombatState
-                if (player != null &&
+                if (player is not null &&
                     player.IsActiveForHooks &&
-                    player.Character != null &&
-                    player.PlayerCombatState != null)
+                    player.Character is not null &&
+                    player.PlayerCombatState is not null)
                 {
                     yield return player.Character;
                 }

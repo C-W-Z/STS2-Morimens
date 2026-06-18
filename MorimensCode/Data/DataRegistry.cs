@@ -3,6 +3,7 @@ using STS2RitsuLib.Utils.Persistence;
 
 namespace Morimens.Data;
 
+// NOTE: 檔案會存在 %APPDATA%\SlayTheSpire2\steam\{玩家SteamID}\mod_data\Morimens
 public static class DataRegistry
 {
     public static void Register()

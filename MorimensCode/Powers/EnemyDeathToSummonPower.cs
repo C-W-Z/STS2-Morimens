@@ -16,7 +16,7 @@ public sealed class EnemyDeathToSummonPower : AbstractDollPower
 
     public override async Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
     {
-        if (Owner.Player == null || wasRemovalPrevented || creature.Side != CombatSide.Enemy)
+        if (Owner.Player is null || wasRemovalPrevented || creature.Side != CombatSide.Enemy)
             return;
 
         for (int i = 0; i < Amount; i++)

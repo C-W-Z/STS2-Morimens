@@ -22,7 +22,7 @@ public class MinionTurnEndPatch : IPatchMethod
     // 3. 實作 Prefix 補丁 (維持 RitsuLib 的規範，名稱必須為 Prefix)
     public static void Prefix(ICombatState combatState, CombatSide side, ref IEnumerable<Creature> participants)
     {
-        if (participants == null) return;
+        if (participants is null) return;
 
         Entry.Logger.Debug($"MinionTurnEndPatch: original participants");
         foreach (var p in participants)
@@ -34,14 +34,14 @@ public class MinionTurnEndPatch : IPatchMethod
         foreach (var creature in participants)
         {
             // 只有玩家的回合結束需要把隨從拉進來結算
-            if (!creature.IsPlayer || creature.Pets == null) continue;
+            if (!creature.IsPlayer || creature.Pets is null) continue;
 
             Entry.Logger.Debug($"MinionTurnEndPatch: Find Player {creature.Name}, Pet Count {creature.Pets.Count}");
 
             // 走訪收集到的所有隨從
             foreach (var pet in creature.Pets)
             {
-                if (pet == null || pet.Monster == null || pet.IsDead) continue;
+                if (pet is null || pet.Monster is null || pet.IsDead) continue;
 
                 Entry.Logger.Debug($"MinionTurnEndPatch: Find Pet {pet.Monster?.GetType().Namespace}");
 

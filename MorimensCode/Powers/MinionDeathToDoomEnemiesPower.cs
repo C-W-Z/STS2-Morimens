@@ -17,7 +17,7 @@ public sealed class MinionDeathToDoomEnemiesPower : AbstractDollPower
 
     public override async Task AfterDeath(PlayerChoiceContext choiceContext, Creature creature, bool wasRemovalPrevented, float deathAnimLength)
     {
-        if (Owner.Player == null || wasRemovalPrevented || creature.Monster is not DollMinion)
+        if (Owner.Player is null || wasRemovalPrevented || creature.Monster is not DollMinion)
             return;
 
         await PowerCmd.Apply<DoomPower>(choiceContext, CombatState.HittableEnemies, Amount, Owner, null);

@@ -6,6 +6,7 @@ using Morimens.Powers;
 
 namespace Morimens.Minions;
 
+// TODO: 改成所有人偶都會替玩家擋傷害，召喚順序是右一個左一個，上限4個，達上限再召喚的話最早的人偶會自爆對所有敵人造成它當前血量的傷害
 public class DollMinionLayout : IMinionLayout
 {
     // 讓這個佈局器一直保持啟用
@@ -16,12 +17,12 @@ public class DollMinionLayout : IMinionLayout
         // 1. 找出當前戰鬥房間中所有未處理隨從的主人
         var owners = context.UnhandledMinions
             .Select(c => c.Entity.PetOwner)
-            .Where(o => o != null)
+            .Where(o => o is not null)
             .Distinct();
 
         foreach (var owner in owners)
         {
-            if (owner?.PlayerCombatState?.Pets == null) continue;
+            if (owner?.PlayerCombatState?.Pets is null) continue;
 
             // 2. 動態計算當前的前排最大上限（基礎值 + Power 帶來的附加值）
             int currentFrontLimit = DollMinion.BASE_FRONT_LIMIT + owner.Creature.GetPowerAmount<MinionLimitUpPower>();

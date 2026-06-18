@@ -18,7 +18,7 @@ internal class AnyDollMinionOrNoneTargetType : CustomTargetType
             // 獲取當前戰鬥中的本地玩家實例
             Player? localPlayer = LocalContext.GetMe(CombatManager.Instance._state);
 
-            if (localPlayer == null) return false;
+            if (localPlayer is null) return false;
 
             // 檢查玩家當前的戰鬥狀態中，是否持有任何你的 DollMinion
             // 如果有，回傳 true (啟用單體拉線)；如果沒有，回傳 false (變成無目標卡，直接釋放打出)

@@ -222,7 +222,7 @@ public static class ExEnergyManager
             return;
 
         var realIcon = FindChildIcon(counter);
-        if (realIcon == null)
+        if (realIcon is null)
             return;
 
         realIcon.GuiInput += (inputEvent) => OnIconGuiInput(inputEvent, counter, realIcon, energyId);
@@ -239,7 +239,7 @@ public static class ExEnergyManager
             return;
 
         Player? player = LocalContext.GetMe(CombatManager.Instance._state);
-        if (player == null || player.Character is not IAwaker awaker)
+        if (player is null || player.Character is not IAwaker awaker)
             return;
 
         EnergySkillContext context = EnergyContexts[energyId];
@@ -256,7 +256,7 @@ public static class ExEnergyManager
 
         // 4. 尋找 UI 樹中的 NCombatUi 與彈窗
         var combatUi = FindParentCombatUi(counter);
-        if (combatUi == null)
+        if (combatUi is null)
             return;
 
         if (TryGetConfirmationDialog(combatUi, out var dialog))
@@ -301,7 +301,7 @@ public static class ExEnergyManager
 
     private static NCombatUi? FindParentCombatUi(Node? node)
     {
-        while (node != null && node is not NCombatUi)
+        while (node is not null && node is not NCombatUi)
             node = node.GetParent();
         return node as NCombatUi;
     }
