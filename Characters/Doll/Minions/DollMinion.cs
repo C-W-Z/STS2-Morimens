@@ -24,10 +24,10 @@ public class DollMinion : ModMinionTemplate
     // 預設的數量上限
     public const int BASE_LIMIT = 4;
 
-    private const string SceneRoot = $"{Entry.ScenePath}/minions";
+    private const string SceneRoot = $"{Entry.ScenePath}/Doll";
 
     public override MonsterAssetProfile AssetProfile => new(
-        VisualsScenePath: $"{SceneRoot}/Doll_minion.tscn"
+        VisualsScenePath: $"{SceneRoot}/minion.tscn"
     );
 
     // 召唤时执行的代码，通常用来设置血量、应用初始能力等，options 是在召唤随从时传入的参数

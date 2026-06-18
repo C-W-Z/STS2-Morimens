@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3]
 
-[ext_resource type="Texture2D" path="res://Morimens/images/characters/Doll_character_select.png" id="1_character"]
+[ext_resource type="Texture2D" path="res://Morimens/images/Doll/ui/character_select.png" id="1_character"]
 
 [node name="DollRestSite" type="Node2D"]
 
@@ -10,9 +10,9 @@ scale = Vector2(1.25, 1.25)
 texture = ExtResource("1_character")
 
 [node name="Shadow" type="Sprite2D" parent="."]
+modulate = Color(0.25, 0.25, 0.25, 0.45)
 position = Vector2(75, -58)
 scale = Vector2(0.75, 0.75)
-modulate = Color(0.25, 0.25, 0.25, 0.45)
 texture = ExtResource("1_character")
 
 [node name="ControlRoot" type="Control" parent="."]

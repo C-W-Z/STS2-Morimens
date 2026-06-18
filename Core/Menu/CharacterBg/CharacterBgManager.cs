@@ -15,8 +15,8 @@ public static class CharacterBgManager
             ModelDb.Get<DollAwaker>().Id.Entry, // MORIMENS_CHARACTER_DOLL_AWAKER
             new()
             {
-                $"{Entry.ScenePath}/characters/Doll_character_select_bg.tscn",
-                $"{Entry.ScenePath}/characters/Doll_character_select_bg_2.tscn"
+                $"{Entry.ScenePath}/Doll/character_select_bg.tscn",
+                $"{Entry.ScenePath}/Doll/character_select_bg_2.tscn"
             }
         }
     };
