@@ -10,7 +10,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace Morimens.Characters.Doll.Powers;
 
 [RegisterPower]
-public sealed class MinionDeathToDoomEnemiesPower : AbstractDollPower
+public sealed class MinionDeathToDoomEnemiesPower : AbstractMorimensPower
 {
     public override PowerType Type => PowerType.Buff;
 

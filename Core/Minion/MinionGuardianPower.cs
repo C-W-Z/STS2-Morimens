@@ -11,7 +11,7 @@ namespace Morimens.Core.Minion;
 
 // see DollMinionLayout and MinionGuardianPatch
 [RegisterPower]
-public sealed class MinionGuardianPower : AbstractDollPower
+public sealed class MinionGuardianPower : AbstractMorimensPower
 {
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Single;

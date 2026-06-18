@@ -10,7 +10,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace Morimens.Characters.Doll.Powers;
 
 [RegisterPower]
-public sealed class SummonOnTurnEndPower : AbstractDollPower
+public sealed class SummonOnTurnEndPower : AbstractMorimensPower
 {
     public override PowerType Type => PowerType.Buff;
 
