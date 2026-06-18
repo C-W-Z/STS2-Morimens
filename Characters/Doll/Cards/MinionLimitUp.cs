@@ -4,6 +4,7 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MinionLib.Commands;
 using Morimens.Characters.Doll.Definition;
+using Morimens.Characters.Doll.Minions;
 using Morimens.Characters.Doll.Powers;
 using Morimens.Core.Card;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -21,7 +22,8 @@ public sealed class MinionLimitUp() : AbstractMorimensCard(1, CardType.Power, Ca
     {
         await CreatureCmd.TriggerAnim(Owner.Creature, DollSpine.State.Exalt, DollSpine.ExaltAnimDelay);
         await PowerCmd.Apply<MinionLimitUpPower>(choiceContext, Owner.Creature, DynamicVars["MinionLimitUpPower"].BaseValue, Owner.Creature, this);
-        await MinionAnimCmd.Rearrange();
+        if (Owner.Creature.Pets.Any(pet => pet.Monster is DollMinion))
+            await MinionAnimCmd.Rearrange();
     }
 
     protected override void OnUpgrade()

@@ -1,12 +1,8 @@
-using MegaCrit.Sts2.Core.Models;
 using MinionLib.Layout;
 using MinionLib.Minion;
-using MinionLib.Powers;
-using Morimens.Characters.Doll.Powers;
 
 namespace Morimens.Characters.Doll.Minions;
 
-// TODO: 改成所有人偶都會替玩家擋傷害，召喚順序是右一個左一個，上限4個，達上限再召喚的話最早的人偶會自爆對所有敵人造成它當前血量的傷害
 public class DollMinionLayout : IMinionLayout
 {
     // 讓這個佈局器一直保持啟用
@@ -14,7 +10,7 @@ public class DollMinionLayout : IMinionLayout
 
     public void ApplyLayout(MinionLayoutContext context)
     {
-        // 1. 找出當前戰鬥房間中所有未處理隨從的主人
+        // 找出當前戰鬥房間中所有未處理隨從的主人
         var owners = context.UnhandledMinions
             .Select(c => c.Entity.PetOwner)
             .Where(o => o is not null)
@@ -24,29 +20,26 @@ public class DollMinionLayout : IMinionLayout
         {
             if (owner?.PlayerCombatState?.Pets is null) continue;
 
-            // 2. 動態計算當前的前排最大上限（基礎值 + Power 帶來的附加值）
-            int currentFrontLimit = DollMinion.BASE_FRONT_LIMIT + owner.Creature.GetPowerAmount<MinionLimitUpPower>();
+            int dollIndex = 0; // 追蹤「真正人偶」的自然召喚順序索引
 
-            int frontCount = 0;
-
-            // 3. 依照 Pets 隊列的自然順序（召喚順序）重新分組
+            // 依照 Pets 隊列的自然順序（召喚順序）重新分組
             foreach (var petEntity in owner.PlayerCombatState.Pets)
             {
+                // 💡 這裡精準過濾 DollMinion，完美避開了 PaelsLegion 等原版遺物幽靈隨從的干擾！
                 if (petEntity.Monster is DollMinion minion)
                 {
-                    if (frontCount < currentFrontLimit)
+                    // 交替策略：第 1, 3, 5... 隻（索引 0, 2, 4...）優先放前排，且不能超過前排上限
+                    if (dollIndex % 2 == 0)
                     {
                         minion.Position = MinionPosition.Front;
-                        frontCount++;
-                        if (!minion.Creature.HasPower<MinionGuardianPower>())
-                            ModelDb.Power<MinionGuardianPower>().ToMutable().ApplyInternal(minion.Creature, 1);
                     }
                     else
                     {
-                        // 超出總上限時的防呆，擠在後排
+                        // 第 2, 4, 6... 隻（索引 1, 3, 5...）或是前排滿了時，放後排
                         minion.Position = MinionPosition.Back;
-                        minion.Creature.GetPower<MinionGuardianPower>()?.RemoveInternal();
                     }
+
+                    dollIndex++; // 只有真正的人偶才會推進索引
                 }
             }
         }

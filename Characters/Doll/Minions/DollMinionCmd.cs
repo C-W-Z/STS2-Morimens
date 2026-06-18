@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 using MinionLib.Commands;
 using MinionLib.Minion;
 using Morimens.Characters.Doll.Definition;
+using Morimens.Characters.Doll.Powers;
 using Morimens.Utils;
 
 namespace Morimens.Characters.Doll.Minions;
@@ -15,6 +16,15 @@ public static class DollMinionCmd
 {
     public static async Task<Creature> Summon(PlayerChoiceContext choiceContext, Player player, CardModel? cardSource, decimal? maxHp = null, decimal? hp = null, decimal? atk = null)
     {
+        // 達上限再召喚的話最早的人偶會自爆對所有敵人造成它當前血量的傷害
+        var minions = GetAllDollMinions(player);
+        if (minions.Count >= GetDollMinionLimit(player) && minions.Count > 0)
+        {
+            await AttackAllEnemy(choiceContext, minions[0], cardSource);
+            await CreatureCmd.Kill(minions[0].Creature);
+            await Cmd.Wait(1); // 等死亡動畫播完
+        }
+
         return await MinionCmd.AddMinion<DollMinion>(choiceContext, player, new MinionSummonOptions(
             MaxHp: maxHp,               // 血量
             PrimaryStatAmount: hp,      // 目前血量
@@ -60,9 +70,17 @@ public static class DollMinionCmd
         if (enemy is null)
             return;
 
-        // await MinionAnimCmd.PlayBumpAttackAsync(minion, enemy); // 播放撞击动画
         await CreatureCmd.TriggerAnim(minion.Creature, DollSpine.State.Attack, DollSpine.AttackAnimDelay);
         await CreatureCmd.Damage(choiceContext, enemy, 0m, ValueProp.Move, minion.Creature, cardSource);
+    }
+
+    public static async Task AttackAllEnemy(PlayerChoiceContext choiceContext, DollMinion minion, CardModel? cardSource)
+    {
+        if (minion.Creature.CombatState is null || minion.Creature.CombatState.HittableEnemies.Count == 0)
+            return;
+
+        await MinionAnimCmd.PlayBumpAttackAsync(minion.Creature, minion.Creature.CombatState.HittableEnemies[0]); // 播放撞击动画
+        await CreatureCmd.Damage(choiceContext, minion.Creature.CombatState.HittableEnemies, minion.Creature.CurrentHp, ValueProp.Move | ValueProp.Unpowered, minion.Creature, cardSource);
     }
 
     public static List<DollMinion> GetAllDollMinions(Player player)
@@ -71,5 +89,11 @@ public static class DollMinionCmd
         if (pets is null)
             return [];
         return [.. pets.Select(p => p.Monster).OfType<DollMinion>()];
+    }
+
+    // TODO: 做成 interface 的 hook 形式，讓遺物之類的也能加上限
+    public static int GetDollMinionLimit(Player player)
+    {
+        return DollMinion.BASE_LIMIT + player.Creature.GetPowerAmount<MinionLimitUpPower>();
     }
 }

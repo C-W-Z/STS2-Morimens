@@ -21,8 +21,8 @@ public class DollMinion : ModMinionTemplate
     public const decimal BASE_MAX_HP = 5m;
     public const decimal BASE_ATK = 1m;
 
-    // 預設的基礎上限
-    public const int BASE_FRONT_LIMIT = 2;
+    // 預設的數量上限
+    public const int BASE_LIMIT = 4;
 
     private const string SceneRoot = $"{Entry.ScenePath}/minions";
 
@@ -49,6 +49,8 @@ public class DollMinion : ModMinionTemplate
             await PowerCmd.Apply<StrengthPower>(choiceContext, Creature, strength, owner.Creature, options.Source);
         else
             await PowerCmd.Apply<StrengthPower>(choiceContext, Creature, BASE_ATK, owner.Creature, options.Source);
+
+        await PowerCmd.Apply<MinionGuardianPower>(choiceContext, Creature, 1, owner.Creature, options.Source);
     }
 
     public override async Task BeforeSideTurnEndVeryEarly(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
