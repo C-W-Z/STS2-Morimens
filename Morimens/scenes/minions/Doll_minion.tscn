@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3]
 
 [ext_resource type="SpineSkeletonDataResource" path="res://Morimens/images/characters/spines/doll_spine_resource.tres" id="1_character"]
-[ext_resource type="Script" path="res://MorimensCode/Minions/NDollMinionVisuals.cs" id="1_script"]
+[ext_resource type="Script" path="res://Characters/Doll/Minions/NDollMinionVisuals.cs" id="1_script"]
 
 [node name="Doll" type="Node2D"]
 script = ExtResource("1_script")

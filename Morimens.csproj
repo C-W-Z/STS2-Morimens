@@ -70,13 +70,6 @@
         <Content Include="local.props" Condition="Exists('local.props')"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Morimens\images\cards\"/>
-        <Folder Include="Morimens\images\characters\"/>
-        <Folder Include="Morimens\images\relics\"/>
-        <Folder Include="Morimens\scenes\characters\"/>
-    </ItemGroup>
-
     <Target Name="ValidateSts2GameInstall" BeforeTargets="ResolveAssemblyReferences">
         <Error Condition="!Exists('$(Sts2DataDir)\sts2.dll')" Text="Could not find sts2.dll under '$(Sts2DataDir)'. Copy local.props.template to local.props and set Sts2Dir/Sts2DataDir for your local game install."/>
     </Target>
