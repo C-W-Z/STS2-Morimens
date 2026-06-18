@@ -4,7 +4,7 @@ using STS2RitsuLib.Patching.Models;
 
 namespace Morimens.Core.Character.Patches;
 
-public class CharacterModelHookPatch : IPatchMethod
+public sealed class CharacterModelHookPatch : IPatchMethod
 {
     public static string PatchId => "MORIMENS_character_model_hooks";
 

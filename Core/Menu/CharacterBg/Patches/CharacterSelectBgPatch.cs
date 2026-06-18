@@ -4,7 +4,7 @@ using STS2RitsuLib.Patching.Models;
 
 namespace Morimens.Core.Menu.CharacterBg.Patches;
 
-public class CharacterSelectBgPatch : IPatchMethod
+public sealed class CharacterSelectBgPatch : IPatchMethod
 {
     public static string PatchId => "MORIMENS_character_selec_bg";
 

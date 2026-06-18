@@ -4,7 +4,7 @@ using STS2RitsuLib.Patching.Models;
 
 namespace Morimens.Core.Minion.Patches;
 
-public class MinionGuardianPatch : IPatchMethod
+public sealed class MinionGuardianPatch : IPatchMethod
 {
     // 1. 設定 RitsuLib 要求的唯一 ID 與功能說明
     public static string PatchId => "MORIMENS_minion_guardian";

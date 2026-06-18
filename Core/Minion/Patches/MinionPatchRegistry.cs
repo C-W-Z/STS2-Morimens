@@ -10,6 +10,7 @@ public static class MinionPatchRegistry
         ModPatcher minionPatcher = RitsuLibFramework.CreatePatcher(Entry.ModId, "minion-patches");
         minionPatcher.RegisterPatch<MinionGuardianPatch>();
         minionPatcher.RegisterPatch<MinionTurnEndPatch>();
+        minionPatcher.RegisterPatch<PersonalHivePowerPatch>();
         if (!minionPatcher.PatchAll())
             throw new InvalidOperationException("Morimens critical minion-patches failed!");
     }

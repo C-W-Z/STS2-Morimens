@@ -5,7 +5,7 @@ using STS2RitsuLib.Patching.Models;
 
 namespace Morimens.Core.Minion.Patches;
 
-public class MinionTurnEndPatch : IPatchMethod
+public sealed class MinionTurnEndPatch : IPatchMethod
 {
     // 1. 填寫 RitsuLib 要求的唯一 ID 與說明
     public static string PatchId => "MORIMENS_minion_turn_end";

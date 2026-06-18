@@ -7,7 +7,7 @@ using STS2RitsuLib.Scaffolding.Godot.NodeAttachments;
 
 namespace Morimens.Core.Menu.CharacterBg.Patches;
 
-public class CharacterSelectBgBtnPatch : IPatchMethod
+public sealed class CharacterSelectBgBtnPatch : IPatchMethod
 {
     public static string PatchId => "MORIMENS_character_selec_bg_btn";
 

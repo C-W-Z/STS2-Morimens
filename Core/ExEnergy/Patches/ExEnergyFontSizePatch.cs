@@ -6,7 +6,7 @@ using STS2RitsuLib.Patching.Models;
 
 namespace Morimens.Core.ExEnergy.Patches;
 
-public class ExEnergyFontSizePatch : IPatchMethod
+public sealed class ExEnergyFontSizePatch : IPatchMethod
 {
     public static string PatchId => "MORIMENS_ex_energy_font_size";
 
