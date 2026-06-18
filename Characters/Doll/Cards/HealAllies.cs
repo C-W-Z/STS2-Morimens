@@ -15,7 +15,7 @@ namespace Morimens.Characters.Doll.Cards;
 [RegisterCard(typeof(DollCardPool))]
 public sealed class HealAllies() : AbstractMorimensCard(1, CardType.Skill, CardRarity.Common, GenericTargetType.AllAllies)
 {
-    protected override HashSet<CardTag> CanonicalTags => [DollCardTag.Heal];
+    protected override HashSet<CardTag> CanonicalTags => [MorimensCardTag.Heal];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [new HealVar(5m)];
 

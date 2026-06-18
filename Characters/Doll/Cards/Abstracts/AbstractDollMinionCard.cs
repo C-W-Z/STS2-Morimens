@@ -1,12 +1,12 @@
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using Morimens.Characters.Doll.CardTags;
 using Morimens.Characters.Doll.Minions;
 using Morimens.Core.Card;
-using Morimens.Core.CardTags;
 
 namespace Morimens.Characters.Doll.Cards.Abstracts;
 
-public abstract class AbstractMinionCard(int baseCost, CardType type, CardRarity rarity, TargetType target) : AbstractMorimensCard(baseCost, type, rarity, target)
+public abstract class AbstractDollMinionCard(int baseCost, CardType type, CardRarity rarity, TargetType target) : AbstractMorimensCard(baseCost, type, rarity, target)
 {
     protected override HashSet<CardTag> CanonicalTags => [DollCardTag.MinionCmd];
 

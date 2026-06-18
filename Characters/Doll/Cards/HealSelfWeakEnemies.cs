@@ -15,7 +15,7 @@ namespace Morimens.Characters.Doll.Cards;
 [RegisterCharacterStarterCard(typeof(DollAwaker), 1)]
 public sealed class HealSelfWeakEnemies() : AbstractMorimensCard(2, CardType.Skill, CardRarity.Basic, TargetType.AllEnemies)
 {
-    protected override HashSet<CardTag> CanonicalTags => [DollCardTag.Heal];
+    protected override HashSet<CardTag> CanonicalTags => [MorimensCardTag.Heal];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [new HealVar(5m), new PowerVar<WeakPower>(1m)];
 

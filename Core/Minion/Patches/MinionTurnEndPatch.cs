@@ -3,7 +3,7 @@ using MegaCrit.Sts2.Core.Hooks;
 using MegaCrit.Sts2.Core.Combat;
 using STS2RitsuLib.Patching.Models;
 
-namespace Morimens.Patches.Minion;
+namespace Morimens.Core.Minion.Patches;
 
 public class MinionTurnEndPatch : IPatchMethod
 {

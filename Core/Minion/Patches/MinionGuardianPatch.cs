@@ -1,9 +1,8 @@
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MinionLib.Powers.Patches;
-using Morimens.Core.Minion;
 using STS2RitsuLib.Patching.Models;
 
-namespace Morimens.Patches.Minion;
+namespace Morimens.Core.Minion.Patches;
 
 public class MinionGuardianPatch : IPatchMethod
 {

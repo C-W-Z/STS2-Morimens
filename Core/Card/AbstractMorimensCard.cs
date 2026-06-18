@@ -35,14 +35,14 @@ public abstract class AbstractMorimensCard(int baseCost, CardType type, CardRari
                 }
             }
 
-            // 2. 組合出動態路徑：$"{Entry.ResPath}/images/cards/Doll/{GetType().Name}.png"
-            string targetPath = $"{Entry.ResPath}/images/cards/{folder}/{GetType().Name}.png";
+            // 2. 組合出動態路徑：$"{Entry.ImagePath}/cards/Doll/{GetType().Name}.png"
+            string targetPath = $"{Entry.ImagePath}/cards/{folder}/{GetType().Name}.png";
 
             // 3. 檢查檔案是否存在
             if (!Godot.ResourceLoader.Exists(targetPath))
             {
                 Entry.Logger.VeryDebug($"Missing card art for '{GetType().Name}'. Falling back to placeholder. (Expected path: {targetPath})");
-                targetPath = $"{Entry.ResPath}/images/cards/missing.png";
+                targetPath = $"{Entry.ImagePath}/cards/missing.png";
             }
 
 #pragma warning disable RITSU013

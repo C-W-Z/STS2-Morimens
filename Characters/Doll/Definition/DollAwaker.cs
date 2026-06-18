@@ -16,8 +16,8 @@ public sealed class DollAwaker : Awaker<DollCardPool, DollRelicPool, DollPotionP
 {
     public static readonly Color ThemeColor = new(0.42f, 0.65f, 0.72f);
 
-    private const string SceneRoot = $"{Entry.ResPath}/scenes/characters";
-    private const string ImageRoot = $"{Entry.ResPath}/images/characters";
+    private const string SceneRoot = $"{Entry.ScenePath}/characters";
+    private const string ImageRoot = $"{Entry.ImagePath}/characters";
     private const string CharacterScenePath = $"{SceneRoot}/Doll_character.tscn";
     private const string EnergyCounterScenePath = $"{SceneRoot}/Doll_energy_counter.tscn";
     private const string MerchantScenePath = $"{SceneRoot}/Doll_merchant.tscn";

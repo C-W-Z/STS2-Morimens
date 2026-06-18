@@ -24,7 +24,7 @@ public class DollMinion : ModMinionTemplate
     // 預設的基礎上限
     public const int BASE_FRONT_LIMIT = 2;
 
-    private const string SceneRoot = $"{Entry.ResPath}/scenes/minions";
+    private const string SceneRoot = $"{Entry.ScenePath}/minions";
 
     public override MonsterAssetProfile AssetProfile => new(
         VisualsScenePath: $"{SceneRoot}/Doll_minion.tscn"

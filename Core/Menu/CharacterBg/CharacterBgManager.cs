@@ -1,4 +1,5 @@
 using MegaCrit.Sts2.Core.Models;
+using Morimens.Characters.Doll.Definition;
 using Morimens.Core.Character;
 using Morimens.Core.Menu.CharacterBg.Data;
 using STS2RitsuLib;
@@ -11,11 +12,11 @@ public static class CharacterBgManager
     private static readonly Dictionary<string, List<string>> CharacterBackgroundMaps = new()
     {
         {
-            "MORIMENS_CHARACTER_DOLL", // 替換為你的 Doll 角色實際的 CharacterModel.Id
+            ModelDb.Get<DollAwaker>().Id.Entry, // MORIMENS_CHARACTER_DOLL_AWAKER
             new()
             {
-                "res://Morimens/scenes/characters/Doll_character_select_bg.tscn",
-                "res://Morimens/scenes/characters/Doll_character_select_bg_2.tscn"
+                $"{Entry.ScenePath}/characters/Doll_character_select_bg.tscn",
+                $"{Entry.ScenePath}/characters/Doll_character_select_bg_2.tscn"
             }
         }
     };

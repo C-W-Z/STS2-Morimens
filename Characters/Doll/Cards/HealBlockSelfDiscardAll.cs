@@ -15,7 +15,7 @@ namespace Morimens.Characters.Doll.Cards;
 [RegisterCharacterStarterCard(typeof(DollAwaker), 1)]
 public sealed class HealBlockSelfDiscardAll() : AbstractMorimensCard(3, CardType.Skill, CardRarity.Basic, TargetType.Self)
 {
-    protected override HashSet<CardTag> CanonicalTags => [DollCardTag.Heal];
+    protected override HashSet<CardTag> CanonicalTags => [MorimensCardTag.Heal];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new HealVar(5m),

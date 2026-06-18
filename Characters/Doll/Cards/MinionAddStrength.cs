@@ -13,7 +13,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace Morimens.Characters.Doll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class MinionAddStrength() : AbstractMinionCard(1, CardType.Skill, CardRarity.Common, DollTargetType.AllDollMinions)
+public sealed class MinionAddStrength() : AbstractDollMinionCard(1, CardType.Skill, CardRarity.Common, DollTargetType.AllDollMinions)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [new PowerVar<StrengthPower>(1m)];
 

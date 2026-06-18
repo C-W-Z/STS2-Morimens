@@ -1,12 +1,9 @@
 using System.Reflection;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
-using MinionLib.Layout;
-using Morimens.Characters.Doll.Minions;
+using Morimens.Characters.Doll;
 using Morimens.Core;
 using Morimens.Core.ExEnergy;
-using Morimens.Core.Menu.CharacterBg.Data;
-using Morimens.Core.Menu.CharacterBg.UI;
 using STS2RitsuLib;
 using STS2RitsuLib.Audio;
 using STS2RitsuLib.Interop;
@@ -21,6 +18,9 @@ public static partial class Entry
     // res://Morimens/... 里的 Morimens 是 PCK 资源目录，不是 C# namespace。
     public const string ModId = "Morimens";
     public const string ResPath = $"res://{ModId}";
+    public const string ImagePath = $"{ResPath}/images";
+    public const string ScenePath = $"{ResPath}/scenes";
+    public const string AudioPath = $"{ResPath}/audio";
 
     public static Logger Logger { get; } = new(ModId, LogType.Generic);
 
@@ -41,18 +41,15 @@ public static partial class Entry
         ModTypeDiscoveryHub.RegisterModAssembly(ModId, assembly);
 
         DataRegistry.Register();
-
         PatchRegistry.Register();
-
-        CharacterBgUiRegistry.Register();
+        UiRegistry.Register();
 
         ExEnergyManager.Register();
 
-        FmodStudioDeferredBankRegistration.RegisterBank("res://Morimens/audio/Morimens.bank");
-        FmodStudioDeferredBankRegistration.RegisterStudioGuidMappings("res://Morimens/audio/GUIDs.txt");
+        FmodStudioDeferredBankRegistration.RegisterBank($"{AudioPath}/Morimens.bank");
+        FmodStudioDeferredBankRegistration.RegisterStudioGuidMappings($"{AudioPath}/GUIDs.txt");
 
-        // 註冊我們的佈局器，設定 priority: 1 確保它在 DefaultMinionLayout (0) 之前執行
-        MinionLayoutManager.Register(new DollMinionLayout(), priority: 1);
+        DollRegistry.Register();
 
         Logger.Info("Morimens initialized.");
     }

@@ -50,8 +50,8 @@ public static class ExEnergyManager
             baseMaxAmount: 100,
             turnStartPolicy: SecondaryResourceTurnStartPolicy.None,
             persistencePolicy: SecondaryResourcePersistencePolicy.Run,
-            smallIconPath: "res://Morimens/images/ui/AliemusText.png",
-            largeIconPath: "res://Morimens/images/ui/Aliemus.png"
+            smallIconPath: $"{Entry.ImagePath}/ui/AliemusText.png",
+            largeIconPath: $"{Entry.ImagePath}/ui/Aliemus.png"
         ));
         AliemusId = AliemusDefinition.Id;
 
@@ -60,8 +60,8 @@ public static class ExEnergyManager
             baseMaxAmount: 1000,
             turnStartPolicy: SecondaryResourceTurnStartPolicy.None,
             persistencePolicy: SecondaryResourcePersistencePolicy.Run,
-            smallIconPath: "res://Morimens/images/ui/KeyflareText.png",
-            largeIconPath: "res://Morimens/images/ui/Keyflare.png"
+            smallIconPath: $"{Entry.ImagePath}/ui/KeyflareText.png",
+            largeIconPath: $"{Entry.ImagePath}/ui/Keyflare.png"
         ));
         KeyflareId = KeyflareDefinition.Id;
 

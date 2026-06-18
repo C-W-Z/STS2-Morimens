@@ -3,12 +3,10 @@ using STS2RitsuLib.CardTags;
 using STS2RitsuLib.Content;
 using STS2RitsuLib.Interop.AutoRegistration;
 
-namespace Morimens.Core.CardTags;
+namespace Morimens.Characters.Doll.CardTags;
 
-[RegisterOwnedCardTag(nameof(Heal))]
 [RegisterOwnedCardTag(nameof(MinionCmd))]
 public static class DollCardTag
 {
-    public static readonly CardTag Heal = ModContentRegistry.GetQualifiedCardTagId(Entry.ModId, nameof(Heal)).GetModCardTag();
     public static readonly CardTag MinionCmd = ModContentRegistry.GetQualifiedCardTagId(Entry.ModId, nameof(MinionCmd)).GetModCardTag();
 }

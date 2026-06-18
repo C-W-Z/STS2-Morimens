@@ -10,7 +10,7 @@ public abstract class AbstractDollPower : ModPowerTemplate
         get
         {
             // 1. 定義原本「應該」存在的路徑
-            string targetPath = $"{Entry.ResPath}/images/powers/{GetType().Name}.png";
+            string targetPath = $"{Entry.ImagePath}/powers/{GetType().Name}.png";
 
             // 2. 使用 Godot 的 API 檢查檔案是否存在
             if (!Godot.ResourceLoader.Exists(targetPath))
@@ -19,7 +19,7 @@ public abstract class AbstractDollPower : ModPowerTemplate
                 Entry.Logger.Debug($"Missing power art for '{GetType().Name}'. Falling back to placeholder. (Expected path: {targetPath})");
 
                 // 4. 自動導向你的 Missing 專用替代圖
-                targetPath = $"{Entry.ResPath}/images/powers/missing.png";
+                targetPath = $"{Entry.ImagePath}/powers/missing.png";
             }
 
             // 使用 pragma 壓制 RITSU013 警告，避免檢查器誤判抽象類別
