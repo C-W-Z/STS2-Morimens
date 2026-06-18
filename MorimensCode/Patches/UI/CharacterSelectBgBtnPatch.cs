@@ -24,7 +24,7 @@ public class CharacterSelectBgBtnPatch : IPatchMethod
 
         NCharacterSelectScreen? screen = FindAncestor<NCharacterSelectScreen>(__instance);
 
-        if (screen == null)
+        if (screen is null)
             return;
 
         // 安全地從 RitsuLib 撈出按鈕並刷新
@@ -37,10 +37,10 @@ public class CharacterSelectBgBtnPatch : IPatchMethod
 
     private static T? FindAncestor<T>(Node node) where T : Node
     {
-        for (Node parent = node.GetParent(); parent != null; parent = parent.GetParent())
+        for (Node parent = node.GetParent(); parent is not null; parent = parent.GetParent())
         {
             T? val = (parent is T t) ? t : null;
-            if (val != null)
+            if (val is not null)
             {
                 return val;
             }

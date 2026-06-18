@@ -19,8 +19,8 @@ public class CharacterSelectBgPatch : IPatchMethod
     {
         if (CharacterBgManager.IsSupportedCharacter(__instance))
         {
-            // 劫持傳回值，換成我們全域管理器當前指向的 .tscn
-            __result = CharacterBgManager.GetCurrentBackgroundPath();
+            // 根據不同的角色實例，去存檔讀取屬於它的專屬背景
+            __result = CharacterBgManager.GetCurrentBackgroundPath(__instance) ?? __result;
         }
     }
 }

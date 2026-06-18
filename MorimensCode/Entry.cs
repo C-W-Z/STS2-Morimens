@@ -2,6 +2,7 @@ using System.Reflection;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
 using MinionLib.Layout;
+using Morimens.Data;
 using Morimens.ExEnergy;
 using Morimens.Minions;
 using Morimens.Patches;
@@ -39,9 +40,12 @@ public static partial class Entry
         // 新增内容类后，只要 attribute 写对，通常不需要在入口里手动逐个注册。
         ModTypeDiscoveryHub.RegisterModAssembly(ModId, assembly);
 
+        DataRegistry.Register();
+
         PatchRegistry.Register();
 
         CharacterBgUiRegistry.Register();
+
         ExEnergyManager.Register();
 
         FmodStudioDeferredBankRegistration.RegisterBank("res://Morimens/audio/Morimens.bank");
