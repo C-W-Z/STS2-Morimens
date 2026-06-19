@@ -8,7 +8,7 @@ using MinionLib.Commands;
 using MinionLib.Minion;
 using Morimens.Characters.Doll.Definition;
 using Morimens.Characters.Doll.Powers;
-using Morimens.Utils;
+using Morimens.Core.Utils;
 
 namespace Morimens.Characters.Doll.Minions;
 
