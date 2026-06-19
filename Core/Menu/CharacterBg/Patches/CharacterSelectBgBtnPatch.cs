@@ -2,6 +2,7 @@ using Godot;
 using MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect;
 using Morimens.Core.Character;
 using Morimens.Core.Menu.CharacterBg.UI;
+using Morimens.Core.Utils;
 using STS2RitsuLib.Patching.Models;
 using STS2RitsuLib.Scaffolding.Godot.NodeAttachments;
 
@@ -19,10 +20,7 @@ public sealed class CharacterSelectBgBtnPatch : IPatchMethod
 
     public static void Postfix(NCharacterSelectButton __instance)
     {
-        if (__instance.Character is not IAwaker)
-            return;
-
-        NCharacterSelectScreen? screen = FindAncestor<NCharacterSelectScreen>(__instance);
+        NCharacterSelectScreen? screen = NodeUtils.FindAncestor<NCharacterSelectScreen>(__instance);
 
         if (screen is null)
             return;
@@ -33,18 +31,5 @@ public sealed class CharacterSelectBgBtnPatch : IPatchMethod
             // 執行刷新顯示邏輯
             button.RefreshVisibility();
         }
-    }
-
-    private static T? FindAncestor<T>(Node node) where T : Node
-    {
-        for (Node parent = node.GetParent(); parent is not null; parent = parent.GetParent())
-        {
-            T? val = (parent is T t) ? t : null;
-            if (val is not null)
-            {
-                return val;
-            }
-        }
-        return default;
     }
 }

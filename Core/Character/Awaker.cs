@@ -4,11 +4,13 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.ValueProps;
 using MinionLib.Powers.Patches;
 using Morimens.Core.ExEnergy;
 using STS2RitsuLib.Combat.SecondaryResources;
 using STS2RitsuLib.Scaffolding.Characters;
+using STS2RitsuLib.Scaffolding.Godot;
 
 namespace Morimens.Core.Character;
 
@@ -17,6 +19,48 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
     where TRelicPool : RelicPoolModel
     where TPotionPool : PotionPoolModel
 {
+    // ─── 自動化路徑約定 ───
+    // 預設會拿類別名字去掉 "Awaker"，例如 DollAwaker 就會自動回傳 "Doll"
+    public virtual string CharacterFolderName => GetType().Name.Replace("Awaker", "");
+
+    protected string SceneRoot => $"{Entry.ScenePath}/{CharacterFolderName}";
+    protected string ImageRoot => $"{Entry.ImagePath}/{CharacterFolderName}/ui";
+
+    protected string CharacterScenePath => $"{SceneRoot}/character.tscn";
+    protected string MerchantScenePath => $"{SceneRoot}/merchant.tscn";
+    protected string RestSiteScenePath => $"{SceneRoot}/rest_site.tscn";
+    protected string CharacterSelectBgScenePath => $"{SceneRoot}/character_select_bg.tscn";
+
+    protected virtual string SharedEnergyCounterScenePath => $"{Entry.ScenePath}/shared/energy_counter.tscn";
+
+    // ─── 統一管理的資產配置 ───
+    public override CharacterAssetProfile AssetProfile => new(
+        Scenes: new CharacterSceneAssetSet(
+            VisualsPath: CharacterScenePath,
+            EnergyCounterPath: SharedEnergyCounterScenePath, // 🎯 帶入共用能量
+            MerchantAnimPath: MerchantScenePath,
+            RestSiteAnimPath: RestSiteScenePath),
+        Ui: new CharacterUiAssetSet(
+            IconTexturePath: $"{ImageRoot}/character_icon.png",
+            IconOutlineTexturePath: $"{ImageRoot}/character_icon_outline.png",
+            IconPath: $"{SceneRoot}/character_icon.tscn",
+            CharacterSelectBgPath: CharacterSelectBgScenePath,
+            CharacterSelectIconPath: $"{ImageRoot}/character_select.png",
+            CharacterSelectLockedIconPath: $"{ImageRoot}/character_select_locked.png",
+            MapMarkerPath: $"{ImageRoot}/map_marker.png"),
+        Audio: new CharacterAudioAssetSet(
+            AttackSfx: $"event:/Morimens/sfx/{CharacterFolderName}/Attack",
+            CastSfx: $"event:/Morimens/sfx/{CharacterFolderName}/Cast",
+            DeathSfx: $"event:/Morimens/sfx/{CharacterFolderName}/Death"
+        ));
+
+    // 让 RitsuLib 把普通 Godot 场景转换成游戏需要的 NCreatureVisuals。
+    // 自动转换人物场景，让你不需要手动挂脚本。复制即可。
+    protected override NCreatureVisuals? TryCreateCreatureVisuals()
+    {
+        return RitsuGodotNodeFactories.CreateFromScenePath<NCreatureVisuals>(CharacterScenePath);
+    }
+
     public virtual int BaseAliemus => 100;
     public virtual int BaseKeyflare => 1000;
 

@@ -1,5 +1,6 @@
 using Godot;
 using MegaCrit.Sts2.Core.Nodes.Screens.CharacterSelect;
+using Morimens.Core.Utils;
 
 namespace Morimens.Core.Menu.CharacterBg.UI;
 
@@ -21,7 +22,7 @@ public sealed partial class CharacterBgCycleButton : Button
 
     public void RefreshVisibility()
     {
-        var screen = FindAncestorScreen();
+        var screen = NodeUtils.FindAncestor<NCharacterSelectScreen>(this);
         if (screen is null)
             return;
 
@@ -36,7 +37,7 @@ public sealed partial class CharacterBgCycleButton : Button
 
     private void OnClicked()
     {
-        var screen = FindAncestorScreen();
+        var screen = NodeUtils.FindAncestor<NCharacterSelectScreen>(this);
         if (screen is null || screen._selectedButton is null)
             return;
 
@@ -44,15 +45,5 @@ public sealed partial class CharacterBgCycleButton : Button
 
         // 利用原版私有方法重新選取一次當前角色，這會逼迫遊戲重新加載背景場景
         screen.SelectCharacter(screen._selectedButton, screen._selectedButton.Character);
-    }
-
-    private NCharacterSelectScreen? FindAncestorScreen()
-    {
-        Node? parent = GetParent();
-        while (parent is not null && parent is not NCharacterSelectScreen)
-        {
-            parent = parent.GetParent();
-        }
-        return parent as NCharacterSelectScreen;
     }
 }
