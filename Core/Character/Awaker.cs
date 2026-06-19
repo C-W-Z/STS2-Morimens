@@ -26,10 +26,10 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
     protected string SceneRoot => $"{Entry.ScenePath}/{CharacterFolderName}";
     protected string ImageRoot => $"{Entry.ImagePath}/{CharacterFolderName}/ui";
 
-    protected string CharacterScenePath => $"{SceneRoot}/character.tscn";
-    protected string MerchantScenePath => $"{SceneRoot}/merchant.tscn";
-    protected string RestSiteScenePath => $"{SceneRoot}/rest_site.tscn";
-    protected string CharacterSelectBgScenePath => $"{SceneRoot}/character_select_bg.tscn";
+    protected virtual string CharacterScenePath => $"{SceneRoot}/character.tscn";
+    protected virtual string MerchantScenePath => $"{SceneRoot}/merchant.tscn";
+    protected virtual string RestSiteScenePath => $"{SceneRoot}/rest_site.tscn";
+    protected virtual string CharacterSelectBgScenePath => $"{SceneRoot}/character_select_bg.tscn";
 
     protected virtual string SharedEnergyCounterScenePath => $"{Entry.ScenePath}/shared/energy_counter.tscn";
 

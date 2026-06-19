@@ -1,3 +1,4 @@
+using Morimens.Core.Character.Data;
 using Morimens.Core.Menu.CharacterBg.Data;
 
 namespace Morimens.Core;
@@ -7,6 +8,7 @@ public static class DataRegistry
 {
     public static void Register()
     {
+        AwakerRunStateRegistry.Register();
         CharacterBgDataRegistry.Register();
     }
 }

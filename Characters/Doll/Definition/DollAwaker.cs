@@ -1,10 +1,15 @@
 using Godot;
 using MegaCrit.Sts2.Core.Animation;
 using MegaCrit.Sts2.Core.Bindings.MegaSpine;
+using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Characters;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes.Combat;
+using MegaCrit.Sts2.Core.Runs;
 using Morimens.Core.Character;
+using Morimens.Core.Character.Data;
 using STS2RitsuLib.Interop.AutoRegistration;
+using STS2RitsuLib.Scaffolding.Godot;
 
 namespace Morimens.Characters.Doll.Definition;
 
@@ -46,6 +51,21 @@ public sealed class DollAwaker : Awaker<DollCardPool, DollRelicPool, DollPotionP
             "vfx/vfx_bloody_impact",
             "vfx/vfx_rock_shatter"
         ];
+    }
+
+    // 用 AwakerRunStateRegistry.Data.Modify(player, data => data.AwakerVisualState = 1); 來達成切換spine（下一場戰鬥生效）
+    protected override NCreatureVisuals? TryCreateCreatureVisuals()
+    {
+        Entry.Logger.Debug($"[TryCreateCreatureVisuals] RunManager.Instance.State is not null = {RunManager.Instance.State is not null}");
+        Entry.Logger.Debug($"[TryCreateCreatureVisuals] LocalContext.NetId is not null = {LocalContext.NetId is not null}");
+        Entry.Logger.Debug($"[TryCreateCreatureVisuals] AwakerVisualState = {AwakerRunStateRegistry.Data.Get(RunManager.Instance.State!, LocalContext.NetId!.Value).AwakerVisualState}");
+
+        string path = AwakerRunStateRegistry.Data.Get(RunManager.Instance.State!, LocalContext.NetId!.Value).AwakerVisualState != 0
+                ? $"{SceneRoot}/character2.tscn"
+                : CharacterScenePath;
+
+        Entry.Logger.Debug($"[TryCreateCreatureVisuals] CharacterScenePath = {path}");
+        return RitsuGodotNodeFactories.CreateFromScenePath<NCreatureVisuals>(path);
     }
 
     protected override CreatureAnimator? SetupCustomCreatureAnimator(MegaSprite controller)
