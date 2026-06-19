@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Core/Character/NMerchantAwaker.cs" id="1_nkxxn"]
+[ext_resource type="SpineSkeletonDataResource" path="res://Morimens/images/Doll/spines/doll_spine_resource.tres" id="1_r3xym"]
+
+[node name="DollMerchant" type="Node2D"]
+script = ExtResource("1_nkxxn")
+
+[node name="Visuals" type="SpineSprite" parent="."]
+skeleton_data_res = ExtResource("1_r3xym")
+preview_skin = "default"
+preview_animation = "Idle_1"
+preview_frame = false
+preview_time = 0.0
+unique_name_in_owner = true
+position = Vector2(0, 15)
+scale = Vector2(0.18, 0.18)
