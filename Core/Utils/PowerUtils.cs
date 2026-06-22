@@ -36,7 +36,7 @@ public static class PowerUtils
         PlayerChoiceContext choiceContext,
         Creature target,
         IEnumerable<PowerModel> powers,
-        Player player,
+        Creature? applier,
         CardModel? cardSource)
     {
         if (target is null || powers is null || !powers.Any()) return;
@@ -48,7 +48,7 @@ public static class PowerUtils
         {
             decimal totalStrength = powers.Where(p => p is StrengthPower).Sum(p => p.Amount);
             if (totalStrength > 0)
-                await PowerCmd.Apply<StrengthPower>(choiceContext, target, totalStrength, player.Creature, cardSource);
+                await PowerCmd.Apply<StrengthPower>(choiceContext, target, totalStrength, applier, cardSource);
             return;
         }
 
@@ -61,7 +61,7 @@ public static class PowerUtils
                 choiceContext,
                 target,
                 (decimal)p.Amount,
-                player.Creature,
+                applier,
                 cardSource,
                 false // silent = false
             ]);

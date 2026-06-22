@@ -11,7 +11,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace Morimens.Characters.Doll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class MinionCopy() : AbstractDollMinionCard(2, CardType.Skill, CardRarity.Rare, DollTargetType.AnyDollMinionOrNone)
+public sealed class MinionCopy() : AbstractDollMinionCard(1, CardType.Skill, CardRarity.Rare, DollTargetType.AnyDollMinionOrNone)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [];
 
