@@ -31,7 +31,7 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
     protected virtual string RestSiteScenePath => $"{SceneRoot}/rest_site.tscn";
     protected virtual string CharacterSelectBgScenePath => $"{SceneRoot}/character_select_bg.tscn";
 
-    protected virtual string SharedEnergyCounterScenePath => $"{Entry.ScenePath}/shared/energy_counter.tscn";
+    protected virtual string SharedEnergyCounterScenePath => $"{Entry.ScenePath}/Shared/energy_counter.tscn";
 
     // ─── 統一管理的資產配置 ───
     public override CharacterAssetProfile AssetProfile => new(

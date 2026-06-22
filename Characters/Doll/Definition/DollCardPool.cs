@@ -16,8 +16,8 @@ public sealed class DollCardPool : TypeListCardPoolModel
 
     // 这里指定卡牌文本和大图使用的能量图标路径。
     // res://Morimens/... 里的 Morimens 是 PCK 资源目录，不是 C# namespace。
-    public override string? BigEnergyIconPath => $"{Entry.ImagePath}/shared/ui/energy_big.png";
-    public override string? TextEnergyIconPath => $"{Entry.ImagePath}/shared/ui/energy_text.png";
+    public override string? BigEnergyIconPath => $"{Entry.ImagePath}/Shared/ui/energy_big.png";
+    public override string? TextEnergyIconPath => $"{Entry.ImagePath}/Shared/ui/energy_text.png";
 
     public override Color DeckEntryCardColor => DollAwaker.ThemeColor;
     public override Color EnergyOutlineColor => new(0.08f, 0.18f, 0.24f);

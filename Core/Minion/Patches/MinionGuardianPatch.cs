@@ -1,4 +1,5 @@
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MinionLib.Powers;
 using MinionLib.Powers.Patches;
 using STS2RitsuLib.Patching.Models;
 

@@ -10,6 +10,6 @@ public sealed class DollPotionPool : TypeListPotionPoolModel
 
     // 即使模板暂时没有示例药水，也先把角色药水池结构留好。
     // AssetProfile 里的资源路径不存在时，RitsuLib 会输出诊断并回退；模板这里提供真实 PNG 占位。
-    public override string? BigEnergyIconPath => $"{Entry.ImagePath}/shared/ui/energy_big.png";
-    public override string? TextEnergyIconPath => $"{Entry.ImagePath}/shared/ui/energy_text.png";
+    public override string? BigEnergyIconPath => $"{Entry.ImagePath}/Shared/ui/energy_big.png";
+    public override string? TextEnergyIconPath => $"{Entry.ImagePath}/Shared/ui/energy_text.png";
 }

@@ -7,6 +7,7 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MinionLib.Minion;
+using MinionLib.Powers;
 using Morimens.Characters.Doll.Definition;
 using Morimens.Core.Minion;
 using STS2RitsuLib.Scaffolding.Content;

@@ -9,6 +9,7 @@ public static class PatchRegistry
 {
     public static void Register()
     {
+        CardPatchRegistry.Register();
         CharacterPatchRegistry.Register();
         ExEnergyPatchRegistry.Register();
         CharacterBgPatchRegistry.Register();

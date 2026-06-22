@@ -7,9 +7,9 @@ public static class CharacterPatchRegistry
 {
     public static void Register()
     {
-        ModPatcher hookPatcher = RitsuLibFramework.CreatePatcher(Entry.ModId, "character-patches");
-        hookPatcher.RegisterPatch<CharacterModelHookPatch>();
-        if (!hookPatcher.PatchAll())
+        ModPatcher characterPatcher = RitsuLibFramework.CreatePatcher(Entry.ModId, "character-patches");
+        characterPatcher.RegisterPatch<CharacterModelHookPatch>();
+        if (!characterPatcher.PatchAll())
             throw new InvalidOperationException("Morimens critical character-patches failed!");
     }
 }
