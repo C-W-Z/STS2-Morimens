@@ -2,7 +2,7 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models.CardPools;
+using Morimens.Characters.Shared.Definition;
 using Morimens.Core.Card;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
@@ -10,7 +10,7 @@ using STS2RitsuLib.Utils;
 
 namespace Morimens.Characters.Shared.Cards;
 
-[RegisterCard(typeof(ColorlessCardPool))]
+[RegisterCard(typeof(SharedCardPool))]
 public sealed class Insight() : AbstractMorimensCard(0, CardType.Skill, CardRarity.Token, TargetType.None)
 {
     public override CardAssetProfile AssetProfile
