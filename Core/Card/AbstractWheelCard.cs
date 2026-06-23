@@ -1,4 +1,7 @@
+using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization;
 using Morimens.Core.CardKeywords;
 using STS2RitsuLib.Keywords;
@@ -7,7 +10,7 @@ using STS2RitsuLib.Utils;
 
 namespace Morimens.Core.Card;
 
-public abstract class AbstractWheelCard(CardRarity rarity) : AbstractMorimensCard(0, CardType.None, rarity, TargetType.None)
+public abstract class AbstractWheelCard(CardRarity rarity) : AbstractMorimensCard(0, CardType.Power, rarity, TargetType.None)
 {
     public override bool HideTypePlaque => true;
 
@@ -22,6 +25,8 @@ public abstract class AbstractWheelCard(CardRarity rarity) : AbstractMorimensCar
     protected override bool IsPlayable => false;
 
     public override int MaxUpgradeLevel => 0; // 無法升級
+
+    public override bool CanBeEnchanted => false; // 不能被附魔
 
     public abstract WheelFrameType WheelType { get; }
 
@@ -64,22 +69,22 @@ public abstract class AbstractWheelCard(CardRarity rarity) : AbstractMorimensCar
 
     protected virtual string? GetFramePath()
     {
-        switch (WheelType)
+        return WheelType switch
         {
-            case WheelFrameType.Caro:
-                return "wheel_frame_caro.png";
-            case WheelFrameType.Chaos:
-                return "wheel_frame_chaos.png";
-            case WheelFrameType.Ocean:
-                return "wheel_frame_ocean.png";
-            case WheelFrameType.Ultra:
-                return "wheel_frame_ultra.png";
-            case WheelFrameType.SSR:
-                return "wheel_frame_ssr.png";
-            case WheelFrameType.SR:
-                return "wheel_frame_sr.png";
-            default:
-                return null;
-        }
+            WheelFrameType.Caro => "wheel_frame_caro.png",
+            WheelFrameType.Chaos => "wheel_frame_chaos.png",
+            WheelFrameType.Ocean => "wheel_frame_ocean.png",
+            WheelFrameType.Ultra => "wheel_frame_ultra.png",
+            WheelFrameType.SSR => "wheel_frame_ssr.png",
+            WheelFrameType.SR => "wheel_frame_sr.png",
+            _ => null,
+        };
+    }
+
+    // 戰鬥開始時自動打出
+    public override async Task AfterAutoPrePlayPhaseEntered(PlayerChoiceContext choiceContext, Player player)
+    {
+        if (player == Owner && player.PlayerCombatState!.TurnNumber <= 1)
+            await CardCmd.AutoPlay(choiceContext, this, null, AutoPlayType.Default, false, true);
     }
 }

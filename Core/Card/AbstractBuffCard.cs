@@ -11,4 +11,6 @@ public abstract class AbstractBuffCard(int baseCost, CardType type, CardRarity r
     protected override HashSet<CardTag> CanonicalTags => [MorimensCardTag.Buff];
 
     public override int MaxUpgradeLevel => 0; // 無法升級
+
+    public override bool CanBeEnchanted => false; // 不能被附魔
 }

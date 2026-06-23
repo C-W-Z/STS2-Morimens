@@ -12,6 +12,8 @@ public abstract class AbstractMorimensCard(int baseCost, CardType type, CardRari
     public virtual bool HideTypePlaque => false; // 卡面上 CardType 的標籤
     public virtual LocString? TypeLocString => null;
 
+    public virtual bool CanBeEnchanted => true;
+
     protected virtual string GetMissingCardFileName() => $"missing{(IsFullArt ? "_full": "")}.png";
 
     protected CardAssetProfile? _cachedAssetProfile;
