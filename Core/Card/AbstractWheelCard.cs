@@ -16,7 +16,7 @@ public abstract class AbstractWheelCard(CardRarity rarity) : AbstractMorimensCar
 
     public override LocString? TypeLocString => new("gameplay_ui", "MORIMENS_CARD_TYPE.WHEEL");
 
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [MorimensCardKeywords.Wheel.GetModCardKeyword()];
+    public override IEnumerable<CardKeyword> CanonicalKeywords => [MorimensCardKeywords.WheelOfDestiny.GetModCardKeyword()];
 
     public override bool CanBeGeneratedInCombat => false;
 
