@@ -4,12 +4,19 @@
         "**/*.import": true,           // 隱藏 Godot 的資源導入檔（最干擾的髒檔案）
         "**/*.uid": true,              // 隱藏 Godot 4 的資源唯一標識檔
         "**/.godot": true,             // 隱藏 Godot 的快取資料夾
+        "**/.sonarlint": true,         // 隱藏 SonarQube 的快取資料夾
+        "**/.sonarqube": true,         // 隱藏 SonarQube 的快取資料夾
     },
-
     // 讓 Ctrl + P (搜尋檔案) 排除這些檔案，搜尋時更精準
     "search.exclude": {
-        "**/.godot": true,
         "**/*.import": true,
         "**/*.uid": true,
+        "**/.godot": true,
+        "**/.sonarlint": true,
+        "**/.sonarqube": true,
+    },
+    "sonarlint.connectedMode.project": {
+        "connectionId": "c-w-z",
+        "projectKey": "C-W-Z_STS2-Morimens"
     }
 }
