@@ -19,7 +19,7 @@ public sealed class DollCardPool : TypeListCardPoolModel
     // public override string? TextEnergyIconPath => $"{Entry.ImagePath}/Shared/ui/energy_text.png";
 
     public override Color DeckEntryCardColor => DollAwaker.ThemeColor;
-    public override Color EnergyOutlineColor => new("917070FF");
+    // public override Color EnergyOutlineColor => new("917070FF");
     public override Material? PoolFrameMaterial => PoolFrameTintMaterial;
 
     // false 表示这是角色专属卡池，不是事件/状态那类无色卡池。
