@@ -4,6 +4,7 @@ public interface IAwaker
 {
     int BaseAliemus { get; }
     int BaseKeyflare { get; }
+    int KeyflareGain { get; }
     string ExaltTitle { get; }
     string ExaltDescription { get; }
     Task Exalt();

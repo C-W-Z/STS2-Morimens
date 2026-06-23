@@ -14,7 +14,7 @@ using STS2RitsuLib.Scaffolding.Godot;
 
 namespace Morimens.Core.Character;
 
-public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterTemplate<TCardPool, TRelicPool, TPotionPool>, ISecondaryResourceHookListener, IAwaker
+public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterTemplate<TCardPool, TRelicPool, TPotionPool>, IAwaker
     where TCardPool : CardPoolModel
     where TRelicPool : RelicPoolModel
     where TPotionPool : PotionPoolModel
@@ -63,6 +63,7 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
 
     public virtual int BaseAliemus => 100;
     public virtual int BaseKeyflare => 1000;
+    public virtual int KeyflareGain => 25;
 
     // ─── 快取欄位 ───
     private CombatState? _cachedCombatState;
@@ -127,50 +128,4 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
     public virtual string OverExaltTitle => GetOverExaltCard().Title;
     public virtual string OverExaltDescription => GetOverExaltCard().GetDescriptionForPile(PileType.Hand);
     public virtual async Task OverExalt() => await ((IExaltCard)GetExaltCard()).Execute();
-
-    public decimal ModifyMaxSecondaryResource(SecondaryResourceMaxContext context, decimal amount)
-    {
-        if (context.Definition.Id == ExEnergyManager.AliemusId)
-            return amount + BaseAliemus - (ExEnergyManager.AliemusDefinition.BaseMaxAmount ?? 0);
-        return amount;
-    }
-
-    public decimal ModifySecondaryResourceGain(SecondaryResourceContext context, decimal amount)
-    {
-        if (context.Definition.Id == ExEnergyManager.AliemusId)
-        {
-            int currentAmt = SecondaryResourceCmd.Get(context.Player, ExEnergyManager.AliemusId);
-            int maxAmt = SecondaryResourceCmd.GetMax(context.Player, ExEnergyManager.AliemusId) ?? BaseAliemus;
-            if (currentAmt + amount > 2 * maxAmt)
-            {
-                Entry.Logger.Debug($"currentAmt = {currentAmt}; maxAmt = {maxAmt}; 獲得 {2 * maxAmt - currentAmt} 點狂氣");
-                return 2 * maxAmt - currentAmt;
-            }
-        }
-        return amount;
-    }
-
-    public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult result, ValueProp props, Creature? dealer, CardModel? cardSource)
-    {
-        Entry.Logger.Debug($"AfterDamageReceived: {dealer?.Name} deals to {target.Name}");
-        if (dealer?.Side != CombatSide.Enemy)
-            return;
-
-        // 1. MinionLib 正在處理溢傷流程中 (IsHandling.Value == true)
-        // 2. 當前觸發 Hook 的目標，正好是第一階段被壓制傷害的玩家 (SuppressedOwner.Value == originalTarget)
-        // 3. 這次傷害結算是原版塞進去的 0 傷幽靈結果 (UnblockedDamage <= 0)
-        if (MinionGuardianOverkillPatch.IsHandling.Value
-            && MinionGuardianOverkillPatch.SuppressedOwner.Value == target
-            && result.UnblockedDamage <= 0
-            && !result.WasFullyBlocked)
-        {
-            Entry.Logger.Debug($"阻止 MinionGuardianOverkillPatch 的幽靈傷害觸發狂氣+1");
-            return;
-        }
-
-        // 获得 1 点狂氣
-        // TODO: 会经过 Gain Hook 修正，要改掉
-        if (target.Player is not null && LocalContext.IsMe(target.Player))
-            await SecondaryResourceCmd.Gain(target.Player, ExEnergyManager.AliemusId, 1, this);
-    }
 }

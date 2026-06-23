@@ -128,8 +128,6 @@ public static class ExEnergyManager
         );
 
         RegisterSkillConfirmationUi();
-
-        RegisterTurnEndAliemusGain();
     }
 
     // 抽取出來的字典配置方法
@@ -197,18 +195,6 @@ public static class ExEnergyManager
                     Order = 99, // 數字大一點，確保渲染在最上層
                     DuplicatePolicy = NodeAttachmentDuplicatePolicy.ReuseExistingByName
                 });
-    }
-
-    private static void RegisterTurnEndAliemusGain()
-    {
-        RitsuLibFramework.SubscribeLifecycle<CardsFlushedEvent>(async evt =>
-        {
-            Entry.Logger.Debug($"回合結束：{evt.Player}");
-            if (evt.Player.Character is not IAwaker)
-                return;
-            // TODO: 会经过 Gain Hook 修正，要改掉
-            await SecondaryResourceCmd.Gain(evt.Player, AliemusId, 5, null);
-        });
     }
 
     private static void SetupExEnergyUi(NSecondaryResourceCounter counter)
