@@ -1,3 +1,4 @@
+using Morimens.Core.Card.Patches;
 using Morimens.Core.Character.Patches;
 using Morimens.Core.ExEnergy.Patches;
 using Morimens.Core.Menu.CharacterBg.Patches;

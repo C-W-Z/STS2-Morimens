@@ -3,8 +3,9 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
+using Morimens.Characters.Doll.Cards.Abstracts;
 using Morimens.Characters.Doll.Definition;
-using Morimens.Core.Card;
+using Morimens.Core.Character.Data;
 using Morimens.Core.ExEnergy;
 using STS2RitsuLib.Combat.SecondaryResources;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -14,7 +15,7 @@ namespace Morimens.Characters.Doll.Cards;
 // 防御牌和打击一样注册到角色卡池，并作为 4 张初始卡加入角色卡组。
 [RegisterCard(typeof(DollCardPool))]
 [RegisterCharacterStarterCard(typeof(DollAwaker), 4)]
-public sealed class Defend() : AbstractMorimensCard(1, CardType.Skill, CardRarity.Basic, TargetType.Self)
+public sealed class Defend() : AbstractDollCard(1, CardType.Skill, CardRarity.Basic, TargetType.Self)
 {
     protected override HashSet<CardTag> CanonicalTags => [CardTag.Defend];
 

@@ -1,16 +1,16 @@
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using Morimens.Characters.Doll.Cards.Abstracts;
 using Morimens.Characters.Doll.Definition;
 using Morimens.Characters.Doll.Minions;
-using Morimens.Core.Card;
 using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace Morimens.Characters.Doll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
 [RegisterCharacterStarterCard(typeof(DollAwaker), 1)]
-public sealed class SummonOnce() : AbstractMorimensCard(0, CardType.Skill, CardRarity.Basic, TargetType.None)
+public sealed class SummonOnce() : AbstractDollCard(0, CardType.Skill, CardRarity.Basic, TargetType.None)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 

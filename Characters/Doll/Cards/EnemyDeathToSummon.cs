@@ -2,15 +2,15 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using Morimens.Characters.Doll.Cards.Abstracts;
 using Morimens.Characters.Doll.Definition;
 using Morimens.Characters.Doll.Powers;
-using Morimens.Core.Card;
 using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace Morimens.Characters.Doll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class EnemyDeathToSummon() : AbstractMorimensCard(1, CardType.Power, CardRarity.Common, TargetType.Self)
+public sealed class EnemyDeathToSummon() : AbstractDollCard(1, CardType.Power, CardRarity.Common, TargetType.Self)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 

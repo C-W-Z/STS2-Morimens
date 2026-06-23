@@ -16,7 +16,7 @@ public sealed class FullCardArtOverlayPatch : IPatchMethod
 
     public static void Postfix(NCard __instance)
     {
-        if (__instance.Model is not Insight)
+        if (__instance.Model is not AbstractMorimensCard card || !card.IsFullArt)
             return;
 
         __instance._frame.Visible = true;

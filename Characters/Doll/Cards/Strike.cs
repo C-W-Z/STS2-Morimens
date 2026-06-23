@@ -3,8 +3,8 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
+using Morimens.Characters.Doll.Cards.Abstracts;
 using Morimens.Characters.Doll.Definition;
-using Morimens.Core.Card;
 using Morimens.Core.ExEnergy;
 using STS2RitsuLib.Combat.SecondaryResources;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -15,7 +15,7 @@ namespace Morimens.Characters.Doll.Cards;
 // RegisterCharacterStarterCard 会把它追加进 Doll 的初始卡组。
 [RegisterCard(typeof(DollCardPool))]
 [RegisterCharacterStarterCard(typeof(DollAwaker), 4)]
-public sealed class Strike() : AbstractMorimensCard(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
+public sealed class Strike() : AbstractDollCard(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
 {
     protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
 

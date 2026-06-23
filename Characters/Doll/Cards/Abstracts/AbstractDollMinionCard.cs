@@ -6,7 +6,7 @@ using Morimens.Core.Card;
 
 namespace Morimens.Characters.Doll.Cards.Abstracts;
 
-public abstract class AbstractDollMinionCard(int baseCost, CardType type, CardRarity rarity, TargetType target) : AbstractMorimensCard(baseCost, type, rarity, target)
+public abstract class AbstractDollMinionCard(int baseCost, CardType type, CardRarity rarity, TargetType target) : AbstractDollCard(baseCost, type, rarity, target)
 {
     protected override HashSet<CardTag> CanonicalTags => [DollCardTag.MinionCmd];
 

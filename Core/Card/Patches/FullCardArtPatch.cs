@@ -22,7 +22,7 @@ public sealed class FullCardArtPatch : IPatchMethod
         if (!__instance.IsNodeReady() || __instance.Model == null)
             return;
 
-        if (__instance.Model is not Insight)
+        if (__instance.Model is not AbstractMorimensCard card || !card.IsFullArt)
             return;
 
         __instance._portraitBorder.Visible = false;

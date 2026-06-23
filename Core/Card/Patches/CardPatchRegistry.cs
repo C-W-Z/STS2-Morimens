@@ -1,8 +1,7 @@
-using Morimens.Core.Card.Patches;
 using STS2RitsuLib;
 using STS2RitsuLib.Patching.Core;
 
-namespace Morimens.Core.Character.Patches;
+namespace Morimens.Core.Card.Patches;
 
 public static class CardPatchRegistry
 {

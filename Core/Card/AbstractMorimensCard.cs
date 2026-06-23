@@ -1,12 +1,17 @@
 using MegaCrit.Sts2.Core.Entities.Cards;
 using Morimens.Core.Utils;
 using STS2RitsuLib.Scaffolding.Content;
+using STS2RitsuLib.Utils;
 
 namespace Morimens.Core.Card;
 
 public abstract class AbstractMorimensCard(int baseCost, CardType type, CardRarity rarity, TargetType target, bool showInCardLibrary = true) : ModCardTemplate(baseCost, type, rarity, target, showInCardLibrary)
 {
-    private CardAssetProfile? _cachedAssetProfile;
+    public virtual bool IsFullArt => true;
+
+    protected virtual string GetMissingCardFileName() => $"missing{(IsFullArt ? "_full": "")}.png";
+
+    protected CardAssetProfile? _cachedAssetProfile;
 
     public override CardAssetProfile AssetProfile
     {
@@ -23,10 +28,21 @@ public abstract class AbstractMorimensCard(int baseCost, CardType type, CardRari
             if (!Godot.ResourceLoader.Exists(targetPath))
             {
                 Entry.Logger.Debug($"Missing card art for '{GetType().Name}'. Falling back to placeholder. (Expected path: {targetPath})");
-                targetPath = $"{Entry.ImagePath}/{folder}/cards/missing.png";
+                targetPath = $"{Entry.ImagePath}/{folder}/cards/{GetMissingCardFileName()}";
             }
 
-            _cachedAssetProfile = new CardAssetProfile(PortraitPath: targetPath);
+            if (IsFullArt)
+            {
+                _cachedAssetProfile = new CardAssetProfile(
+                    PortraitPath: targetPath,
+                    FramePath: $"{Entry.ImagePath}/Shared/ui/card_frame{(Type == CardType.Power ? "_power" : "")}.png",
+                    FrameMaterial: MaterialUtils.CreateUnmodulatedHsvShaderMaterial()
+                );
+            }
+            else
+            {
+                _cachedAssetProfile = new CardAssetProfile(PortraitPath: targetPath);
+            }
             return _cachedAssetProfile;
         }
     }

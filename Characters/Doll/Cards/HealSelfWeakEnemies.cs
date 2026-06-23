@@ -4,8 +4,8 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
+using Morimens.Characters.Doll.Cards.Abstracts;
 using Morimens.Characters.Doll.Definition;
-using Morimens.Core.Card;
 using Morimens.Core.CardTags;
 using STS2RitsuLib.Interop.AutoRegistration;
 
@@ -13,7 +13,7 @@ namespace Morimens.Characters.Doll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
 [RegisterCharacterStarterCard(typeof(DollAwaker), 1)]
-public sealed class HealSelfWeakEnemies() : AbstractMorimensCard(2, CardType.Skill, CardRarity.Basic, TargetType.AllEnemies)
+public sealed class HealSelfWeakEnemies() : AbstractDollCard(2, CardType.Skill, CardRarity.Basic, TargetType.AllEnemies)
 {
     protected override HashSet<CardTag> CanonicalTags => [MorimensCardTag.Heal];
 

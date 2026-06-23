@@ -11,20 +11,8 @@ using STS2RitsuLib.Utils;
 namespace Morimens.Characters.Shared.Cards;
 
 [RegisterCard(typeof(SharedCardPool))]
-public sealed class Insight() : AbstractMorimensCard(0, CardType.Skill, CardRarity.Token, TargetType.None)
+public sealed class Insight() : AbstractMorimensCard(0, CardType.None, CardRarity.Token, TargetType.None)
 {
-    public override CardAssetProfile AssetProfile
-    {
-        get
-        {
-            return base.AssetProfile with
-            {
-                FramePath = $"{Entry.ImagePath}/Shared/ui/card_frame.png",
-                FrameMaterial = MaterialUtils.CreateUnmodulatedHsvShaderMaterial(),
-            };
-        }
-    }
-
     // 無法升級
     public override int MaxUpgradeLevel => 0;
 
