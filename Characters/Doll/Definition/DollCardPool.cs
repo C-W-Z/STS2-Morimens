@@ -6,21 +6,20 @@ namespace Morimens.Characters.Doll.Definition;
 
 public sealed class DollCardPool : TypeListCardPoolModel
 {
-    private static readonly Material? PoolFrameTintMaterial =
-        MaterialUtils.CreateReplaceHueShaderMaterial(0.42f, 0.65f, 0.72f);
+    private static readonly Material? PoolFrameTintMaterial = MaterialUtils.CreateReplaceHueShaderMaterial(0.92f, 0.82f, 0.81f);
 
     // Title 和 EnergyColorName 是池子的稳定标识，不是玩家看到的角色名。
     // 自定义角色卡、遗物、药水池保持同一个 EnergyColorName，方便实验室和文本统一读取能量图标。
-    public override string Title => "Morimens";
-    public override string EnergyColorName => "Morimens";
+    public override string Title => "MorimensDoll";
+    public override string EnergyColorName => "colorless";
 
     // 这里指定卡牌文本和大图使用的能量图标路径。
     // res://Morimens/... 里的 Morimens 是 PCK 资源目录，不是 C# namespace。
-    public override string? BigEnergyIconPath => $"{Entry.ImagePath}/Shared/ui/energy_big.png";
-    public override string? TextEnergyIconPath => $"{Entry.ImagePath}/Shared/ui/energy_text.png";
+    // public override string? BigEnergyIconPath => $"{Entry.ImagePath}/Shared/ui/energy_big.png";
+    // public override string? TextEnergyIconPath => $"{Entry.ImagePath}/Shared/ui/energy_text.png";
 
     public override Color DeckEntryCardColor => DollAwaker.ThemeColor;
-    public override Color EnergyOutlineColor => new(0.08f, 0.18f, 0.24f);
+    public override Color EnergyOutlineColor => new("917070FF");
     public override Material? PoolFrameMaterial => PoolFrameTintMaterial;
 
     // false 表示这是角色专属卡池，不是事件/状态那类无色卡池。
