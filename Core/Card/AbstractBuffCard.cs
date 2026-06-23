@@ -4,11 +4,15 @@ using Morimens.Core.CardTags;
 
 namespace Morimens.Core.Card;
 
-public abstract class AbstractBuffCard(int baseCost, CardType type, CardRarity rarity, TargetType target) : AbstractMorimensCard(baseCost, type, rarity, target)
+public abstract class AbstractBuffCard(int baseCost, TargetType target) : AbstractMorimensCard(baseCost, CardType.None, CardRarity.Token, target)
 {
     public override LocString? TypeLocString => new("gameplay_ui", "MORIMENS_CARD_TYPE.BUFF");
 
     protected override HashSet<CardTag> CanonicalTags => [MorimensCardTag.Buff];
+
+    public override bool CanBeGeneratedInCombat => false;
+
+    public override bool CanBeGeneratedByModifiers => false;
 
     public override int MaxUpgradeLevel => 0; // 無法升級
 

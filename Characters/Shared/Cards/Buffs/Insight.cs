@@ -9,7 +9,7 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace Morimens.Characters.Shared.Cards.Buffs;
 
 [RegisterCard(typeof(SharedCardPool))]
-public sealed class Insight() : AbstractBuffCard(0, CardType.None, CardRarity.Token, TargetType.None)
+public sealed class Insight() : AbstractBuffCard(0, TargetType.None)
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new EnergyVar(1),

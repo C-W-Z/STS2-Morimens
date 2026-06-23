@@ -7,7 +7,7 @@ public sealed class FullCardArtOverlayPatch : IPatchMethod
 {
     public static string PatchId => "MORIMENS_full_card_art_overlay";
 
-    public static string Description => "";
+    public static string Description => "全圖卡面";
 
     public static bool IsCritical => true;
 

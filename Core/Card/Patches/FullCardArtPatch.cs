@@ -9,7 +9,7 @@ public sealed class FullCardArtPatch : IPatchMethod
 {
     public static string PatchId => "MORIMENS_full_card_art";
 
-    public static string Description => "";
+    public static string Description => "全圖卡面";
 
     public static bool IsCritical => true;
 
