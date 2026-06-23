@@ -5,14 +5,14 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using Morimens.Characters.Shared.Definition;
 using Morimens.Core.Card;
 using STS2RitsuLib.Interop.AutoRegistration;
-using STS2RitsuLib.Scaffolding.Content;
-using STS2RitsuLib.Utils;
 
 namespace Morimens.Characters.Shared.Cards;
 
 [RegisterCard(typeof(SharedCardPool))]
 public sealed class Insight() : AbstractMorimensCard(0, CardType.None, CardRarity.Token, TargetType.None)
 {
+    public override bool HideTypePlaque => true;
+
     // 無法升級
     public override int MaxUpgradeLevel => 0;
 

@@ -14,22 +14,37 @@ public sealed class FullCardArtTypePlaquePatch : IPatchMethod
 
     public static ModPatchTarget[] GetTargets() => [new(typeof(NCard), nameof(NCard.UpdateTypePlaqueSizeAndPosition))];
 
-    private static Vector2? NormalPosition = null;
+    private static float? NormalPositionY = null;
 
     public static void Postfix(NCard __instance)
     {
-        NormalPosition ??= __instance._typePlaque.Position;
+        if (NormalPositionY == null)
+        {
+            // (-30.5, 1)
+            Entry.Logger.Debug($"[FullCardArtTypePlaquePatch] {__instance._typePlaque.Position}");
+            NormalPositionY ??= __instance._typePlaque.Position.Y;
+        }
 
         if (__instance.Model is not AbstractMorimensCard card || !card.IsFullArt)
         {
-            // 原版和其他模組的牌複用到我們卡牌的Plaque時位置要調整回來
-            __instance._typePlaque.Position = NormalPosition.Value;
+            // 原版和其他模組的牌複用到我們卡牌的Plaque時位置和可見度要調整回來
+            Vector2 tmp = __instance._typePlaque.Position;
+            tmp.Y = NormalPositionY.Value;
+            __instance._typePlaque.Position = tmp;
+            __instance._typePlaque.Visible = true;
             return;
         }
 
-        Vector2 currentPos = NormalPosition.Value;
+        if (card.HideTypePlaque)
+        {
+            __instance._typePlaque.Visible = false;
+            return;
+        }
+
+        __instance._typePlaque.Visible = true;
+        Vector2 currentPos = __instance._typePlaque.Position;
         // Godot 的座標系中，(0,0) 在左上角。
-        currentPos.Y += 170f;
+        currentPos.Y = 171f; // NormalPositionY + 170f
         __instance._typePlaque.Position = currentPos;
     }
 }

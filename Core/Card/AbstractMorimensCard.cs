@@ -8,6 +8,7 @@ namespace Morimens.Core.Card;
 public abstract class AbstractMorimensCard(int baseCost, CardType type, CardRarity rarity, TargetType target, bool showInCardLibrary = true) : ModCardTemplate(baseCost, type, rarity, target, showInCardLibrary)
 {
     public virtual bool IsFullArt => true;
+    public virtual bool HideTypePlaque => false; // 卡面上 CardType 的標籤
 
     protected virtual string GetMissingCardFileName() => $"missing{(IsFullArt ? "_full": "")}.png";
 
