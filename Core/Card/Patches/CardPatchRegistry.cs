@@ -12,6 +12,7 @@ public static class CardPatchRegistry
         cardPathcer.RegisterPatch<FullCardArtOverlayPatch>();
         cardPathcer.RegisterPatch<TypePlaquePositionPatch>();
         cardPathcer.RegisterPatch<CustomCardTypeTextPatch>();
+        cardPathcer.RegisterPatch<HideEnergyCostVisualsPatch>();
         if (!cardPathcer.PatchAll())
             throw new InvalidOperationException("Morimens critical card-patches failed!");
     }

@@ -63,5 +63,7 @@
   "MORIMENS_CARD_LOSE_HP_GAIN_ENERGY.title": "缸中之腦",
   "MORIMENS_CARD_LOSE_HP_GAIN_ENERGY.description": "失去{HpLoss:diff()}點生命，獲得{Energy:energyIcons()}。",
   "MORIMENS_CARD_INSIGHT.title": "靈感",
-  "MORIMENS_CARD_INSIGHT.description": "獲得{Energy:energyIcons()}，抽{Cards:diff()}張牌。"
+  "MORIMENS_CARD_INSIGHT.description": "獲得{Energy:energyIcons()}，抽{Cards:diff()}張牌。",
+  "MORIMENS_CARD_MANIKIN_OF_OBLIVION.title": "未完成的人偶",
+  "MORIMENS_CARD_MANIKIN_OF_OBLIVION.description": ""
 }

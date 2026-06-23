@@ -18,7 +18,7 @@ public sealed class FullCardArtOverlayPatch : IPatchMethod
         if (__instance.Model is not AbstractMorimensCard card || !card.IsFullArt)
             return;
 
-        __instance._frame.Visible = true;
+        __instance._frame.Visible = card is not AbstractWheelCard || ((AbstractWheelCard)card).WheelType != WheelFrameType.None;
         __instance._ancientBorder.Visible = false;
     }
 }
