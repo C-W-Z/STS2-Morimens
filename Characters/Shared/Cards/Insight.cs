@@ -1,6 +1,7 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Localization;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using Morimens.Characters.Shared.Definition;
 using Morimens.Core.Card;
@@ -11,7 +12,8 @@ namespace Morimens.Characters.Shared.Cards;
 [RegisterCard(typeof(SharedCardPool))]
 public sealed class Insight() : AbstractMorimensCard(0, CardType.None, CardRarity.Token, TargetType.None)
 {
-    public override bool HideTypePlaque => true;
+    // public override bool HideTypePlaque => true;
+    public override LocString? TypeLocString => new("gameplay_ui", "MORIMENS_CARD_TYPE.BUFF");
 
     // 無法升級
     public override int MaxUpgradeLevel => 0;

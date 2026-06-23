@@ -4,5 +4,7 @@
   "MORIMENS_ALIEMUS_INSUFFICIENT.title": "狂氣不足",
   "MORIMENS_ALIEMUS_INSUFFICIENT.description": "需要{Cost}狂氣才能釋放狂氣爆發。",
   "MORIMENS_KEYFLARE_INSUFFICIENT.title": "銀鑰不足",
-  "MORIMENS_KEYFLARE_INSUFFICIENT.description": "需要{Cost}銀鑰才能釋放鑰令。"
+  "MORIMENS_KEYFLARE_INSUFFICIENT.description": "需要{Cost}銀鑰才能釋放鑰令。",
+  "MORIMENS_CARD_TYPE.BUFF": "增益",
+  "MORIMENS_CARD_TYPE.WHEEL": "命輪"
 }

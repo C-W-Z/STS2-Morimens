@@ -1,4 +1,5 @@
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Localization;
 using Morimens.Core.Utils;
 using STS2RitsuLib.Scaffolding.Content;
 using STS2RitsuLib.Utils;
@@ -9,6 +10,7 @@ public abstract class AbstractMorimensCard(int baseCost, CardType type, CardRari
 {
     public virtual bool IsFullArt => true;
     public virtual bool HideTypePlaque => false; // 卡面上 CardType 的標籤
+    public virtual LocString? TypeLocString => null;
 
     protected virtual string GetMissingCardFileName() => $"missing{(IsFullArt ? "_full": "")}.png";
 

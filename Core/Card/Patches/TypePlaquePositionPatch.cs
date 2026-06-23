@@ -4,11 +4,11 @@ using STS2RitsuLib.Patching.Models;
 
 namespace Morimens.Core.Card.Patches;
 
-public sealed class FullCardArtTypePlaquePatch : IPatchMethod
+public sealed class TypePlaquePositionPatch : IPatchMethod
 {
-    public static string PatchId => "MORIMENS_full_card_art_type_plaque";
+    public static string PatchId => "MORIMENS_type_plaque_position";
 
-    public static string Description => "";
+    public static string Description => "更改全圖卡的類型標籤位置到卡牌底部，以及實現隱藏標籤功能。同時不影響其他模組對於標籤位置/顯示的改動。";
 
     public static bool IsCritical => true;
 
