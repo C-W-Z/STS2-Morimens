@@ -1,8 +1,6 @@
-using Godot;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Entities.UI;
 using MegaCrit.Sts2.Core.Nodes.Cards;
-using Morimens.Characters.Shared.Cards;
 using STS2RitsuLib.Patching.Models;
 
 namespace Morimens.Core.Card.Patches;
@@ -34,7 +32,6 @@ public sealed class FullCardArtPatch : IPatchMethod
         __instance._ancientTextBg.Visible = false; // 這個可以考慮開啟，但需要解決Error問題
         __instance._ancientBanner.Visible = false;
         __instance._banner.Visible = false;
-        // Texture2D portrait = __instance.Model.Portrait;
         if (__instance.Visibility != ModelVisibility.Visible)
         {
             __instance._canvasGroupMaskBlurMaterial ??= PreloadManager.Cache.GetMaterial("res://scenes/cards/card_canvas_group_mask_blur_material.tres");

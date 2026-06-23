@@ -1,5 +1,4 @@
 using MegaCrit.Sts2.Core.Nodes.Cards;
-using Morimens.Characters.Shared.Cards;
 using STS2RitsuLib.Patching.Models;
 
 namespace Morimens.Core.Card.Patches;
