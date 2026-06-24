@@ -30,8 +30,19 @@ jobs:
           fetch-depth: 0
 
       - name: Checkout Images Submodule Only
+        env:
+          SUBMODULE_TOKEN: ${{ secrets.SUBMODULE_TOKEN }}
+        shell: pwsh
         run: |
+
+          # 建立動態 URL 替換規則，叫 Git 自動把 Token 偽裝成通行證帶入 https 請求中
+          git config --global url."https://x-access-token:${env:SUBMODULE_TOKEN}@github.com/".insteadOf "https://github.com/"
+
+          # 只初始化並同步圖片子模組
           git submodule update --init --recursive Morimens/images
+
+          # [選擇性] 跑完後隨手清除全域設定，保持環境乾淨（雖然雲端機器人跑完就會銷毀）
+          git config --global --unset url."https://x-access-token:${env:SUBMODULE_TOKEN}@github.com/".insteadOf
 
       # 3. 安裝 .NET SDK (配合你的 Morimens 專案設定為 net9.0)
       - name: Setup .NET SDK
