@@ -11,5 +11,9 @@
         "**/.godot": true,
         "**/*.import": true,
         "**/*.uid": true,
+    },
+    "sonarlint.connectedMode.project": {
+        "connectionId": "c-w-z",
+        "projectKey": "C-W-Z_STS2-Morimens"
     }
 }

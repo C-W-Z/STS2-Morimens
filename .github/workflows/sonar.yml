@@ -7,6 +7,7 @@ on:
       - dev
   pull_request:
     types: [opened, synchronize, reopened]
+  workflow_dispatch: # 手動
 
 jobs:
   build:
@@ -67,7 +68,7 @@ jobs:
           New-Item -Path "${{ runner.temp }}\scanner" -ItemType Directory -Force
           dotnet tool update dotnet-sonarscanner --tool-path "${{ runner.temp }}\scanner"
 
-      # 8. 執行分析與編譯 (🔒 完美修正 S7636 安全漏洞)
+      # 8. 執行分析與編譯
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
