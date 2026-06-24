@@ -6,13 +6,12 @@ using MinionLib.Commands;
 using Morimens.Characters.Doll.Definition;
 using Morimens.Characters.Doll.Minions;
 using Morimens.Characters.Doll.Powers;
-using Morimens.Core.Card;
 using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace Morimens.Characters.Doll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class MinionLimitUp() : AbstractMorimensCard(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+public sealed class MinionLimitUp() : AbstractDollCard(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 

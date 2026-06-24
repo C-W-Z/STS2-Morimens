@@ -7,7 +7,7 @@ using Morimens.Core.Power;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Scaffolding.Content;
 
-namespace Morimens.Core.Minion;
+namespace Morimens.Characters.Shared.Powers;
 
 // see DollMinionLayout and MinionGuardianPatch
 [RegisterPower]

@@ -1,20 +1,14 @@
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
-using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Combat;
-using MegaCrit.Sts2.Core.ValueProps;
-using MinionLib.Powers.Patches;
-using Morimens.Core.ExEnergy;
-using STS2RitsuLib.Combat.SecondaryResources;
 using STS2RitsuLib.Scaffolding.Characters;
 using STS2RitsuLib.Scaffolding.Godot;
 
 namespace Morimens.Core.Character;
 
-public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterTemplate<TCardPool, TRelicPool, TPotionPool>, ISecondaryResourceHookListener, IAwaker
+public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterTemplate<TCardPool, TRelicPool, TPotionPool>, IAwaker
     where TCardPool : CardPoolModel
     where TRelicPool : RelicPoolModel
     where TPotionPool : PotionPoolModel
@@ -31,7 +25,7 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
     protected virtual string RestSiteScenePath => $"{SceneRoot}/rest_site.tscn";
     protected virtual string CharacterSelectBgScenePath => $"{SceneRoot}/character_select_bg.tscn";
 
-    protected virtual string SharedEnergyCounterScenePath => $"{Entry.ScenePath}/shared/energy_counter.tscn";
+    protected virtual string SharedEnergyCounterScenePath => $"{Entry.ScenePath}/Shared/energy_counter.tscn";
 
     // ─── 統一管理的資產配置 ───
     public override CharacterAssetProfile AssetProfile => new(
@@ -63,19 +57,20 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
 
     public virtual int BaseAliemus => 100;
     public virtual int BaseKeyflare => 1000;
+    public virtual int KeyflareGain => 25;
 
     // ─── 快取欄位 ───
     private CombatState? _cachedCombatState;
-    private CardModel? _cachedExaltCard;
-    private CardModel? _cachedOverExaltCard;
+    private AbstractExaltCard? _cachedExaltCard;
+    private AbstractExaltCard? _cachedOverExaltCard;
 
     // ─── 工廠方法 (Factory Methods) ───
     // 子類別只需要實作這兩個方法，回傳對應的卡牌範本即可
-    protected abstract CardModel CreateExaltCardInstance();
-    protected abstract CardModel CreateOverExaltCardInstance();
+    protected abstract AbstractExaltCard ExaltCard { get; }
+    protected abstract AbstractExaltCard OverExaltCard { get; }
 
     // ─── 核心輔助方法：獲取並動態更新快取的卡牌 ───
-    protected CardModel GetExaltCard()
+    private AbstractExaltCard GetExaltCard()
     {
         // 只有第一次會執行 ToMutable() 分配記憶體，後續皆重複使用
         var combatState = CombatManager.Instance._state;
@@ -84,7 +79,7 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
         if (_cachedExaltCard is null || _cachedCombatState != combatState)
         {
             _cachedCombatState = combatState;
-            _cachedExaltCard = CreateExaltCardInstance(); // 重新 ToMutable() 完美向新對局注入 CombatState
+            _cachedExaltCard = (AbstractExaltCard)ExaltCard.ToMutable(); // 重新 ToMutable() 完美向新對局注入 CombatState
         }
 
         _cachedExaltCard.UpgradePreviewType = CardUpgradePreviewType.Combat;
@@ -99,14 +94,14 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
         return _cachedExaltCard;
     }
 
-    protected CardModel GetOverExaltCard()
+    private AbstractExaltCard GetOverExaltCard()
     {
         var combatState = CombatManager.Instance._state;
 
         if (_cachedOverExaltCard is null || _cachedCombatState != combatState)
         {
             _cachedCombatState = combatState;
-            _cachedOverExaltCard = CreateOverExaltCardInstance();
+            _cachedOverExaltCard = (AbstractExaltCard)OverExaltCard.ToMutable();
         }
 
         _cachedOverExaltCard.UpgradePreviewType = CardUpgradePreviewType.Combat;
@@ -121,56 +116,6 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
         return _cachedOverExaltCard;
     }
 
-    public virtual string ExaltTitle => GetExaltCard().Title;
-    public virtual string ExaltDescription => GetExaltCard().GetDescriptionForPile(PileType.Hand);
-    public virtual async Task Exalt() => await ((IExaltCard)GetExaltCard()).Execute();
-    public virtual string OverExaltTitle => GetOverExaltCard().Title;
-    public virtual string OverExaltDescription => GetOverExaltCard().GetDescriptionForPile(PileType.Hand);
-    public virtual async Task OverExalt() => await ((IExaltCard)GetExaltCard()).Execute();
-
-    public decimal ModifyMaxSecondaryResource(SecondaryResourceMaxContext context, decimal amount)
-    {
-        if (context.Definition.Id == ExEnergyManager.AliemusId)
-            return amount + BaseAliemus - (ExEnergyManager.AliemusDefinition.BaseMaxAmount ?? 0);
-        return amount;
-    }
-
-    public decimal ModifySecondaryResourceGain(SecondaryResourceContext context, decimal amount)
-    {
-        if (context.Definition.Id == ExEnergyManager.AliemusId)
-        {
-            int currentAmt = SecondaryResourceCmd.Get(context.Player, ExEnergyManager.AliemusId);
-            int maxAmt = SecondaryResourceCmd.GetMax(context.Player, ExEnergyManager.AliemusId) ?? BaseAliemus;
-            if (currentAmt + amount > 2 * maxAmt)
-            {
-                Entry.Logger.Debug($"currentAmt = {currentAmt}; maxAmt = {maxAmt}; 獲得 {2 * maxAmt - currentAmt} 點狂氣");
-                return 2 * maxAmt - currentAmt;
-            }
-        }
-        return amount;
-    }
-
-    public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult result, ValueProp props, Creature? dealer, CardModel? cardSource)
-    {
-        Entry.Logger.Debug($"AfterDamageReceived: {dealer?.Name} deals to {target.Name}");
-        if (dealer?.Side != CombatSide.Enemy)
-            return;
-
-        // 1. MinionLib 正在處理溢傷流程中 (IsHandling.Value == true)
-        // 2. 當前觸發 Hook 的目標，正好是第一階段被壓制傷害的玩家 (SuppressedOwner.Value == originalTarget)
-        // 3. 這次傷害結算是原版塞進去的 0 傷幽靈結果 (UnblockedDamage <= 0)
-        if (MinionGuardianOverkillPatch.IsHandling.Value
-            && MinionGuardianOverkillPatch.SuppressedOwner.Value == target
-            && result.UnblockedDamage <= 0
-            && !result.WasFullyBlocked)
-        {
-            Entry.Logger.Debug($"阻止 MinionGuardianOverkillPatch 的幽靈傷害觸發狂氣+1");
-            return;
-        }
-
-        // 获得 1 点狂氣
-        // TODO: 会经过 Gain Hook 修正，要改掉
-        if (target.Player is not null && LocalContext.IsMe(target.Player))
-            await SecondaryResourceCmd.Gain(target.Player, ExEnergyManager.AliemusId, 1, this);
-    }
+    public AbstractExaltCard Exalt => GetExaltCard();
+    public AbstractExaltCard OverExalt => GetOverExaltCard();
 }

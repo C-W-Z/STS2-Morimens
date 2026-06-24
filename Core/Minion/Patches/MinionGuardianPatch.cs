@@ -1,15 +1,18 @@
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MinionLib.Minion;
 using MinionLib.Powers.Patches;
+using Morimens.Characters.Shared.Powers;
 using STS2RitsuLib.Patching.Models;
 
 namespace Morimens.Core.Minion.Patches;
 
+// FIXME: 聯機時會出 bug ，只有第一隻人偶會擋傷害，很可能是 MinionLib 的問題
 public sealed class MinionGuardianPatch : IPatchMethod
 {
     // 1. 設定 RitsuLib 要求的唯一 ID 與功能說明
     public static string PatchId => "MORIMENS_minion_guardian";
 
-    public static string Description => "擴充 MinionLib 的 IsFrontGuardian 判定，使其支援自訂的 DollMinionGuardianPower";
+    public static string Description => "擴充 MinionLib 的 IsFrontGuardian 判定，使其支援自訂的 MinionGuardianPower";
 
     public static bool IsCritical => true;
 
@@ -26,7 +29,7 @@ public sealed class MinionGuardianPatch : IPatchMethod
 
         // 如果不是，檢查它有沒有掛載我們自訂的新 Power
         // 並且同樣要符合「它是隨從，且站在前排」的規則
-        if (creature.HasPower<MinionGuardianPower>())
+        if (creature.Monster is MinionModel && creature.HasPower<MinionGuardianPower>())
         {
             __result = true; // 強行改成 true，欺騙原模組的溢出演算法！
         }

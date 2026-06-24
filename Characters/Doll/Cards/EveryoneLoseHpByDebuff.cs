@@ -1,5 +1,6 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -7,13 +8,12 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using MinionLib.Targeting;
 using Morimens.Characters.Doll.Definition;
-using Morimens.Core.Card;
 using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace Morimens.Characters.Doll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class EveryoneLoseHpByDoom() : AbstractMorimensCard(2, CardType.Attack, CardRarity.Rare, MinionTargetTypes.AllCreatures)
+public sealed class EveryoneLoseHpByDebuff() : AbstractDollCard(2, CardType.Attack, CardRarity.Rare, MinionTargetTypes.AllCreatures)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 
@@ -41,7 +41,7 @@ public sealed class EveryoneLoseHpByDoom() : AbstractMorimensCard(2, CardType.At
         {
             // 防禦性檢查，因為前面的受擊可能已經導致後面的怪暴斃了
             if (e is null || !e.IsHittable) continue;
-            int amount = e.GetPowerAmount<DoomPower>();
+            int amount = e.Powers.Where(p => p.Type == PowerType.Debuff).Sum(p => p.Amount);
             if (amount > 0)
                 await CreatureCmd.Damage(choiceContext, e, amount, ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, Owner.Creature, this);
         }

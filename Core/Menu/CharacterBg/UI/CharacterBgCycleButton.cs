@@ -14,7 +14,7 @@ public sealed partial class CharacterBgCycleButton : Button
         FocusMode = FocusModeEnum.None;
 
         // 載入按鈕圖標（例如一個循環箭頭的圖示）
-        Icon = ResourceLoader.Load<Texture2D>($"{Entry.ImagePath}/shared/ui/switch_button.png");
+        Icon = ResourceLoader.Load<Texture2D>($"{Entry.ImagePath}/Shared/ui/switch_button.png");
 
         ButtonDown += OnClicked;
         RefreshVisibility();

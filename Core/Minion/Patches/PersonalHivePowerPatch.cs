@@ -18,10 +18,8 @@ public sealed class PersonalHivePowerPatch : IPatchMethod
 
     public static void Prefix(ref Creature? dealer)
     {
-        // 如果攻擊者不是 null，且不是原版的 Osty，但它確實是一個擁有主人的僕從/人偶
         if (dealer is not null && dealer.Monster is not Osty && dealer.PetOwner?.Creature is not null)
         {
-            // 完美的泛型重導向：把傷害責任歸咎給主人（玩家），原版程式碼隨後就能順利讀取到 .Player 實體！
             dealer = dealer.PetOwner.Creature;
         }
     }

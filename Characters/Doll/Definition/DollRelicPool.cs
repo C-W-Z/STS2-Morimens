@@ -5,11 +5,11 @@ namespace Morimens.Characters.Doll.Definition;
 
 public sealed class DollRelicPool : TypeListRelicPoolModel
 {
-    public override string EnergyColorName => "Morimens";
+    public override string EnergyColorName => "colorless";
     public override Color LabOutlineColor => DollAwaker.ThemeColor;
 
     // 遗物实验室和文本也会读取池子的能量图标路径。
     // 资源路径以 res:// 开头，并且要能在 PCK 内找到对应文件。
-    public override string? BigEnergyIconPath => $"{Entry.ImagePath}/shared/ui/energy_big.png";
-    public override string? TextEnergyIconPath => $"{Entry.ImagePath}/shared/ui/energy_text.png";
+    // public override string? BigEnergyIconPath => $"{Entry.ImagePath}/Shared/ui/energy_big.png";
+    // public override string? TextEnergyIconPath => $"{Entry.ImagePath}/Shared/ui/energy_text.png";
 }

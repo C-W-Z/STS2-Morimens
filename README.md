@@ -1,48 +1,50 @@
-# Morimens
+# 殺戮尖塔2-忘卻前夜模組 STS2 Morimens Mod
 
 語言 / Languages：中文 | [English](README.en.md)
 
 ## 支援遊戲版本
 
-Slay the Spire 2 beta-branch v0.107.0
+Slay the Spire 2 v0.107.1
 
 ## 依賴模組
 
-- [STS2-RitsuLib](https://github.com/BAKAOLC/STS2-RitsuLib) ^0.4.13
+- STS2-RitsuLib:
+  - [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3747602295)
+  - [Github](https://github.com/BAKAOLC/STS2-RitsuLib)
 
-- [MinionLib](https://github.com/FuYnAloft/MinionLib) ^0.5.1
+- MinionLib
+  - [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3747595039)
+  - [Github](https://github.com/FuYnAloft/MinionLib)
 
 ## 如何安装
 
-將Morimens.dll, Morimens.pck, Morimens.json連同依賴模組的檔案一起放入殺戮尖塔2資料夾底下的mods資料夾。
+先在Steam Workshop訂閱所有依賴模組。
+
+然後將Morimens.dll, Morimens.pck, Morimens.json一起放入殺戮尖塔2資料夾底下的mods資料夾。
 
 建議資料夾結構：
 
 ```text
 .../steamapps/common/Slay the Spire 2/mods/
-├───MinionLib/
-│       MinionLib.dll
-│       MinionLib.json
-│       MinionLib.pck
-├───Morimens/
-│       Morimens.dll
-│       Morimens.json
-│       Morimens.pck
-└───STS2-RitsuLib/
-    │   compat-target.txt
-    │   mod_manifest.json
-    │   STS2-RitsuLib.dll
-    │   STS2-RitsuLib.pdb
-    │   STS2-RitsuLib.xml
-    └───viewer/
+└───Morimens/
+    ├───Morimens.dll
+    ├───Morimens.json
+    └───Morimens.pck
 ```
+
+打開遊戲，前往[設置] -> [模組設置]，確定依賴模組和本模組都有被勾選，若無則勾選後重啟遊戲。
+
+## 致謝與貢獻者
+
+- 靈感協助：清清梓然、幻幻
+- 美術來自於忘卻前夜，版權歸B.I.A.V.Studio所有
 
 ## 模組内容
 
 | 项 | 值 |
 |---|---|
 | 角色 | 1個：朵爾 |
-| 卡牌 | 27張 |
+| 卡牌 | 29張 |
 | 遺物 | 0 |
 | 藥水 | 0 |
 
@@ -79,7 +81,8 @@ Slay the Spire 2 beta-branch v0.107.0
 
 ```text
 Morimens/
-├── MorimensCode/   # C# 原始碼
+├── Characters/     # 內容 (C# 原始碼)
+├── Core/           # 核心 (C# 原始碼)
 ├── Morimens/       # Godot 資源：影像、文本、音頻和場景
 ├── Morimens.csproj
 ├── Morimens.json   # Mod manifest

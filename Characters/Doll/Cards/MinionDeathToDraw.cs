@@ -4,13 +4,12 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using Morimens.Characters.Doll.Definition;
 using Morimens.Characters.Doll.Powers;
-using Morimens.Core.Card;
 using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace Morimens.Characters.Doll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class MinionDeathToDraw() : AbstractMorimensCard(2, CardType.Power, CardRarity.Uncommon, TargetType.Self)
+public sealed class MinionDeathToDraw() : AbstractDollCard(2, CardType.Power, CardRarity.Uncommon, TargetType.Self)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 

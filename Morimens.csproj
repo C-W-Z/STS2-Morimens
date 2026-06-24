@@ -37,11 +37,13 @@
 
     <ItemGroup>
         <PackageReference Include="Krafs.Publicizer" Version="2.2.1" PrivateAssets="all"/>
+        <!-- 從 NuGet 上自動下載最新版 RitsuLib -->
         <PackageReference Include="Nothing.STS2RitsuLib.ModAnalyzers" Version="*" PrivateAssets="all"/>
         <PackageReference Include="STS2.RitsuLib" Version="*" GeneratePathProperty="true"/>
     </ItemGroup>
 
     <ItemGroup>
+        <!-- 讓專案內部的 private interal 都變成 public -->
         <Publicize Include="sts2" IncludeVirtualMembers="false" IncludeCompilerGeneratedMembers="false"/>
         <Publicize Include="MinionLib"/>
     </ItemGroup>
@@ -54,9 +56,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Remove=".godot/**;.idea/**;.vs/**;bin/**;obj/**"/>
-        <EmbeddedResource Remove=".godot/**;.idea/**;.vs/**;bin/**;obj/**"/>
-        <None Remove=".godot/**;.idea/**;.vs/**;bin/**;obj/**"/>
+        <Compile Remove=".godot/**;.idea/**;.vs/**;.vscode/**;bin/**;obj/**;lib/**"/>
+        <EmbeddedResource Remove=".godot/**;.idea/**;.vs/**;.vscode/**;bin/**;obj/**;lib/**"/>
+        <None Remove=".godot/**;.idea/**;.vs/**;.vscode/**;bin/**;obj/**;lib/**"/>
 
         <AdditionalFiles Include="Morimens/localization/**/*.json"/>
 

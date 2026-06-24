@@ -16,12 +16,12 @@ namespace Morimens.Characters.Doll.Definition;
 [RegisterCharacter]
 public sealed class DollAwaker : Awaker<DollCardPool, DollRelicPool, DollPotionPool>
 {
-    public static readonly Color ThemeColor = new(0.42f, 0.65f, 0.72f);
+    public static readonly Color ThemeColor = new("ECD3D1FF");
 
     // 角色名称颜色。
     public override Color NameColor => ThemeColor;
     // 能量图标轮廓颜色。
-    public override Color EnergyLabelOutlineColor => new(0.08f, 0.18f, 0.24f);
+    public override Color EnergyLabelOutlineColor => new("917070FF");
     // 地图绘制颜色。
     public override Color MapDrawingColor => ThemeColor;
 
@@ -73,6 +73,6 @@ public sealed class DollAwaker : Awaker<DollCardPool, DollRelicPool, DollPotionP
         return DollSpine.GetCreatureAnimator(controller);
     }
 
-    protected override CardModel CreateExaltCardInstance() => ModelDb.Get<MorimensExaltDoll>().ToMutable();
-    protected override CardModel CreateOverExaltCardInstance() => ModelDb.Get<MorimensOverExaltDoll>().ToMutable();
+    protected override AbstractExaltCard ExaltCard => ModelDb.Get<DollExalt>();
+    protected override AbstractExaltCard OverExaltCard => ModelDb.Get<DollOverExalt>();
 }

@@ -8,5 +8,5 @@ namespace Morimens.Characters.Doll.CardTags;
 [RegisterOwnedCardTag(nameof(MinionCmd))]
 public static class DollCardTag
 {
-    public static readonly CardTag MinionCmd = ModContentRegistry.GetQualifiedCardTagId(Entry.ModId, nameof(MinionCmd)).GetModCardTag();
+    public static readonly CardTag MinionCmd = ModContentRegistry.GetQualifiedCardTagId(Entry.ModId, nameof(MinionCmd)).GetModCardTag(); // 指令系列牌
 }

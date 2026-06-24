@@ -4,7 +4,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using Morimens.Characters.Doll.Definition;
-using Morimens.Core.Card;
 using Morimens.Core.ExEnergy;
 using STS2RitsuLib.Combat.SecondaryResources;
 using STS2RitsuLib.Interop.AutoRegistration;
@@ -15,7 +14,7 @@ namespace Morimens.Characters.Doll.Cards;
 // RegisterCharacterStarterCard 会把它追加进 Doll 的初始卡组。
 [RegisterCard(typeof(DollCardPool))]
 [RegisterCharacterStarterCard(typeof(DollAwaker), 4)]
-public sealed class Strike() : AbstractMorimensCard(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
+public sealed class Strike() : AbstractDollCard(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
 {
     protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
 
@@ -23,7 +22,7 @@ public sealed class Strike() : AbstractMorimensCard(1, CardType.Attack, CardRari
     // 添加一个 DamageVar 意为指定卡牌的基础伤害是多少；它会自动绑定到本地化里的 {Damage:diff()} 占位符。
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DamageVar(6, ValueProp.Move),
-        SecondaryResourceVars.For("Aliemus", ExEnergyManager.AliemusId, 5)
+        SecondaryResourceVars.For("Aliemus", ExEnergyRegistry.AliemusId, 5)
     ];
 
     // 打出时的效果逻辑。
@@ -36,7 +35,7 @@ public sealed class Strike() : AbstractMorimensCard(1, CardType.Attack, CardRari
             .FromCard(this)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
-        await SecondaryResourceCmd.Gain(Owner, ExEnergyManager.AliemusId, DynamicVars["Aliemus"].IntValue);
+        await SecondaryResourceCmd.Gain(Owner, ExEnergyRegistry.AliemusId, DynamicVars["Aliemus"].IntValue);
     }
 
     // 升级后的效果逻辑。

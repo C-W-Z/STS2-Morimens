@@ -23,7 +23,7 @@ public abstract class AbstractMorimensPower : ModPowerTemplate
             if (!Godot.ResourceLoader.Exists(targetPath))
             {
                 Entry.Logger.Debug($"Missing power art for '{GetType().Name}'. Falling back to placeholder. (Expected path: {targetPath})");
-                targetPath = $"{Entry.ImagePath}/shared/powers/missing.png";
+                targetPath = $"{Entry.ImagePath}/Shared/powers/missing.png";
             }
 
             _cachedAssetProfile = new PowerAssetProfile(IconPath: targetPath, BigIconPath: targetPath);

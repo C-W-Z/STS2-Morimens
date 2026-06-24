@@ -1,0 +1,24 @@
+using MegaCrit.Sts2.Core.Nodes.Cards;
+using STS2RitsuLib.Patching.Models;
+
+namespace Morimens.Core.Card.Patches;
+
+public sealed class FullCardArtOverlayPatch : IPatchMethod
+{
+    public static string PatchId => "MORIMENS_full_card_art_overlay";
+
+    public static string Description => "全圖卡面";
+
+    public static bool IsCritical => true;
+
+    public static ModPatchTarget[] GetTargets() => [new(typeof(NCard), nameof(NCard.ReloadOverlay))];
+
+    public static void Postfix(NCard __instance)
+    {
+        if (__instance.Model is not AbstractMorimensCard card || !card.IsFullArt)
+            return;
+
+        __instance._frame.Visible = card is not AbstractWheelCard || ((AbstractWheelCard)card).WheelType != WheelFrameType.None;
+        __instance._ancientBorder.Visible = false;
+    }
+}

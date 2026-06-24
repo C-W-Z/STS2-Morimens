@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - dev
   pull_request:
     types: [opened, synchronize, reopened]
   workflow_dispatch: # 手動
@@ -26,7 +25,24 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v4
         with:
+          token: ${{ secrets.SUBMODULE_TOKEN }}
+          submodules: false
           fetch-depth: 0
+
+      - name: Checkout Images Submodule Only
+        env:
+          SUBMODULE_TOKEN: ${{ secrets.SUBMODULE_TOKEN }}
+        shell: pwsh
+        run: |
+
+          # 建立動態 URL 替換規則，叫 Git 自動把 Token 偽裝成通行證帶入 https 請求中
+          git config --global url."https://x-access-token:${env:SUBMODULE_TOKEN}@github.com/".insteadOf "https://github.com/"
+
+          # 只初始化並同步圖片子模組
+          git submodule update --init --recursive Morimens/images
+
+          # [選擇性] 跑完後隨手清除全域設定，保持環境乾淨（雖然雲端機器人跑完就會銷毀）
+          git config --global --unset url."https://x-access-token:${env:SUBMODULE_TOKEN}@github.com/".insteadOf
 
       # 3. 安裝 .NET SDK (配合你的 Morimens 專案設定為 net9.0)
       - name: Setup .NET SDK
@@ -63,7 +79,7 @@ jobs:
       # 7. 如果快取沒中，才重新安裝 Scanner 工具
       - name: Install SonarQube Cloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        shell: powershell
+        shell: pwsh
         run: |
           New-Item -Path "${{ runner.temp }}\scanner" -ItemType Directory -Force
           dotnet tool update dotnet-sonarscanner --tool-path "${{ runner.temp }}\scanner"
@@ -73,14 +89,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # 安全地將 Secret 封裝進環境變數
-        shell: powershell
+        shell: pwsh
         run: |
-          & "${{ runner.temp }}\scanner\dotnet-sonarscanner" begin `
-            /k:"C-W-Z_STS2-Morimens" `
-            /o:"c-w-z" `
-            /d:sonar.token="$env:SONAR_TOKEN" `
-            /d:sonar.host.url="https://sonarcloud.io"
-
+          $sonarArgs = @(
+            "begin",
+            "/k:C-W-Z_STS2-Morimens",
+            "/o:c-w-z",
+            "/d:sonar.token=$env:SONAR_TOKEN",
+            "/d:sonar.host.url=https://sonarcloud.io",
+            "/d:sonar.coverage.exclusions=**/*"
+          )
+          & "${{ runner.temp }}\scanner\dotnet-sonarscanner" $sonarArgs
           dotnet build
-
           & "${{ runner.temp }}\scanner\dotnet-sonarscanner" end /d:sonar.token="$env:SONAR_TOKEN"

@@ -24,7 +24,7 @@ public abstract class AbstractMorimensRelic : ModRelicTemplate
             if (!Godot.ResourceLoader.Exists(targetPath))
             {
                 Entry.Logger.Debug($"Missing relic art for '{GetType().Name}'. Falling back to placeholder. (Expected path: {targetPath})");
-                targetPath = $"{Entry.ImagePath}/shared/relics/missing.png";
+                targetPath = $"{Entry.ImagePath}/Shared/relics/missing.png";
             }
 
             _cachedAssetProfile = new RelicAssetProfile(IconPath: targetPath, IconOutlinePath: targetPath, BigIconPath: targetPath);

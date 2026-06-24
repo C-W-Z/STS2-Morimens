@@ -4,7 +4,7 @@ public static class TypeExtensions
 {
     /// <summary>
     /// 依據類別的命名空間自動推導其所屬的角色資料夾名稱。
-    /// 若不屬於特定角色，則回傳預設的 "shared"。
+    /// 若不屬於特定角色，則回傳預設的 "Shared"。
     /// </summary>
     public static string GetCharacterFolderName(this Type type)
     {
@@ -12,7 +12,7 @@ public static class TypeExtensions
 
         if (string.IsNullOrEmpty(ns))
         {
-            return "shared";
+            return "Shared";
         }
 
         // 依據 "." 切開字串：["Morimens", "Characters", "Doll", "Cards"]
@@ -24,6 +24,6 @@ public static class TypeExtensions
             return segments[2]; // 回傳 "Doll"
         }
 
-        return "shared";
+        return "Shared";
     }
 }

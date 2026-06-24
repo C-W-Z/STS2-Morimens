@@ -1,8 +1,7 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using Morimens.Characters.Doll.Cards.Abstracts;
+using Morimens.Characters.Doll.CardTags;
 using Morimens.Characters.Doll.Definition;
 using Morimens.Characters.Doll.Minions;
 using Morimens.Characters.Doll.Targeting;
@@ -11,13 +10,13 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace Morimens.Characters.Doll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class MinionMerge() : AbstractDollMinionCard(2, CardType.Skill, CardRarity.Rare, DollTargetType.AllDollMinions)
+public sealed class MinionMerge() : AbstractDollCard(1, CardType.Skill, CardRarity.Rare, DollTargetType.AllDollMinions)
 {
-    protected override IEnumerable<DynamicVar> CanonicalVars => [];
+    protected override HashSet<CardTag> CanonicalTags => [DollCardTag.MinionCmd];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        List<DollMinion> minions = await CheckMinionExistAndSummon(choiceContext);
+        List<DollMinion> minions = await DollMinionCmd.CheckMinionExistAndSummon(choiceContext, Owner, this);
         if (minions.Count == 0)
             return;
 

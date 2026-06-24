@@ -5,13 +5,12 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using Morimens.Characters.Doll.Definition;
 using Morimens.Characters.Doll.Powers;
-using Morimens.Core.Card;
 using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace Morimens.Characters.Doll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class HealToBlock() : AbstractMorimensCard(2, CardType.Power, CardRarity.Rare, TargetType.Self)
+public sealed class HealToBlock() : AbstractDollCard(2, CardType.Power, CardRarity.Rare, TargetType.Self)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 

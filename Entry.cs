@@ -2,6 +2,7 @@ using System.Reflection;
 using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Modding;
 using Morimens.Characters.Doll;
+using Morimens.Characters.Shared;
 using Morimens.Core;
 using Morimens.Core.ExEnergy;
 using STS2RitsuLib;
@@ -44,11 +45,12 @@ public static partial class Entry
         PatchRegistry.Register();
         UiRegistry.Register();
 
-        ExEnergyManager.Register();
+        ExEnergyRegistry.Register();
 
         FmodStudioDeferredBankRegistration.RegisterBank($"{AudioPath}/Morimens.bank");
         FmodStudioDeferredBankRegistration.RegisterStudioGuidMappings($"{AudioPath}/GUIDs.txt");
 
+        SharedRegistry.Register();
         DollRegistry.Register();
 
         Logger.Info("Morimens initialized.");

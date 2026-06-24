@@ -5,13 +5,12 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using Morimens.Characters.Doll.Definition;
 using Morimens.Characters.Doll.Minions;
-using Morimens.Core.Card;
 using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace Morimens.Characters.Doll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class SummonFew() : AbstractMorimensCard(1, CardType.Skill, CardRarity.Common, TargetType.Self)
+public sealed class SummonFew() : AbstractDollCard(1, CardType.Skill, CardRarity.Common, TargetType.Self)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 

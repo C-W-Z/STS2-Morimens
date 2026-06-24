@@ -6,13 +6,12 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using Morimens.Characters.Doll.Definition;
-using Morimens.Core.Card;
 using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace Morimens.Characters.Doll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class DamageByDoom() : AbstractMorimensCard(2, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
+public sealed class DamageByDoom() : AbstractDollCard(2, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
 {
     protected override HashSet<CardTag> CanonicalTags => [];
 
