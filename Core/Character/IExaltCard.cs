@@ -1,4 +1,4 @@
-namespace Morimens.Core.ExEnergy;
+namespace Morimens.Core.Character;
 
 public interface IExaltCard
 {

@@ -1,6 +1,6 @@
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using Morimens.Core.ExEnergy;
+using Morimens.Core.Character;
 using STS2RitsuLib.Cards.DynamicVars;
 
 namespace Morimens.Characters.Doll.Definition;
