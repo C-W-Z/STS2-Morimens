@@ -14,6 +14,7 @@ using STS2RitsuLib.Ui.Toast;
 
 namespace Morimens.Core.ExEnergy;
 
+// FIXME: 狂氣爆發會導致聯機時數據不同步，需要看原版怎麼做數據同步的，還有 GameAction 那些
 public static class ExEnergyManager
 {
     private sealed class EnergySkillContext

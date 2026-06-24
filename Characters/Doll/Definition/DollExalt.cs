@@ -2,14 +2,17 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
+using Morimens.Characters.Shared.Definition;
 using Morimens.Core.Character;
 using Morimens.Core.ExEnergy;
 using STS2RitsuLib.Cards.DynamicVars;
 using STS2RitsuLib.Combat.SecondaryResources;
+using STS2RitsuLib.Interop.AutoRegistration;
 
 namespace Morimens.Characters.Doll.Definition;
 
-public sealed class MorimensExaltDoll : AbstractExaltCard<DollCardPool>
+[RegisterCard(typeof(ExaltCardPool))]
+public sealed class DollExalt : AbstractExaltCard
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new HealVar(10m),

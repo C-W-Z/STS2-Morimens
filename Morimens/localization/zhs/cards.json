@@ -1,8 +1,8 @@
 {
-  "MORIMENS_EXALT_DOLL.title": "狂氣爆發：理性，真理與現實",
-  "MORIMENS_EXALT_DOLL.description": "驅散所有友方[gold]易傷[/gold]狀態，回復所有友方{Heal:diff()}點生命，其他玩家獲得{Aliemus:diff()}[gold]狂氣[/gold]。",
-  "MORIMENS_OVER_EXALT_DOLL.title": "超限爆發：心智分析",
-  "MORIMENS_OVER_EXALT_DOLL.description": "驅散所有友方[gold]易傷[/gold]狀態，回復所有友方{Heal:diff()}點生命，其他玩家獲得{Aliemus:diff()}[gold]狂氣[/gold]。接下來{Turn:diff()}回合每回合開始時回復所有友方{Heal:diff()}點生命。",
+  "MORIMENS_CARD_DOLL_EXALT.title": "狂氣爆發：理性，真理與現實",
+  "MORIMENS_CARD_DOLL_EXALT.description": "驅散所有友方[gold]易傷[/gold]狀態，回復所有友方{Heal:diff()}點生命，其他玩家獲得{Aliemus:diff()}[gold]狂氣[/gold]。",
+  "MORIMENS_CARD_DOLL_OVER_EXALT.title": "超限爆發：心智分析",
+  "MORIMENS_CARD_DOLL_OVER_EXALT.description": "驅散所有友方[gold]易傷[/gold]狀態，回復所有友方{Heal:diff()}點生命，其他玩家獲得{Aliemus:diff()}[gold]狂氣[/gold]。接下來{Turn:diff()}回合每回合開始時回復所有友方{Heal:diff()}點生命。",
   "MORIMENS_CARD_STRIKE.title": "打擊",
   "MORIMENS_CARD_STRIKE.description": "造成{Damage:diff()}點傷害。\n獲得{Aliemus:secondaryResourceIcons()}。",
   "MORIMENS_CARD_DEFEND.title": "防禦",
@@ -65,5 +65,7 @@
   "MORIMENS_CARD_INSIGHT.title": "靈感",
   "MORIMENS_CARD_INSIGHT.description": "獲得{Energy:energyIcons()}，抽{Cards:diff()}張牌。",
   "MORIMENS_CARD_MANIKIN_OF_OBLIVION.title": "墜入虛無的人偶",
-  "MORIMENS_CARD_MANIKIN_OF_OBLIVION.description": "釋放[gold]狂氣爆發[/gold]或[gold]超限爆發[/gold]後獲得狂氣消耗量{ManikinOfOblivionPower:diff()}%的[gold]狂氣[/gold]。"
+  "MORIMENS_CARD_MANIKIN_OF_OBLIVION.description": "釋放[gold]狂氣爆發[/gold]或[gold]超限爆發[/gold]後獲得狂氣消耗量{ManikinOfOblivionPower:diff()}%的[gold]狂氣[/gold]。",
+  "MORIMENS_CARD_A_MOUSES_WISDOM.title": "鼠鼠的智慧",
+  "MORIMENS_CARD_A_MOUSES_WISDOM.description": "獲得{Energy:energyIcons()}。"
 }
