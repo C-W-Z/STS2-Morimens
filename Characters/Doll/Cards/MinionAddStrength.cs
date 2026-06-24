@@ -4,7 +4,6 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
-using Morimens.Characters.Doll.Cards.Abstracts;
 using Morimens.Characters.Doll.CardTags;
 using Morimens.Characters.Doll.Definition;
 using Morimens.Characters.Doll.Minions;

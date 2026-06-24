@@ -1,7 +1,6 @@
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using Morimens.Characters.Doll.Cards.Abstracts;
 using Morimens.Characters.Doll.CardTags;
 using Morimens.Characters.Doll.Definition;
 using Morimens.Characters.Doll.Minions;

@@ -1,7 +1,7 @@
 using MegaCrit.Sts2.Core.Entities.Cards;
 using Morimens.Core.Card;
 
-namespace Morimens.Characters.Doll.Cards.Abstracts;
+namespace Morimens.Characters.Doll.Cards;
 
 public abstract class AbstractDollCard(int baseCost, CardType type, CardRarity rarity, TargetType target) : AbstractMorimensCard(baseCost, type, rarity, target)
 {

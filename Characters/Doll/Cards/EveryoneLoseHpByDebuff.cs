@@ -7,7 +7,6 @@ using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using MinionLib.Targeting;
-using Morimens.Characters.Doll.Cards.Abstracts;
 using Morimens.Characters.Doll.Definition;
 using STS2RitsuLib.Interop.AutoRegistration;
 

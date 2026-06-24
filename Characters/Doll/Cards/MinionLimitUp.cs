@@ -3,7 +3,6 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MinionLib.Commands;
-using Morimens.Characters.Doll.Cards.Abstracts;
 using Morimens.Characters.Doll.Definition;
 using Morimens.Characters.Doll.Minions;
 using Morimens.Characters.Doll.Powers;

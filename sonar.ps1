@@ -4,7 +4,6 @@
 $envFilePath = Join-Path $PSScriptRoot ".env"
 if (Test-Path $envFilePath) {
     Get-Content $envFilePath | ForEach-Object {
-        # 跳過註解和空行，只抓取 KEY=VALUE
         if ($_ -notmatch "^\s*#" -and $_ -match "^\s*([^=]+)\s*=\s*(.*)\s*$") {
             $key = $Matches[1].Trim()
             $value = $Matches[2].Trim()
@@ -14,7 +13,16 @@ if (Test-Path $envFilePath) {
 }
 
 # =========================================================
-# 2. 原本的防錯與安全協定
+# 2. 自動偵測當前 Git 分支名稱 ⭐️ (新加入的防呆機制)
+# =========================================================
+$currentBranch = (git branch --show-current).Trim()
+if ([string]::IsNullOrEmpty($currentBranch)) {
+    Write-Warning "⚠️ 無法偵測到 Git 分支名稱，將預設使用 'dev'"
+    $currentBranch = "dev"
+}
+
+# =========================================================
+# 3. 防錯與安全協定
 # =========================================================
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 -bor [Net.SecurityProtocolType]::Tls13
 
@@ -25,13 +33,14 @@ if ([string]::IsNullOrEmpty($token)) {
 }
 
 # =========================================================
-# 3. 執行掃描
+# 4. 執行掃描（明確指定分支名稱）
 # =========================================================
 dotnet sonarscanner begin `
     /o:"c-w-z" `
     /k:"C-W-Z_STS2-Morimens" `
     /d:sonar.host.url="https://sonarcloud.io" `
-    /d:sonar.token="$token"
+    /d:sonar.token="$token" `
+    /d:sonar.branch.name="$currentBranch"  #  強制指定分支，不再讓 Sonar 瞎猜
 
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
