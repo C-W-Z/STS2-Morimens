@@ -1,6 +1,6 @@
 using MegaCrit.Sts2.Core.Entities.Creatures;
-using MinionLib.Powers;
 using MinionLib.Powers.Patches;
+using Morimens.Characters.Shared.Powers;
 using STS2RitsuLib.Patching.Models;
 
 namespace Morimens.Core.Minion.Patches;
