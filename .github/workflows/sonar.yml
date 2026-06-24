@@ -79,7 +79,7 @@ jobs:
       # 7. 如果快取沒中，才重新安裝 Scanner 工具
       - name: Install SonarQube Cloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        shell: powershell
+        shell: pwsh
         run: |
           New-Item -Path "${{ runner.temp }}\scanner" -ItemType Directory -Force
           dotnet tool update dotnet-sonarscanner --tool-path "${{ runner.temp }}\scanner"
@@ -89,13 +89,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # 安全地將 Secret 封裝進環境變數
-        shell: powershell
+        shell: pwsh
         run: |
           & "${{ runner.temp }}\scanner\dotnet-sonarscanner" begin `
             /k:"C-W-Z_STS2-Morimens" `
             /o:"c-w-z" `
             /d:sonar.token="$env:SONAR_TOKEN" `
             /d:sonar.host.url="https://sonarcloud.io"
+            /d:sonar.coverage.exclusions="**/*"
 
           dotnet build
 
