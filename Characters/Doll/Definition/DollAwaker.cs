@@ -73,6 +73,6 @@ public sealed class DollAwaker : Awaker<DollCardPool, DollRelicPool, DollPotionP
         return DollSpine.GetCreatureAnimator(controller);
     }
 
-    protected override CardModel CreateExaltCardInstance() => ModelDb.Get<MorimensExaltDoll>().ToMutable();
-    protected override CardModel CreateOverExaltCardInstance() => ModelDb.Get<MorimensOverExaltDoll>().ToMutable();
+    protected override AbstractExaltCard ExaltCard => ModelDb.Get<MorimensExaltDoll>();
+    protected override AbstractExaltCard OverExaltCard => ModelDb.Get<MorimensOverExaltDoll>();
 }

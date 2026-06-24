@@ -146,15 +146,15 @@ public static class ExEnergyManager
 
             // 達2倍上限切換為超限爆發品類，否則為一般狂氣爆發
             GetTitle = (awaker, current, max) =>
-                current >= max * 2 ? awaker.OverExaltTitle : awaker.ExaltTitle,
+                current >= max * 2 ? awaker.OverExalt.Title : awaker.Exalt.Title,
 
             GetDescription = (awaker, current, max) =>
-                current >= max * 2 ? awaker.OverExaltDescription : awaker.ExaltDescription,
+                current >= max * 2 ? awaker.OverExalt.GetDescription() : awaker.Exalt.GetDescription(),
 
             GetExecuteCoreAction = (awaker, current, max) =>
                 current >= max * 2
-                    ? a => a.OverExalt()
-                    : a => a.Exalt(),
+                    ? a => a.OverExalt.Execute()
+                    : a => a.Exalt.Execute(),
 
             ToastTitle = new(ToastLocTable, "MORIMENS_ALIEMUS_INSUFFICIENT.title"),
             ToastBody = new(ToastLocTable, "MORIMENS_ALIEMUS_INSUFFICIENT.description")
@@ -167,9 +167,9 @@ public static class ExEnergyManager
 
             // 永遠只消耗 1 倍上限
             GetActualCost = (awaker, current, max) => max,
-            GetTitle = (awaker, current, max) => awaker.OverExaltTitle,
-            GetDescription = (awaker, current, max) => awaker.OverExaltDescription,
-            GetExecuteCoreAction = (awaker, current, max) => a => a.OverExalt(),
+            GetTitle = (awaker, current, max) => awaker.OverExalt.Title,
+            GetDescription = (awaker, current, max) => awaker.OverExalt.GetDescription(),
+            GetExecuteCoreAction = (awaker, current, max) => a => a.OverExalt.Execute(),
 
             ToastTitle = new(ToastLocTable, "MORIMENS_KEYFLARE_INSUFFICIENT.title"),
             ToastBody = new(ToastLocTable, "MORIMENS_KEYFLARE_INSUFFICIENT.description")

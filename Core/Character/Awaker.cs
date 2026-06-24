@@ -61,16 +61,16 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
 
     // ─── 快取欄位 ───
     private CombatState? _cachedCombatState;
-    private CardModel? _cachedExaltCard;
-    private CardModel? _cachedOverExaltCard;
+    private AbstractExaltCard? _cachedExaltCard;
+    private AbstractExaltCard? _cachedOverExaltCard;
 
     // ─── 工廠方法 (Factory Methods) ───
     // 子類別只需要實作這兩個方法，回傳對應的卡牌範本即可
-    protected abstract CardModel CreateExaltCardInstance();
-    protected abstract CardModel CreateOverExaltCardInstance();
+    protected abstract AbstractExaltCard ExaltCard { get; }
+    protected abstract AbstractExaltCard OverExaltCard { get; }
 
     // ─── 核心輔助方法：獲取並動態更新快取的卡牌 ───
-    protected CardModel GetExaltCard()
+    private AbstractExaltCard GetExaltCard()
     {
         // 只有第一次會執行 ToMutable() 分配記憶體，後續皆重複使用
         var combatState = CombatManager.Instance._state;
@@ -79,7 +79,7 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
         if (_cachedExaltCard is null || _cachedCombatState != combatState)
         {
             _cachedCombatState = combatState;
-            _cachedExaltCard = CreateExaltCardInstance(); // 重新 ToMutable() 完美向新對局注入 CombatState
+            _cachedExaltCard = (AbstractExaltCard)ExaltCard.ToMutable(); // 重新 ToMutable() 完美向新對局注入 CombatState
         }
 
         _cachedExaltCard.UpgradePreviewType = CardUpgradePreviewType.Combat;
@@ -94,14 +94,14 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
         return _cachedExaltCard;
     }
 
-    protected CardModel GetOverExaltCard()
+    private AbstractExaltCard GetOverExaltCard()
     {
         var combatState = CombatManager.Instance._state;
 
         if (_cachedOverExaltCard is null || _cachedCombatState != combatState)
         {
             _cachedCombatState = combatState;
-            _cachedOverExaltCard = CreateOverExaltCardInstance();
+            _cachedOverExaltCard = (AbstractExaltCard)OverExaltCard.ToMutable();
         }
 
         _cachedOverExaltCard.UpgradePreviewType = CardUpgradePreviewType.Combat;
@@ -116,10 +116,6 @@ public abstract class Awaker<TCardPool, TRelicPool, TPotionPool> : ModCharacterT
         return _cachedOverExaltCard;
     }
 
-    public virtual string ExaltTitle => GetExaltCard().Title;
-    public virtual string ExaltDescription => GetExaltCard().GetDescriptionForPile(PileType.Hand);
-    public virtual async Task Exalt() => await ((IExaltCard)GetExaltCard()).Execute();
-    public virtual string OverExaltTitle => GetOverExaltCard().Title;
-    public virtual string OverExaltDescription => GetOverExaltCard().GetDescriptionForPile(PileType.Hand);
-    public virtual async Task OverExalt() => await ((IExaltCard)GetExaltCard()).Execute();
+    public AbstractExaltCard Exalt => GetExaltCard();
+    public AbstractExaltCard OverExalt => GetOverExaltCard();
 }
