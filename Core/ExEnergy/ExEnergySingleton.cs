@@ -5,31 +5,33 @@ using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using MinionLib.Powers.Patches;
-using Morimens.Core.ExEnergy;
+using Morimens.Core.Character;
 using STS2RitsuLib.Combat.SecondaryResources;
 using STS2RitsuLib.Interop.AutoRegistration;
 using STS2RitsuLib.Models;
 
-namespace Morimens.Core.Character;
+namespace Morimens.Core.ExEnergy;
 
 // TODO: 測試這些到底要不要加上 LocalContext.IsMe(target.Player)
 [RegisterSingleton]
-public sealed class AwakerSingleton() : HookedSingletonModel(HookType.Run), ISecondaryResourceHookListener
+public sealed class ExEnergySingleton() : HookedSingletonModel(HookType.Combat), ISecondaryResourceHookListener
 {
-    // 根據角色改變基礎狂氣
+    // 根據角色改變基礎狂氣/銀鑰
     public decimal ModifyMaxSecondaryResource(SecondaryResourceMaxContext context, decimal amount)
     {
-        if (context.Player is not IAwaker awaker)
+        if (context.Player.Character is not IAwaker awaker)
             return amount;
         if (context.Definition.Id == ExEnergyManager.AliemusId)
             return amount + awaker.BaseAliemus - (ExEnergyManager.AliemusDefinition.BaseMaxAmount ?? 0);
+        if (context.Definition.Id == ExEnergyManager.KeyflareId)
+            return amount + awaker.BaseKeyflare - (ExEnergyManager.KeyflareDefinition.BaseMaxAmount ?? 0);
         return amount;
     }
 
-    // 2倍上限狂氣
+    // 2倍上限狂氣，2倍或以上銀鑰
     public decimal ModifySecondaryResourceGain(SecondaryResourceContext context, decimal amount)
     {
-        if (context.Player is not IAwaker awaker)
+        if (context.Player.Character is not IAwaker awaker)
             return amount;
         if (context.Definition.Id == ExEnergyManager.AliemusId)
         {
@@ -37,8 +39,19 @@ public sealed class AwakerSingleton() : HookedSingletonModel(HookType.Run), ISec
             int maxAmt = SecondaryResourceCmd.GetMax(context.Player, ExEnergyManager.AliemusId) ?? awaker.BaseAliemus;
             if (currentAmt + amount > 2 * maxAmt)
             {
-                Entry.Logger.Debug($"currentAmt = {currentAmt}; maxAmt = {maxAmt}; 獲得 {2 * maxAmt - currentAmt} 點狂氣");
+                Entry.Logger.Debug($"[ExEnergySingleton] currentAmt = {currentAmt}; maxAmt = {maxAmt}; 獲得 {2 * maxAmt - currentAmt} 點狂氣");
                 return 2 * maxAmt - currentAmt;
+            }
+        }
+        else if (context.Definition.Id == ExEnergyManager.KeyflareId)
+        {
+            int currentAmt = SecondaryResourceCmd.Get(context.Player, ExEnergyManager.KeyflareId);
+            int maxAmt = SecondaryResourceCmd.GetMax(context.Player, ExEnergyManager.KeyflareId) ?? awaker.BaseKeyflare;
+            int maxAmtMultiply = 2; // TODO: 如果有隱世轉輪則為3
+            if (currentAmt + amount > maxAmtMultiply * maxAmt)
+            {
+                Entry.Logger.Debug($"[ExEnergySingleton] currentAmt = {currentAmt}; maxAmt = {maxAmt}; maxAmtMultiply = {maxAmtMultiply}; 獲得 {maxAmtMultiply * maxAmt - currentAmt} 點銀鑰");
+                return maxAmtMultiply * maxAmt - currentAmt;
             }
         }
         return amount;
@@ -47,11 +60,11 @@ public sealed class AwakerSingleton() : HookedSingletonModel(HookType.Run), ISec
     // 被攻擊獲得1點狂氣
     public override async Task AfterDamageReceived(PlayerChoiceContext choiceContext, Creature target, DamageResult result, ValueProp props, Creature? dealer, CardModel? cardSource)
     {
-        Entry.Logger.Debug($"AfterDamageReceived: {dealer?.Name} deals to {target.Name}");
+        Entry.Logger.Debug($"[ExEnergySingleton] AfterDamageReceived: {dealer?.Name} deals to {target.Name}");
         if (dealer?.Side != CombatSide.Enemy)
             return;
 
-        if (target.Player is not IAwaker)
+        if (target.Player?.Character is not IAwaker)
             return;
 
         // 1. MinionLib 正在處理溢傷流程中 (IsHandling.Value == true)
@@ -62,7 +75,7 @@ public sealed class AwakerSingleton() : HookedSingletonModel(HookType.Run), ISec
             && result.UnblockedDamage <= 0
             && !result.WasFullyBlocked)
         {
-            Entry.Logger.Debug($"阻止 MinionGuardianOverkillPatch 的幽靈傷害觸發狂氣+1");
+            Entry.Logger.Debug($"[ExEnergySingleton] 阻止 MinionGuardianOverkillPatch 的幽靈傷害觸發狂氣+1");
             return;
         }
 
@@ -76,6 +89,7 @@ public sealed class AwakerSingleton() : HookedSingletonModel(HookType.Run), ISec
     {
         foreach (var p in participants)
         {
+            Entry.Logger.Debug($"[ExEnergySingleton] AfterSideTurnEnd participant: {p.Name}, is Awaker = {p.Player?.Character is IAwaker}");
             if (p.Player?.Character is IAwaker)
             {
                 // TODO: 会经过 Gain Hook 修正，要改掉
@@ -87,7 +101,7 @@ public sealed class AwakerSingleton() : HookedSingletonModel(HookType.Run), ISec
     // 打牌耗費獲得銀鑰
     public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        if (cardPlay.Card.Owner is not IAwaker awaker)
+        if (cardPlay.Card.Owner.Character is not IAwaker awaker)
             return;
         await SecondaryResourceCmd.Gain(cardPlay.Card.Owner, ExEnergyManager.KeyflareId, cardPlay.Resources.EnergySpent * awaker.KeyflareGain, this);
     }
