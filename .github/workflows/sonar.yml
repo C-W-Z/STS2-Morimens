@@ -1,0 +1,85 @@
+name: SonarCloud Automated Analysis
+
+on:
+  push:
+    branches:
+      - master
+      - dev
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    name: Build and analyze
+    runs-on: windows-latest # 官方推薦的 .NET 分析環境
+
+    steps:
+      # 1. 設定 JDK 17 (SonarScanner 運作必備)
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'zulu'
+
+      # 2. 檢查出專案原始碼（必須完整 fetch-depth）
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 3. 安裝 .NET SDK (配合你的 Morimens 專案設定為 net9.0)
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      # 4. 快取 SonarQube Cloud 的分析套件快取
+      - name: Cache SonarQube Cloud packages
+        uses: actions/cache@v4
+        with:
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      # 5. 快取 SonarQube Cloud Scanner 執行檔本身 (避免每次重複下載)
+      - name: Cache SonarQube Cloud scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}\scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+
+      # 6. 快取 NuGet 套件 (注意：Windows 環境路徑為 ~\.nuget\packages)
+      - name: Cache NuGet Packages
+        uses: actions/cache@v4
+        with:
+          path: ~\.nuget\packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      # 7. 如果快取沒中，才重新安裝 Scanner 工具
+      - name: Install SonarQube Cloud scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: powershell
+        run: |
+          New-Item -Path "${{ runner.temp }}\scanner" -ItemType Directory -Force
+          dotnet tool update dotnet-sonarscanner --tool-path "${{ runner.temp }}\scanner"
+
+      # 8. 執行分析與編譯 (🔒 完美修正 S7636 安全漏洞)
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # 安全地將 Secret 封裝進環境變數
+        shell: powershell
+        run: |
+          & "${{ runner.temp }}\scanner\dotnet-sonarscanner" begin `
+            /k:"C-W-Z_STS2-Morimens" `
+            /o:"c-w-z" `
+            /d:sonar.token="$env:SONAR_TOKEN" `
+            /d:sonar.host.url="https://sonarcloud.io"
+
+          dotnet build
+
+          & "${{ runner.temp }}\scanner\dotnet-sonarscanner" end /d:sonar.token="$env:SONAR_TOKEN"

@@ -11,3 +11,8 @@ local.props
 *.import
 *.tmp
 *.log
+
+.env
+
+.sonarqube/
+.sonarlint/
