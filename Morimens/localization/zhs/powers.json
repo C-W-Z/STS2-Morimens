@@ -17,5 +17,7 @@
   "MORIMENS_POWER_TMP_STRENGTH_POWER.title": "臨時力量",
   "MORIMENS_POWER_TMP_STRENGTH_POWER.description": "本回合[gold]力量[/gold]提升[blue]{Amount}[/blue]。",
   "MORIMENS_POWER_TMP_STRENGTH_DOWN_POWER.title": "臨時降力",
-  "MORIMENS_POWER_TMP_STRENGTH_DOWN_POWER.description": "本回合[gold]力量[/gold]降低[blue]{Amount:abs()}[/blue]。"
+  "MORIMENS_POWER_TMP_STRENGTH_DOWN_POWER.description": "本回合[gold]力量[/gold]降低[blue]{Amount:abs()}[/blue]。",
+  "MORIMENS_POWER_MANIKIN_OF_OBLIVION_POWER.title": "墜入虛無的人偶",
+  "MORIMENS_POWER_MANIKIN_OF_OBLIVION_POWER.description": "釋放[gold]狂氣爆發[/gold]或[gold]超限爆發[/gold]後獲得狂氣消耗量[blue]{Amount}%[blue]的[gold]狂氣[/gold]。"
 }
