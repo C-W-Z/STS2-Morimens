@@ -34,6 +34,15 @@ public static class DollMinionCmd
             Position: MinionPosition.Front)); // 站位但不重要因為 DollMinionLayout 會自動調整
     }
 
+    public static async Task<List<DollMinion>> CheckMinionExistAndSummon(PlayerChoiceContext choiceContext, Player player, CardModel? cardSource)
+    {
+        ArgumentNullException.ThrowIfNull(player);
+        List<DollMinion> minions = GetAllDollMinions(player);
+        if (minions.Count == 0)
+            await Summon(choiceContext, player, cardSource);
+        return minions;
+    }
+
     public static async Task<Creature> SummonCopy(PlayerChoiceContext choiceContext, Player player, DollMinion origin, CardModel? cardSource)
     {
         var powers = origin.Creature.Powers.ToList();

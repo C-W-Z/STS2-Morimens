@@ -12,8 +12,10 @@ using STS2RitsuLib.Interop.AutoRegistration;
 namespace Morimens.Characters.Doll.Cards;
 
 [RegisterCard(typeof(DollCardPool))]
-public sealed class MinionCmdSearch() : AbstractDollMinionCard(0, CardType.Skill, CardRarity.Rare, TargetType.None)
+public sealed class MinionCmdSearch() : AbstractDollCard(0, CardType.Skill, CardRarity.Rare, TargetType.None)
 {
+    protected override HashSet<CardTag> CanonicalTags => [DollCardTag.MinionCmd];
+
     protected override IEnumerable<DynamicVar> CanonicalVars => [new CardsVar(1)];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
