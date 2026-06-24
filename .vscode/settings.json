@@ -4,6 +4,7 @@
         "**/*.import": true,           // 隱藏 Godot 的資源導入檔（最干擾的髒檔案）
         "**/*.uid": true,              // 隱藏 Godot 4 的資源唯一標識檔
         "**/.godot": true,             // 隱藏 Godot 的快取資料夾
+        "**/.obj": true,               // 隱藏 obj 快取資料夾
         "**/.sonarlint": true,         // 隱藏 SonarQube 的快取資料夾
         "**/.sonarqube": true,         // 隱藏 SonarQube 的快取資料夾
     },
@@ -12,6 +13,7 @@
         "**/*.import": true,
         "**/*.uid": true,
         "**/.godot": true,
+        "**/.obj": true,
         "**/.sonarlint": true,
         "**/.sonarqube": true,
     },

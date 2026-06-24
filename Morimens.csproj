@@ -56,9 +56,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Remove=".godot/**;.idea/**;.vs/**;bin/**;obj/**"/>
-        <EmbeddedResource Remove=".godot/**;.idea/**;.vs/**;bin/**;obj/**"/>
-        <None Remove=".godot/**;.idea/**;.vs/**;bin/**;obj/**"/>
+        <Compile Remove=".godot/**;.idea/**;.vs/**;.vscode/**;bin/**;obj/**;lib/**"/>
+        <EmbeddedResource Remove=".godot/**;.idea/**;.vs/**;.vscode/**;bin/**;obj/**;lib/**"/>
+        <None Remove=".godot/**;.idea/**;.vs/**;.vscode/**;bin/**;obj/**;lib/**"/>
 
         <AdditionalFiles Include="Morimens/localization/**/*.json"/>
 
