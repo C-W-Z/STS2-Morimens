@@ -4,9 +4,13 @@ using STS2RitsuLib.Scaffolding.Content;
 
 namespace Morimens.Core.Character;
 
-public abstract class AbstractExaltCard<TCardPool>() : ModCardTemplate(0, CardType.None, CardRarity.None, TargetType.None), IExaltCard
+public abstract class AbstractExaltCard<TCardPool> : ModCardTemplate, IExaltCard
     where TCardPool : CardPoolModel
 {
-    public override CardPoolModel Pool => ModelDb.Get<TCardPool>();
+    protected AbstractExaltCard() : base(0, CardType.None, CardRarity.None, TargetType.None)
+    {
+        _pool = ModelDb.Get<TCardPool>();
+    }
+
     public abstract Task Execute();
 }
