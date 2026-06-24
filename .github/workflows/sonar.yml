@@ -91,13 +91,14 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # 安全地將 Secret 封裝進環境變數
         shell: pwsh
         run: |
-          & "${{ runner.temp }}\scanner\dotnet-sonarscanner" begin `
-            /k:"C-W-Z_STS2-Morimens" `
-            /o:"c-w-z" `
-            /d:sonar.token="$env:SONAR_TOKEN" `
-            /d:sonar.host.url="https://sonarcloud.io"
-            /d:sonar.coverage.exclusions="**/*"
-
+          $sonarArgs = @(
+            "begin",
+            "/k:C-W-Z_STS2-Morimens",
+            "/o:c-w-z",
+            "/d:sonar.token=$env:SONAR_TOKEN",
+            "/d:sonar.host.url=https://sonarcloud.io",
+            "/d:sonar.coverage.exclusions=**/*"
+          )
+          & "${{ runner.temp }}\scanner\dotnet-sonarscanner" $sonarArgs
           dotnet build
-
           & "${{ runner.temp }}\scanner\dotnet-sonarscanner" end /d:sonar.token="$env:SONAR_TOKEN"
