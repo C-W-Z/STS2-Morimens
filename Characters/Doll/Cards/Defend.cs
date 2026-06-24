@@ -22,7 +22,7 @@ public sealed class Defend() : AbstractDollCard(1, CardType.Skill, CardRarity.Ba
     // BlockVar 会绑定到本地化里的 {Block:diff()}，升级时文本会自动显示差值。
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new BlockVar(5m, ValueProp.Move),
-        SecondaryResourceVars.For("Aliemus", ExEnergyManager.AliemusId, 5)
+        SecondaryResourceVars.For("Aliemus", ExEnergyRegistry.AliemusId, 5)
     ];
 
     public override bool GainsBlock => true; // 似乎只有加上"格擋"這個HoverTip的效果？還有是否可附魔靈巧
@@ -32,7 +32,7 @@ public sealed class Defend() : AbstractDollCard(1, CardType.Skill, CardRarity.Ba
     {
         await CreatureCmd.TriggerAnim(Owner.Creature, DollSpine.State.Cast, DollSpine.CastAnimDelay);
         await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
-        await SecondaryResourceCmd.Gain(Owner, ExEnergyManager.AliemusId, DynamicVars["Aliemus"].IntValue);
+        await SecondaryResourceCmd.Gain(Owner, ExEnergyRegistry.AliemusId, DynamicVars["Aliemus"].IntValue);
     }
 
     // 升级后的效果逻辑。

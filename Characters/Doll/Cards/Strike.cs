@@ -22,7 +22,7 @@ public sealed class Strike() : AbstractDollCard(1, CardType.Attack, CardRarity.B
     // 添加一个 DamageVar 意为指定卡牌的基础伤害是多少；它会自动绑定到本地化里的 {Damage:diff()} 占位符。
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DamageVar(6, ValueProp.Move),
-        SecondaryResourceVars.For("Aliemus", ExEnergyManager.AliemusId, 5)
+        SecondaryResourceVars.For("Aliemus", ExEnergyRegistry.AliemusId, 5)
     ];
 
     // 打出时的效果逻辑。
@@ -35,7 +35,7 @@ public sealed class Strike() : AbstractDollCard(1, CardType.Attack, CardRarity.B
             .FromCard(this)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
-        await SecondaryResourceCmd.Gain(Owner, ExEnergyManager.AliemusId, DynamicVars["Aliemus"].IntValue);
+        await SecondaryResourceCmd.Gain(Owner, ExEnergyRegistry.AliemusId, DynamicVars["Aliemus"].IntValue);
     }
 
     // 升级后的效果逻辑。

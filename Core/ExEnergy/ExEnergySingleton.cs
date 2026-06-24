@@ -21,10 +21,10 @@ public sealed class ExEnergySingleton() : HookedSingletonModel(HookType.Combat),
     {
         if (context.Player.Character is not IAwaker awaker)
             return amount;
-        if (context.Definition.Id == ExEnergyManager.AliemusId)
-            return amount + awaker.BaseAliemus - (ExEnergyManager.AliemusDefinition.BaseMaxAmount ?? 0);
-        if (context.Definition.Id == ExEnergyManager.KeyflareId)
-            return amount + awaker.BaseKeyflare - (ExEnergyManager.KeyflareDefinition.BaseMaxAmount ?? 0);
+        if (context.Definition.Id == ExEnergyRegistry.AliemusId)
+            return amount + awaker.BaseAliemus - (ExEnergyRegistry.AliemusDefinition.BaseMaxAmount ?? 0);
+        if (context.Definition.Id == ExEnergyRegistry.KeyflareId)
+            return amount + awaker.BaseKeyflare - (ExEnergyRegistry.KeyflareDefinition.BaseMaxAmount ?? 0);
         return amount;
     }
 
@@ -33,20 +33,20 @@ public sealed class ExEnergySingleton() : HookedSingletonModel(HookType.Combat),
     {
         if (context.Player.Character is not IAwaker awaker)
             return amount;
-        if (context.Definition.Id == ExEnergyManager.AliemusId)
+        if (context.Definition.Id == ExEnergyRegistry.AliemusId)
         {
-            int currentAmt = SecondaryResourceCmd.Get(context.Player, ExEnergyManager.AliemusId);
-            int maxAmt = SecondaryResourceCmd.GetMax(context.Player, ExEnergyManager.AliemusId) ?? awaker.BaseAliemus;
+            int currentAmt = SecondaryResourceCmd.Get(context.Player, ExEnergyRegistry.AliemusId);
+            int maxAmt = SecondaryResourceCmd.GetMax(context.Player, ExEnergyRegistry.AliemusId) ?? awaker.BaseAliemus;
             if (currentAmt + amount > 2 * maxAmt)
             {
                 Entry.Logger.Debug($"[ExEnergySingleton] currentAmt = {currentAmt}; maxAmt = {maxAmt}; 獲得 {2 * maxAmt - currentAmt} 點狂氣");
                 return 2 * maxAmt - currentAmt;
             }
         }
-        else if (context.Definition.Id == ExEnergyManager.KeyflareId)
+        else if (context.Definition.Id == ExEnergyRegistry.KeyflareId)
         {
-            int currentAmt = SecondaryResourceCmd.Get(context.Player, ExEnergyManager.KeyflareId);
-            int maxAmt = SecondaryResourceCmd.GetMax(context.Player, ExEnergyManager.KeyflareId) ?? awaker.BaseKeyflare;
+            int currentAmt = SecondaryResourceCmd.Get(context.Player, ExEnergyRegistry.KeyflareId);
+            int maxAmt = SecondaryResourceCmd.GetMax(context.Player, ExEnergyRegistry.KeyflareId) ?? awaker.BaseKeyflare;
             int maxAmtMultiply = 2; // TODO: 如果有隱世轉輪則為3
             if (currentAmt + amount > maxAmtMultiply * maxAmt)
             {
@@ -81,7 +81,7 @@ public sealed class ExEnergySingleton() : HookedSingletonModel(HookType.Combat),
 
         // 获得 1 点狂氣
         // TODO: 会经过 Gain Hook 修正，要改掉
-        await SecondaryResourceCmd.Gain(target.Player, ExEnergyManager.AliemusId, 1, this);
+        await SecondaryResourceCmd.Gain(target.Player, ExEnergyRegistry.AliemusId, 1, this);
     }
 
     // 回合結束獲得5狂氣
@@ -93,7 +93,7 @@ public sealed class ExEnergySingleton() : HookedSingletonModel(HookType.Combat),
             if (p.Player?.Character is IAwaker)
             {
                 // TODO: 会经过 Gain Hook 修正，要改掉
-                await SecondaryResourceCmd.Gain(p.Player!, ExEnergyManager.AliemusId, 5, null);
+                await SecondaryResourceCmd.Gain(p.Player!, ExEnergyRegistry.AliemusId, 5, null);
             }
         }
     }
@@ -103,6 +103,6 @@ public sealed class ExEnergySingleton() : HookedSingletonModel(HookType.Combat),
     {
         if (cardPlay.Card.Owner.Character is not IAwaker awaker)
             return;
-        await SecondaryResourceCmd.Gain(cardPlay.Card.Owner, ExEnergyManager.KeyflareId, cardPlay.Resources.EnergySpent * awaker.KeyflareGain, this);
+        await SecondaryResourceCmd.Gain(cardPlay.Card.Owner, ExEnergyRegistry.KeyflareId, cardPlay.Resources.EnergySpent * awaker.KeyflareGain, this);
     }
 }

@@ -45,7 +45,7 @@ public static partial class Entry
         PatchRegistry.Register();
         UiRegistry.Register();
 
-        ExEnergyManager.Register();
+        ExEnergyRegistry.Register();
 
         FmodStudioDeferredBankRegistration.RegisterBank($"{AudioPath}/Morimens.bank");
         FmodStudioDeferredBankRegistration.RegisterStudioGuidMappings($"{AudioPath}/GUIDs.txt");

@@ -20,7 +20,7 @@ public sealed class ExEnergyFontSizePatch : IPatchMethod
     {
         var definitionField = AccessTools.Field(typeof(NSecondaryResourceCounter), "_definition");
         if (definitionField?.GetValue(__instance) is SecondaryResourceDefinition definition &&
-            (definition.Id == ExEnergyManager.AliemusId || definition.Id == ExEnergyManager.KeyflareId))
+            (definition.Id == ExEnergyRegistry.AliemusId || definition.Id == ExEnergyRegistry.KeyflareId))
         {
             // 利用 Harmony 的 AccessTools 抓取私有的 _amountLabel 反射欄位
             var labelField = AccessTools.Field(typeof(NSecondaryResourceCounter), "_amountLabel");

@@ -30,6 +30,6 @@ public sealed class DollExalt : AbstractExaltCard
             await CreatureCmd.Heal(ally, DynamicVars.Heal.BaseValue);
         foreach (var ally in CombatState.Players)
             if (!LocalContext.IsMe(ally) && ally.Character is IAwaker)
-                await SecondaryResourceCmd.Gain(ally, ExEnergyManager.AliemusId, DynamicVars["Aliemus"].IntValue, this);
+                await SecondaryResourceCmd.Gain(ally, ExEnergyRegistry.AliemusId, DynamicVars["Aliemus"].IntValue, this);
     }
 }
